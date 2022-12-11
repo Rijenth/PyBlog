@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+    flask_backend:
+      container_name: flask_backend
+      build: 
+        context: ./backend
+        dockerfile: Dockerfile
+      ports:
+        - "5000:5000"
+      volumes:
+        - ./backend:/code
+      restart: always
+
+    react_frontend:
+      container_name: react_frontend
+      build: 
+        context: ./frontend
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./frontend:/usr/src/app
+      restart: always
