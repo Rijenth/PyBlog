@@ -1,50 +1,40 @@
 import axios from 'axios';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import NotFound from '../404';
-
-// article interface
-// article is an array containing object
-interface Article {
-    id: number;
-    title: string;
-    body: string;
-    author: string;
-    date: string;
-}
+import { Navigate, useParams } from 'react-router-dom';
+import RedirectButton from '../../components/redirectButton';
 
 const DeleteArticle = () => {
     const baseUrl = 'http://localhost:5000/api/articles';
-    
-    const { id } = useParams();    
+    const { id } = useParams();
+    const[articleDeleted, setArticleDeleted] = React.useState(false)
 
-    const [article, setArticle] = React.useState<Article[]>([]);
-
-    React.useEffect(() => {
-        axios.get(`${baseUrl}/${id}`)
-            .then((response) => setArticle(response.data))
-            .catch((error) => console.log(error));
-    }, []);
-
-    if(!article || article.length === 0) {
-        return (
-            <NotFound />
-        )
+    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        axios.delete(`${baseUrl}/${id}`)
+        .then(response => {
+            if(response.status === 204) {
+                setArticleDeleted(true);
+            } else {
+                alert('Une erreur est survenue lors de la suppression de l\'article.')
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     return (
-        <div className="container">
-            {article && article.map((article) => (
-                <div key={article.id}>
-                    <h1>Article</h1>
-                    <h2>{article.title}</h2>
-                    <p>{article.body}</p>
-                    <p>{article.author}</p>
-                    <p>{article.date}</p>
-                </div>
-            ))}
-        </div>
-    );
+        (articleDeleted) ? <Navigate to='/articles' /> : (
+            <div className='container'>
+                <h3>Supprimer un article</h3>
+                <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
+                <button onClick={handleClick} className="btn btn-primary">Confirmer</button>
+                <a href="/articles">
+                    <RedirectButton buttonText='Annuler' buttonUrl='/articles' buttonClass='btn btn-danger' />
+                </a>
+            </div>
+        )
+    )
 };
 
 export default DeleteArticle;

@@ -30,6 +30,25 @@ def PostArticle():
     data['title'] = data['title'].replace('<', '').replace('>', '')
     return ArticlesController.postArticle(data)
 
+@app.route('/api/articles/<string:id>', methods=['PUT'])
+def updateArticle(id):
+    data = request.get_json()
+    try:
+        int(id)
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 404
+    id = int(id)
+    return ArticlesController.updateArticle(id, data)
+
+@app.route('/api/articles/<string:id>', methods=['DELETE'])
+def deleteArticle(id):
+    try:
+        int(id)
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 404
+    id = int(id)
+    return ArticlesController.deleteArticle(id)
+
 @app.route('/api', methods=['POST'])
 def data():
     data = request.get_json()

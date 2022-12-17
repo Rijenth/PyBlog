@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import Button from '../../components/redirectButton';
+import RedirectButton from '../../components/redirectButton';
 
 interface Article {
     id: number;
@@ -33,9 +33,8 @@ const IndexArticles = () => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-
-                            <Button buttonText='Update' buttonUrl={`/articles/update/${article.id}`} buttonClass='btn btn-info' />
-                            <Button buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger'/>
+                            <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary'/>
+                            <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger'/>
                             <a style={{paddingLeft: 15}} href={`/articles/${article.id}`}>
                             {article.title} - {article.author} - {article.date}
                             </a>

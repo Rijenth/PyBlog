@@ -32,11 +32,16 @@ class ArticlesController:
         return jsonify(article), 200
 
     def postArticle(data):
+        if(len(ArticlesController.articles) == 0):
+            id = 1
+        else:
+            id = ArticlesController.articles[-1]['id'] + 1
+
         article = [
             {
                 # temporaire car pas de base de données
                 # provoque une erreur si la liste d'articles et vide
-                "id" : ArticlesController.articles[-1]['id'] + 1,
+                "id" : id,
 
                 "title" : data['title'],
                 "body" : data['body'],
@@ -58,3 +63,10 @@ class ArticlesController:
         article[0]['author'] = data['author']
 
         return jsonify(article), 200
+    
+    def deleteArticle(id):
+        article = [article for article in ArticlesController.articles if article['id'] == id]
+        if len(article) == 0:
+            return jsonify({}), 404
+        ArticlesController.articles.remove(article[0])
+        return jsonify({}), 204
