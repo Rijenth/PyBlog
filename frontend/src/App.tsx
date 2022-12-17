@@ -16,9 +16,11 @@ function App() {
 
           <Route index path='/' element={<Home />} />
 
-          <Route path='/articles' element={<IndexArticles />} />
-          <Route path='/articles/:id' element={<GetArticle />} />
-          
+          <Route path='/articles'>
+            <Route index element={<IndexArticles />} />
+            <Route path=':id' element={<GetArticle />} />
+          </Route>
+        
           <Route path='/about' element={<About />} />
           <Route path='*' element={<NotFound />} />
           
