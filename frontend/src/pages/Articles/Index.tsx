@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import RedirectButton from '../../components/redirectButton';
+import RedirectButton from '../../components/RedirectButton';
 
 interface Article {
     id: number;

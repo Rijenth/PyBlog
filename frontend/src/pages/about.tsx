@@ -13,7 +13,7 @@ const About = () => {
             <hr/>
 
             <p>
-                PyBlog est un blog créé avec le framework Flask dans le cadre d'un perfectionnement personnel.
+                PyBlog est un blog créé avec le framework Flask dans le cadre d'un projet personnel.
                 Mon objectif en faisant ce projet était d'appliquer mes acquis tout en me lançant sur un nouveau framework pour ainsi découvrir de nouvelles manières de faire.
             </p>
 

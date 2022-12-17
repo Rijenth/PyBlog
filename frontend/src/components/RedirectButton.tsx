@@ -6,7 +6,7 @@ interface ButtonProps {
     buttonClass: string;
 }
 
-const redirectButton = (props:ButtonProps) => {
+const RedirectButton = (props:ButtonProps) => {
     return (
         <a href={props.buttonUrl}>  
             <button type='button' className={props.buttonClass}>
@@ -16,4 +16,4 @@ const redirectButton = (props:ButtonProps) => {
     )
 }
 
-export default redirectButton;
+export default RedirectButton;
