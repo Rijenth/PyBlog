@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 interface Article {
     id: number;
@@ -13,19 +14,24 @@ interface Article {
 } */
 
 const IndexArticles = () => {    
+    const baseUrl = 'http://localhost:5000/api/articles';
+
     const [articles, setArticles] = React.useState<Article[]>([]);
 
     React.useEffect(() => {
-        fetch('http://localhost:5000/api/articles', { 
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => setArticles(data));
+        axios.get(baseUrl)
+            .then((response) => setArticles(response.data))
+            .catch((error) => console.log(error));
     }, []);
+
+    if(!articles || articles.length === 0) {
+        return (
+            <div className="container">
+                <h1>Articles</h1>
+                <p>Aucun article n'est disponible</p>
+            </div>
+        );
+    }
 
     return (
         <div className="container">

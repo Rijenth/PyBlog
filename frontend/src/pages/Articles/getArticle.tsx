@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../404';
@@ -20,22 +21,16 @@ const GetArticle = () => {
 
     const [article, setArticle] = React.useState<Article[]>([]);
 
-    
     React.useEffect(() => {
-        fetch(`${baseUrl}/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => setArticle(data))
+        axios.get(`${baseUrl}/${id}`)
+            .then((response) => setArticle(response.data))
             .catch((error) => console.log(error));
     }, []);
-    
-    if (article.length === 0) {
-        return <NotFound />;
+
+    if(!article || article.length === 0) {
+        return (
+            <NotFound />
+        )
     }
 
     return (
@@ -51,34 +46,6 @@ const GetArticle = () => {
             ))}
         </div>
     );
-
-    /* return (
-        <div className="container">
-            {article && (
-                <div>
-                    <h1>Article</h1>
-                    <h2>{article.title}</h2>
-                    <p>{article.body}</p>
-                    <p>{article.author}</p>
-                    <p>{article.date}</p>
-                </div>
-            )}            
-        </div>
-    ); */
-
 };
 
-
-
 export default GetArticle;
-
-
-
-
-/* 
-    <h2>{{article.title}}</h2>
-    <p>{{article.body}}</p>
-    <p>{{article.author}}</p>
-    <p>{{article.date_created}}</p>
-
-*/

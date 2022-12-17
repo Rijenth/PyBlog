@@ -45,7 +45,6 @@ class ArticlesController:
         article = [article for article in articles if article['id'] == id]
         
         if len(article) == 0:
-            # return an empty json object with a 404 status code
             return jsonify({}), 404
 
 
