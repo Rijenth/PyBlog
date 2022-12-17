@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Navigate } from 'react-router';
+import RedirectButton from '../../components/RedirectButton';
 
 const PostArticle = () => {
     const baseUrl = 'http://localhost:5000/api/articles';
@@ -55,6 +56,7 @@ const PostArticle = () => {
                         <input required type="text" className="form-control" id="author" placeholder="Enter author" />
                     </div>
                     <button onClick={handleClick} type="submit" className="btn btn-primary btn-sm">Submit</button>
+                    <RedirectButton buttonText='Annuler' buttonClass='btn btn-secondary btn-sm' buttonUrl='/articles'/>
                 </form>
             </div>
         )
