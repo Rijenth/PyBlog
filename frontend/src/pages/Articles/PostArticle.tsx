@@ -1,50 +1,64 @@
 import axios from 'axios';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import NotFound from '../404';
-
-// article interface
-// article is an array containing object
-interface Article {
-    id: number;
-    title: string;
-    body: string;
-    author: string;
-    date: string;
-}
+import { Navigate } from 'react-router';
 
 const PostArticle = () => {
     const baseUrl = 'http://localhost:5000/api/articles';
-    
-    const { id } = useParams();    
 
-    const [article, setArticle] = React.useState<Article[]>([]);
+    const [articlesCreated, setArticlesCreated] = React.useState(false)
 
-    React.useEffect(() => {
-        axios.get(`${baseUrl}/${id}`)
-            .then((response) => setArticle(response.data))
-            .catch((error) => console.log(error));
-    }, []);
+    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        const title = document.getElementById('title') as HTMLInputElement
+        const body = document.getElementById('body') as HTMLInputElement
+        const author = document.getElementById('author') as HTMLInputElement
+        
+        if(title.value.length !== 0 && body.value.length !== 0 && author.value.length !== 0) {
+            const article = {
+                title: title.value,
+                body: body.value,
+                author: author.value,
+            };
 
-    if(!article || article.length === 0) {
-        return (
-            <NotFound />
-        )
+            axios.post(baseUrl, article)
+            .then(response => {
+                if(response.status === 201) {
+                    setArticlesCreated(true);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        } else {
+            return alert('Tout les champs doivent être complétés');
+        }
     }
 
+
     return (
-        <div className="container">
-            {article && article.map((article) => (
-                <div key={article.id}>
-                    <h1>Article</h1>
-                    <h2>{article.title}</h2>
-                    <p>{article.body}</p>
-                    <p>{article.author}</p>
-                    <p>{article.date}</p>
-                </div>
-            ))}
-        </div>
-    );
+        (articlesCreated) ? <Navigate to='/articles' /> : (
+            <div>
+                <h2>Créer un article</h2>
+                <form>
+                    <div className="form-group">
+                        <label htmlFor="title">Title</label>
+                        <input required type="text" className="form-control" id="title" placeholder="Enter title" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="body">Body</label>
+                        <textarea required className="form-control" id="body" rows={3} defaultValue={""} />
+                    </div>
+
+                    {/* Supprimer quand on aura les sessions */}
+                    <div className="form-group">
+                        <label htmlFor="author">Author</label>
+                        <input required type="text" className="form-control" id="author" placeholder="Enter author" />
+                    </div>
+                    <button onClick={handleClick} type="submit" className="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        )
+    )
 };
 
 export default PostArticle;

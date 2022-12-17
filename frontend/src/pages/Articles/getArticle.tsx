@@ -37,7 +37,6 @@ const GetArticle = () => {
         <div className="container">
             {article && article.map((article) => (
                 <div key={article.id}>
-                    <h1>Article</h1>
                     <h2>{article.title}</h2>
                     <p>{article.body}</p>
                     <p>{article.author}</p>

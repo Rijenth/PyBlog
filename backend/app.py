@@ -9,7 +9,6 @@ cors = CORS(app)
 def home():
     return HomeController.home()
 
-
 @app.route('/api/articles', methods=['GET'])
 def indexArticles():
     return ArticlesController.indexArticles()
@@ -22,6 +21,14 @@ def showArticle(id):
         return jsonify({'message': 'Wrong params!'}), 404
     id = int(id)
     return ArticlesController.showArticle(id)
+
+@app.route('/api/articles', methods=['POST'])
+def PostArticle():
+    data = request.get_json()    
+    for key, value in data.items():
+        data[key] = value.strip()
+    data['title'] = data['title'].replace('<', '').replace('>', '')
+    return ArticlesController.postArticle(data)
 
 @app.route('/api', methods=['POST'])
 def data():

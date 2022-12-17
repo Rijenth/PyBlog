@@ -24,28 +24,26 @@ const IndexArticles = () => {
             .catch((error) => console.log(error));
     }, []);
 
-    if(!articles || articles.length === 0) {
-        return (
+    return (
+        (articles.length === 0) ? ( 
             <div className="container">
                 <h1>Articles</h1>
                 <p>Aucun article n'est disponible</p>
+            </div> 
+        ) : (
+            <div className="container">
+                <h1>Articles</h1>
+                <ul className="list-group">
+                    {articles && articles.length > 0 && articles.map((article) => (
+                        <li key={article.id} className="list-group-item">
+                            <a href={`/articles/${article.id}`}>
+                                {article.title} - {article.author} - {article.date}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
             </div>
-        );
-    }
-
-    return (
-        <div className="container">
-            <h1>Articles</h1>
-            <ul className="list-group">
-                {articles && articles.length > 0 && articles.map((article) => (
-                    <li key={article.id} className="list-group-item">
-                        <a href={`/articles/${article.id}`}>
-                            {article.title} - {article.author} - {article.date}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        )
     );
 };
 
