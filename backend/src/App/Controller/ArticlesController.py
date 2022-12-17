@@ -46,3 +46,15 @@ class ArticlesController:
         ]
         ArticlesController.articles.append(article[0])
         return jsonify(ArticlesController.articles), 201
+
+    def updateArticle(id, data):
+        article = [article for article in ArticlesController.articles if article['id'] == id]
+        if len(article) == 0:
+            return jsonify({}), 404
+
+        # Remplacer ça par une requête SQL
+        article[0]['title'] = data['title']
+        article[0]['body'] = data['body']
+        article[0]['author'] = data['author']
+
+        return jsonify(article), 200

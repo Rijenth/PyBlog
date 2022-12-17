@@ -5,7 +5,7 @@ const NotFound = () => {
         <div className="container">
             <h1>Oups...</h1>
             <p>
-                La page que vous recherchez n'existe pas.
+                Cette page n'existe pas.
             </p>
         </div>
     );
