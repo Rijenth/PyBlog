@@ -1,4 +1,5 @@
 import axios from 'axios';
+import e from 'express';
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import RedirectButton from '../../components/RedirectButton';
@@ -33,29 +34,23 @@ const UpdateArticle = () => {
 
     function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        const title = document.getElementById('title') as HTMLInputElement
-        const body = document.getElementById('body') as HTMLInputElement
-        const author = document.getElementById('author') as HTMLInputElement
-        
-        if(title.value.length !== 0 && body.value.length !== 0 && author.value.length !== 0) {
-            const article = {
-                title: title.value,
-                body: body.value,
-                author: author.value,
-            };
-
-            axios.patch(baseUrl, article)
+        axios.put(`${baseUrl}/${id}`, {
+            title: articleTitle,
+            body: articleBody,
+            author: articleAuthor
+        })
             .then(response => {
-                if(response.status === 204) {
+                if (response.status === 204) {
                     setArticleUpdated(true);
+                } else {
+                    alert('Une erreur est survenue lors de la mise à jour de l\'article.');
                 }
             })
             .catch(error => {
                 console.log(error);
-            });
-        }
+            }
+        );      
     }
-
 
     return (
         (articleUpdated) ? <Navigate to='/articles' /> : (
@@ -64,17 +59,17 @@ const UpdateArticle = () => {
                 <form>
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input required type="text" className="form-control" id="title" defaultValue={articleTitle} />
+                        <input required type="text" className="form-control" id="title" defaultValue={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="body">Body</label>
-                        <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody} />
+                        <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody} onChange={(e) => setArticleBody(e.target.value)} /> 
                     </div>
 
                     {/* Supprimer quand on aura les sessions */}
                     <div className="form-group">
                         <label htmlFor="author">Author</label>
-                        <input required type="text" className="form-control" id="author" defaultValue={articleAuthor} />
+                        <input required type="text" className="form-control" id="author" defaultValue={articleAuthor} onChange={(e) => setArticleAuthor(e.target.value)} />
                     </div>
 
                     <button onClick={handleUpdate} type="submit" className="btn btn-primary btn-sm">Confirmer les changements</button>
