@@ -26,10 +26,10 @@ const DeleteArticle = () => {
     return (
         (articleDeleted) ? <Navigate to='/articles' /> : (
             <div className='container'>
-                <h3>Supprimer un article</h3>
+                <h2>Supprimer un article</h2>
                 <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
-                <button onClick={handleClick} className="btn btn-primary">Confirmer</button>
-                <RedirectButton buttonText='Annuler' buttonUrl='/articles' buttonClass='btn btn-danger' />
+                <button style={{marginRight:5}} onClick={handleClick} className="btn btn-primary btn-sm">Confirmer</button>
+                <RedirectButton buttonText='Annuler' buttonUrl='/articles' buttonClass='btn btn-secondary btn-sm' />
             </div>
         )
     )

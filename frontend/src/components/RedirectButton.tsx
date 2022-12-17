@@ -8,7 +8,7 @@ interface ButtonProps {
 
 const RedirectButton = (props:ButtonProps) => {
     return (
-        <a href={props.buttonUrl}>  
+        <a style={{paddingLeft: 5, paddingRight: 5}} href={props.buttonUrl}>  
             <button type='button' className={props.buttonClass}>
                 {props.buttonText}
             </button>

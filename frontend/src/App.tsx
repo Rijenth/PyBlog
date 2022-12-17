@@ -20,7 +20,7 @@ function App() {
             <Route index element={<IndexArticles />} />
             <Route path=':id' element={<GetArticle />} />
             <Route path='create' element={<PostArticle />} />
-            <Route path='update/:id' element={<UpdateArticle />} />
+            <Route path='edit/:id' element={<UpdateArticle />} />
             <Route path='delete/:id' element={<DeleteArticle />} />
           </Route>
         

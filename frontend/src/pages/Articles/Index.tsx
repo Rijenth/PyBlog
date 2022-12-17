@@ -24,18 +24,18 @@ const IndexArticles = () => {
     return (
         (articles.length === 0) ? ( 
             <div className="container">
-                <h1>Articles</h1>
+                <h2>Articles</h2>
                 <p>Aucun article n'est disponible</p>
             </div> 
         ) : (
             <div className="container">
-                <h1>Articles</h1>
+                <h2>Articles</h2>
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary'/>
-                            <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger'/>
-                            <a style={{paddingLeft: 15}} href={`/articles/${article.id}`}>
+                            <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
+                            <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
+                            <a style={{paddingLeft: 10}} href={`/articles/${article.id}`}>
                             {article.title} - {article.author} - {article.date}
                             </a>
                         </li>

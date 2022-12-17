@@ -54,11 +54,10 @@ const PostArticle = () => {
                         <label htmlFor="author">Author</label>
                         <input required type="text" className="form-control" id="author" placeholder="Enter author" />
                     </div>
-                    <button onClick={handleClick} type="submit" className="btn btn-primary">Submit</button>
+                    <button onClick={handleClick} type="submit" className="btn btn-primary btn-sm">Submit</button>
                 </form>
             </div>
         )
     )
 };
-
 export default PostArticle;

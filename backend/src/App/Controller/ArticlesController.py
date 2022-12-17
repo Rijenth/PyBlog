@@ -62,7 +62,7 @@ class ArticlesController:
         article[0]['body'] = data['body']
         article[0]['author'] = data['author']
 
-        return jsonify(article), 200
+        return jsonify({}), 204
     
     def deleteArticle(id):
         article = [article for article in ArticlesController.articles if article['id'] == id]
