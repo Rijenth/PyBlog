@@ -1,7 +1,7 @@
 # React_Flask
 Docker template for React App | Flask Backend
 
-`yarn install`
+`cd /PyBlog/frontend && yarn install`
 
 ## Pour le style
 `yarn add react-bootstrap bootstrap`
@@ -13,6 +13,8 @@ Docker template for React App | Flask Backend
 `yarn add axios`
 
 `docker-compose up -d --build`
+
+
 
 ## explorer un conteneur
 `docker exec -t -i d19cbfce47df /bin/sh`
