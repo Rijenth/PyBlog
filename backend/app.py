@@ -5,6 +5,12 @@ from src.App.Controller.ArticlesController import ArticlesController
 app=Flask(__name__)
 cors = CORS(app)
 
+# this is a route to test the creation of a new article trough the ArticleClass
+@app.route('/api/articles/new', methods=['POST'])
+def newArticle():
+    data = request.get_json()
+    return ArticlesController.newArticle(data)
+
 @app.route('/', methods=['GET'])
 def home():
     return HomeController.home()
