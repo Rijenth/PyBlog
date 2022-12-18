@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from datetime import date
 from src.App.Models.ArticleModel import ArticleModel
+from src.App.Actions.DatabaseSetup import DatabaseSetup
 
 class ArticlesController:
     articles = [
@@ -26,7 +27,14 @@ class ArticlesController:
 
 
     def newArticle(data):
+        
+        # connect to mariaDB
+        
+        return jsonify("done"), 201
         article = ArticleModel(data)
+
+        
+
         return jsonify(article.serialize()), 201
 
 
