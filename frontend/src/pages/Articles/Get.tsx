@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import NotFound from '../404';
 
 interface Article {
@@ -13,22 +13,27 @@ interface Article {
 
 
 const GetArticle = () => {
-    const baseUrl = 'http://localhost:5000/api/articles';
-    
-    const { id } = useParams();    
+    const [isLoading, setIsLoading] = React.useState(true);
 
+    const baseUrl = 'http://localhost:5000/api/articles';
+    const { id } = useParams();    
     const [article, setArticle] = React.useState<Article[]>([]);
 
     React.useEffect(() => {
         axios.get(`${baseUrl}/${id}`)
-            .then((response) => setArticle(response.data))
+            .then((response) => {
+                setArticle(response.data)
+                setIsLoading(false);
+            })
             .catch((error) => console.log(error));
     }, []);
 
-    if(!article || article.length === 0) {
-        return (
-            <NotFound />
-        )
+    if (isLoading) {
+        return <div/>;
+    }
+    
+    if(article.length === 0) {
+        return <NotFound />
     }
 
     return (
