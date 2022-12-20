@@ -2,12 +2,15 @@ version: "3.8"
 
 services:
     flask_backend:
-      container_name: flask_backend
+      container_name: flask
       build: 
         context: ./backend
         dockerfile: Dockerfile
       links:
         - mysql
+      depends_on:
+        mysql:
+          condition: service_healthy
       ports:
         - "5000:5000"
       volumes:
@@ -17,6 +20,11 @@ services:
     mysql:
       container_name: mysql
       image: mysql:5.7
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-pRijenth123+", "-P", "3306"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
       ports:
         - "3306:3306"
       volumes:
@@ -27,7 +35,7 @@ services:
         MYSQL_DATABASE: PyBlog
     
     react_frontend:
-      container_name: react_frontend
+      container_name: react
       build: 
         context: ./frontend
         dockerfile: Dockerfile
