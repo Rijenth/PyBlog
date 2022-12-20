@@ -2,18 +2,40 @@ version: "3.8"
 
 services:
     flask_backend:
-      container_name: flask_backend
+      container_name: flask
       build: 
         context: ./backend
         dockerfile: Dockerfile
+      links:
+        - mysql
+      depends_on:
+        mysql:
+          condition: service_healthy
       ports:
         - "5000:5000"
       volumes:
         - ./backend:/code
       restart: always
-
+    
+    mysql:
+      container_name: mysql
+      image: mysql:5.7
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-pRijenth123+", "-P", "3306"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./database:/docker-entrypoint-initdb.d/:ro
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: Rijenth123+
+        MYSQL_DATABASE: PyBlog
+    
     react_frontend:
-      container_name: react_frontend
+      container_name: react
       build: 
         context: ./frontend
         dockerfile: Dockerfile
@@ -23,20 +45,6 @@ services:
         - ./frontend:/usr/src/app
       restart: always
 
-    mariadb:
-      container_name: mariadb
-      image: mariadb:latest
-      ports:
-        - "3306:3306"
-      volumes:
-        - ./backend/database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
-      restart: always
-      environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: PyBlog
-        MYSQL_USER: rijenth
-        MYSQL_PASSWORD: rijenth
-
     phpmyadmin:
       container_name: phpmyadmin
       image: phpmyadmin/phpmyadmin
@@ -44,7 +52,7 @@ services:
         - "8080:80"
       restart: always
       environment:
-        PMA_HOST: mariadb
+        PMA_HOST: mysql
         PMA_PORT: 3306
-        PMA_USER: rijenth
-        PMA_PASSWORD: rijenth
+        PMA_USER: root
+        PMA_PASSWORD: Rijenth123+

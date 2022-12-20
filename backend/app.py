@@ -2,8 +2,28 @@ from flask import (Flask, jsonify, json, request)
 from flask_cors import CORS
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.ArticlesController import ArticlesController
+import mysql.connector
+
 app=Flask(__name__)
 cors = CORS(app)
+
+config = {
+        'user': 'root',
+        'password': 'Rijenth123+',
+        'host': 'mysql',
+        'port': '3306',
+        'database': 'PyBlog'
+    }
+connection = mysql.connector.connect(**config)
+
+# this is a route to test the mysql connection
+@app.route('/api/mysql', methods=['GET'])
+def mysql():
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM Articles")
+    result = cursor.fetchall()
+    return jsonify(result)
+
 
 # this is a route to test the creation of a new article trough the ArticleClass
 @app.route('/api/articles/new', methods=['POST'])

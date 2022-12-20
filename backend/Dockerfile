@@ -1,18 +1,12 @@
 FROM python:3.8-alpine3.13
 
+EXPOSE 5000
+
 WORKDIR /code
-
-RUN apk --update --upgrade add --no-cache  gcc musl-dev jpeg-dev zlib-dev libffi-dev cairo-dev pango-dev gdk-pixbuf-dev
-
-RUN python -m pip install --upgrade pip
 
 COPY requirements.txt requirements.txt
 
-RUN apk add --no-cache mariadb-connector-c-dev
-
 RUN pip install -r requirements.txt
-
-EXPOSE 5000
 
 COPY . .
 
