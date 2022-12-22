@@ -4,6 +4,7 @@ from flask import Flask, jsonify
      
 class ArticleModel(BasicModel): 
     attributes = {
+        'id': int,
         'title': str,
         'body': str,
         'author': str,

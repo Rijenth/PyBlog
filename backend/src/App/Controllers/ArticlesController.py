@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 from datetime import date
 from src.App.Models.ArticleModel import ArticleModel
-from src.App.Actions.DatabaseSetup import DatabaseSetup
-
+from src.App.Actions.DatabaseActions import DatabaseActions
+from src.App.Actions.ArticleAction import ArticleAction
 class ArticlesController:
     articles = [
         {
@@ -23,26 +23,13 @@ class ArticlesController:
 
     def __init__(self, request):
         self.request = request
-
-
-
-    def newArticle(data):
         
-        # connect to mariaDB
-        
-        return jsonify("done"), 201
-        article = ArticleModel(data)
-
-        
-
-        return jsonify(article.serialize()), 201
-
-
-
-        
-
     def indexArticles():
-        return jsonify(ArticlesController.articles), 200
+        articles = ArticleAction().index()
+
+        # Créer des objets ArticleModel
+        
+        return jsonify(articles), 200
 
     def showArticle(id):
         article = [article for article in ArticlesController.articles if article['id'] == id]

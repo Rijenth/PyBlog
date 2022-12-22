@@ -1,5 +1,4 @@
 import axios from 'axios';
-import e from 'express';
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import RedirectButton from '../../components/RedirectButton';

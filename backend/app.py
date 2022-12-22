@@ -7,23 +7,14 @@ import mysql.connector
 app=Flask(__name__)
 cors = CORS(app)
 
-config = {
-        'user': 'root',
-        'password': 'Rijenth123+',
-        'host': 'mysql',
-        'port': '3306',
-        'database': 'PyBlog'
-    }
-connection = mysql.connector.connect(**config)
-
 # this is a route to test the mysql connection
-@app.route('/api/mysql', methods=['GET'])
+""" @app.route('/api/mysql', methods=['GET'])
 def mysql():
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM Articles")
     result = cursor.fetchall()
     return jsonify(result)
-
+ """
 
 # this is a route to test the creation of a new article trough the ArticleClass
 @app.route('/api/articles/new', methods=['POST'])
@@ -49,7 +40,7 @@ def showArticle(id):
     return ArticlesController.showArticle(id)
 
 @app.route('/api/articles', methods=['POST'])
-def PostArticle():
+def postArticle():
     data = request.get_json()    
     for key, value in data.items():
         data[key] = value.strip()
@@ -74,11 +65,6 @@ def deleteArticle(id):
         return jsonify({'message': 'Wrong params!'}), 404
     id = int(id)
     return ArticlesController.deleteArticle(id)
-
-@app.route('/api', methods=['POST'])
-def data():
-    data = request.get_json()
-    return jsonify({'message': 'Data received!', 'data': data})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

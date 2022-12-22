@@ -31,7 +31,7 @@ const GetArticle = () => {
             }
         };
         getArticle();
-    }, [isLoading]);
+    }, [isLoading, error, id]);
 
     if (isLoading) {
         return <div/>;
