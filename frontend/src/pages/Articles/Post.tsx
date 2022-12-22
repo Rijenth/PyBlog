@@ -14,7 +14,7 @@ const PostArticle = () => {
         const body = document.getElementById('body') as HTMLInputElement
         const author = document.getElementById('author') as HTMLInputElement
         
-        if(title.value.length !== 0 && body.value.length !== 0 && author.value.length !== 0) {
+        if(title.value.trim().length !== 0 && body.value.trim().length !== 0 && author.value.trim().length !== 0) {
             const article = {
                 title: title.value,
                 body: body.value,
@@ -34,7 +34,6 @@ const PostArticle = () => {
             return alert('Tout les champs doivent être complétés');
         }
     }
-
 
     return (
         (articlesCreated) ? <Navigate to='/articles' /> : (

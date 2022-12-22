@@ -34,10 +34,20 @@ const UpdateArticle = () => {
 
     function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
+
+        const title = document.getElementById('title') as HTMLInputElement
+        const body = document.getElementById('body') as HTMLInputElement
+        const author = document.getElementById('author') as HTMLInputElement
+
+        if(title.value.trim() === '' || body.value.trim() === '' || author.value.trim() === '') {
+            alert('Tout les champs sont obligatoires.');
+            return;
+        }
+
         axios.put(`${baseUrl}/${id}`, {
-            title: articleTitle,
-            body: articleBody,
-            author: articleAuthor
+            title: title.value,
+            body: body.value,
+            author: author.value
         })
             .then(response => {
                 if (response.status === 204) {
@@ -59,17 +69,17 @@ const UpdateArticle = () => {
                 <form>
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input required type="text" className="form-control" id="title" defaultValue={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} />
+                        <input required type="text" className="form-control" id="title" defaultValue={articleTitle}/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="body">Body</label>
-                        <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody} onChange={(e) => setArticleBody(e.target.value)} /> 
+                        <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody}/> 
                     </div>
 
                     {/* Supprimer quand on aura les sessions */}
                     <div className="form-group">
                         <label htmlFor="author">Author</label>
-                        <input required type="text" className="form-control" id="author" defaultValue={articleAuthor} onChange={(e) => setArticleAuthor(e.target.value)} />
+                        <input required type="text" className="form-control" id="author" defaultValue={articleAuthor}/>
                     </div>
 
                     <button onClick={handleUpdate} type="submit" className="btn btn-primary btn-sm">Confirmer les changements</button>
