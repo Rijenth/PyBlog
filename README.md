@@ -24,8 +24,3 @@ Docker template for React App | Flask Backend
 Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER avec `root`
 
 `2022-12-18 12:17:17+00:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/dump.sql`
-
-
-# Issue
-    -> Quand on update un post avec un champs vide, le champ n'est
-    pas inséré comme étant vide.
