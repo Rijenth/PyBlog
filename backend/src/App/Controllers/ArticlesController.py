@@ -52,12 +52,7 @@ class ArticlesController:
 
         return jsonify({}), 204
     
+
     def deleteArticle(id):
-        article = [article for article in ArticlesController.articles if article['id'] == id]
-        if len(article) == 0:
-            return jsonify({}), 404
-
-        # removes this article from DB
-
-        ArticlesController.articles.remove(article[0])
+        ArticleAction()._delete(id)
         return jsonify({}), 204

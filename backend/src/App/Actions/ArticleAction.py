@@ -16,3 +16,6 @@ class ArticleAction(DatabaseActions):
     def show(self, id):
         data = super()._get(id)    
         return ArticleModel(data).serialize()
+
+    def delete(self, id):
+        return super()._delete(id)
