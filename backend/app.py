@@ -27,8 +27,7 @@ def showArticle(id):
         int(id)
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 404
-    id = int(id)
-    return ArticlesController.showArticle(id)
+    return ArticlesController.showArticle(int(id))
 
 @app.route('/api/articles', methods=['POST'])
 def postArticle():
@@ -45,8 +44,7 @@ def updateArticle(id):
         int(id)
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 404
-    id = int(id)
-    return ArticlesController.updateArticle(id, data)
+    return ArticlesController.updateArticle(int(id), data)
 
 @app.route('/api/articles/<string:id>', methods=['DELETE'])
 def deleteArticle(id):
@@ -54,8 +52,7 @@ def deleteArticle(id):
         int(id)
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 404
-    id = int(id)
-    return ArticlesController.deleteArticle(id)
+    return ArticlesController.deleteArticle(int(id))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

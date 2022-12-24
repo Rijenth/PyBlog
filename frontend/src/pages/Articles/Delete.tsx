@@ -14,12 +14,10 @@ const DeleteArticle = () => {
         .then(response => {
             if(response.status === 204) {
                 setArticleDeleted(true);
-            } else {
-                alert('Une erreur est survenue lors de la suppression de l\'article.')
             }
         })
         .catch(error => {
-            console.log(error);
+            alert('Une erreur est survenue lors de la suppression de l\'article.')
         });
     }
 
