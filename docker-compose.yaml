@@ -22,7 +22,7 @@ services:
       image: mysql:5.7
       healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-pRijenth123+", "-P", "3306"]
-        interval: 10s
+        interval: 5s
         timeout: 5s
         retries: 5
       ports:

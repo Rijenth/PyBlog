@@ -24,4 +24,21 @@ INSERT INTO `Articles` (`id`, `title`, `body`, `author`, `date`) VALUES
     (2, 'Article 2', 'This is the body of article 2', 'Jane Doe', '2021-11-15 20:28:58'),
     (3, 'Article 3', 'This is the body of article 3', 'Jacob Doe', '2021-11-15 20:28:58');
 
+
+DROP TABLE IF EXISTS `Users`;
+
+CREATE TABLE `Users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `username` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `firstName` varchar(255) NOT NULL,
+    `lastName` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL,
+    `admin` tinyint(1) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT into `Users` (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `admin`) VALUES 
+    (1, 'admin', 'admin', 'Admin', 'Admin', 'admin@admin.fr', 1);
+
 -- 2022-11-15 20:28:58
