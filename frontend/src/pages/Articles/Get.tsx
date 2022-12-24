@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import NotFound from '../404';
 
 interface Article {
     id: number;
@@ -38,7 +39,7 @@ const GetArticle = () => {
     }
 
     return (
-        (article.length === 0) ? <Navigate to="/404" /> : (
+        (article.length === 0) ? <NotFound /> : (
             <div className="container">
                 {article && article.map((article) => (
                     <div key={article.id} className="card" style={{width: 500}}>

@@ -7,25 +7,16 @@ import mysql.connector
 app=Flask(__name__)
 cors = CORS(app)
 
-# this is a route to test the mysql connection
-""" @app.route('/api/mysql', methods=['GET'])
-def mysql():
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM Articles")
-    result = cursor.fetchall()
-    return jsonify(result)
- """
-
-# this is a route to test the creation of a new article trough the ArticleClass
-@app.route('/api/articles/new', methods=['POST'])
-def newArticle():
-    data = request.get_json()
-    return ArticlesController.newArticle(data)
-
+###                 ###
+###    Home Route   ###
+###                 ###
 @app.route('/', methods=['GET'])
 def home():
     return HomeController.home()
 
+###                 ###
+### Articles Routes ###
+###                 ###
 @app.route('/api/articles', methods=['GET'])
 def indexArticles():
     return ArticlesController.indexArticles()

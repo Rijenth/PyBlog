@@ -14,8 +14,11 @@ class ArticleModel(BasicModel):
     def __init__(self, data):
         super().__init__(data)
     
-    def extract(self):
-        return super().extract()
-
-
-
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'body': self.body,
+            'author': self.author,
+            'date': self.date
+        }

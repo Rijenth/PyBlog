@@ -1,41 +1,23 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, json, request
 from datetime import date
 from src.App.Models.ArticleModel import ArticleModel
 from src.App.Actions.DatabaseActions import DatabaseActions
 from src.App.Actions.ArticleAction import ArticleAction
 class ArticlesController:
-    articles = [
-        {
-            "id" : 1,
-            "title" : 'Article 1',
-            "body" : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.',
-            "author" : 'John Doe',
-            "date" : '2020-01-01'
-        },
-        {
-            "id" : 2,
-            "title" : 'Article 2',
-            "body" : 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.',
-            "author" : 'Jane Doe',
-            "date" : '2020-01-01'      
-        }
-    ]
-
     def __init__(self, request):
         self.request = request
-        
-    def indexArticles():
-        articles = ArticleAction().index()
 
-        # Créer des objets ArticleModel
-        
-        return jsonify(articles), 200
+    def indexArticles():
+        return jsonify(ArticleAction().index()), 200
 
     def showArticle(id):
-        article = [article for article in ArticlesController.articles if article['id'] == id]
+        article = ArticleAction()._get(id)
         if len(article) == 0:
             return jsonify({}), 404
-        return jsonify(article), 200
+        return jsonify([article]), 200
+
+
+    
 
     def postArticle(data):
         if(len(ArticlesController.articles) == 0):
@@ -74,5 +56,8 @@ class ArticlesController:
         article = [article for article in ArticlesController.articles if article['id'] == id]
         if len(article) == 0:
             return jsonify({}), 404
+
+        # removes this article from DB
+
         ArticlesController.articles.remove(article[0])
         return jsonify({}), 204
