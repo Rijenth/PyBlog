@@ -40,18 +40,9 @@ class DatabaseActions:
         if(result == None):
             return []
         return self._format(result)
-    
-    def _patch(self):
+
+    def _execute(self, query, value):
         self._connect()
-        self.cursor.execute("INSERT INTO Articles (title, body, author, date) VALUES (%s, %s, %s, %s)", ("Article 1", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.", "John Doe", date.today()))
+        self.cursor.execute(query, value)
         self.connection.commit()
         self.connection.close()
-
-    def _delete(self, id):
-        self._connect()
-        self.cursor.execute("DELETE FROM " + self.table + " WHERE id = " + str(id))
-        self.connection.commit()
-        self.connection.close()
-    
-
-

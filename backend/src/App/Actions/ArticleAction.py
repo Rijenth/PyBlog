@@ -18,12 +18,18 @@ class ArticleAction(DatabaseActions):
         return ArticleModel(data).serialize()
 
     def post(self, data):
-        self._connect()
         query = "INSERT INTO " + self.table + " (title, body, author, date) VALUES (%s, %s, %s, %s)"
         value = (data['title'], data['body'], data['author'], data['date'])
-        self.cursor.execute(query, value)
-        self.connection.commit()
-        self.connection.close()
+        super()._execute(query, value)
+
+
+    def update(self, id, data):
+        query = "UPDATE " + self.table + " SET title = %s, body = %s, author = %s WHERE id = %s"
+        value = (data['title'], data['body'], data['author'], id)
+        super()._execute(query, value)
+
 
     def delete(self, id):
-        return super()._delete(id)
+        query = "DELETE FROM " + self.table + " WHERE id = %s"
+        value = (id,)
+        super()._execute(query, value)
