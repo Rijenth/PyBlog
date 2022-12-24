@@ -34,7 +34,6 @@ def postArticle():
     data = request.get_json()    
     for key, value in data.items():
         data[key] = value.strip()
-    data['title'] = data['title'].replace('<', '').replace('>', '')
     return ArticlesController.postArticle(data)
 
 @app.route('/api/articles/<string:id>', methods=['PUT'])

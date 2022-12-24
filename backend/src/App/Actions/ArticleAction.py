@@ -17,5 +17,13 @@ class ArticleAction(DatabaseActions):
         data = super()._get(id)    
         return ArticleModel(data).serialize()
 
+    def post(self, data):
+        self._connect()
+        query = "INSERT INTO " + self.table + " (title, body, author, date) VALUES (%s, %s, %s, %s)"
+        value = (data['title'], data['body'], data['author'], data['date'])
+        self.cursor.execute(query, value)
+        self.connection.commit()
+        self.connection.close()
+
     def delete(self, id):
         return super()._delete(id)

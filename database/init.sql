@@ -15,7 +15,7 @@ CREATE TABLE `Articles` (
     `title` varchar(255) NOT NULL,
     `body` text NOT NULL, 
     `author` varchar(255) NOT NULL,
-    `date` datetime NOT NULL,
+    `date` date NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

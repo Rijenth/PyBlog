@@ -16,29 +16,10 @@ class ArticlesController:
             return jsonify({}), 404
         return jsonify([article]), 200
 
-
-    
-
     def postArticle(data):
-        if(len(ArticlesController.articles) == 0):
-            id = 1
-        else:
-            id = ArticlesController.articles[-1]['id'] + 1
-
-        article = [
-            {
-                # temporaire car pas de base de données
-                # provoque une erreur si la liste d'articles et vide
-                "id" : id,
-
-                "title" : data['title'],
-                "body" : data['body'],
-                "author" : data['author'],
-                "date" : date.today().strftime("%Y-%m-%d")
-            }
-        ]
-        ArticlesController.articles.append(article[0])
-        return jsonify(ArticlesController.articles), 201
+        data['date'] = date.today().strftime("%Y-%m-%d")
+        ArticleAction().post(data)
+        return jsonify({}), 201
 
     def updateArticle(id, data):
         article = [article for article in ArticlesController.articles if article['id'] == id]
