@@ -1,6 +1,5 @@
 from src.App.Models.BasicModel import BasicModel
-from flask import Flask, jsonify
-# this class herit from BasicModel class
+from flask import Flask
      
 class ArticleModel(BasicModel): 
     attributes = {

@@ -39,6 +39,6 @@ CREATE TABLE `Users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT into `Users` (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `admin`) VALUES 
-    (1, 'admin', 'admin', 'Admin', 'Admin', 'admin@admin.fr', 1);
+    (1, 'admin', '$2b$12$tv73iMZ1gQZZC4f/bXLPpO7Jxt6GcYFcjExnX7P7YNktpzHJ4X4A2', 'Admin', 'Admin', 'admin@admin.fr', 1);
 
 -- 2022-11-15 20:28:58

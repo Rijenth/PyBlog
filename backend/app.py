@@ -2,6 +2,7 @@ from flask import (Flask, jsonify, json, request)
 from flask_cors import CORS
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.ArticlesController import ArticlesController
+from src.App.Controllers.UsersController import UsersController
 import mysql.connector
 
 app=Flask(__name__)
@@ -13,6 +14,19 @@ cors = CORS(app)
 @app.route('/', methods=['GET'])
 def home():
     return HomeController.home()
+
+###                       ###
+### User Routes ###
+###                       ###
+@app.route('/api/users/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    for key, value in data.items():
+        if(type(value) == bool):
+            data[key] = value
+        else :
+            data[key] = value.strip()
+    return UsersController.register(data)
 
 ###                 ###
 ### Articles Routes ###

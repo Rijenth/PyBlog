@@ -41,20 +41,20 @@ const PostArticle = () => {
                 <h2>Créer un article</h2>
                 <form>
                     <div className="form-group">
-                        <label htmlFor="title">Title</label>
-                        <input required type="text" className="form-control" id="title" placeholder="Enter title" />
+                        <label htmlFor="title">Titre</label>
+                        <input required type="text" className="form-control" id="title" placeholder="Entrer le titre de l'article" />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="body">Body</label>
-                        <textarea required className="form-control" id="body" rows={3} defaultValue={""} />
+                        <label htmlFor="body">Contenu</label>
+                        <textarea required className="form-control" id="body" rows={3} placeholder="Le corps de votre article" defaultValue={""} />
                     </div>
 
                     {/* Supprimer quand on aura les sessions */}
                     <div className="form-group">
-                        <label htmlFor="author">Author</label>
-                        <input required type="text" className="form-control" id="author" placeholder="Enter author" />
+                        <label htmlFor="author">Auteur</label>
+                        <input required type="text" className="form-control" id="author" placeholder="Entrer le nom de l'auteur" />
                     </div>
-                    <button onClick={handleClick} type="submit" className="btn btn-primary btn-sm">Submit</button>
+                    <button onClick={handleClick} type="submit" className="btn btn-primary btn-sm">Envoyer</button>
                     <RedirectButton buttonText='Annuler' buttonClass='btn btn-secondary btn-sm' buttonUrl='/articles'/>
                 </form>
             </div>

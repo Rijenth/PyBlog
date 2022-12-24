@@ -6,6 +6,7 @@ import {IndexArticles, GetArticle, PostArticle, UpdateArticle, DeleteArticle} fr
 import Navbar from './components/navbar';
 import NotFound from './pages/404';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './pages/Authentication/Register';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path='delete/:id' element={<DeleteArticle />} />
           </Route>
         
+          <Route path='/register' element={<Register />} />
           <Route path='/about' element={<About />} />
           <Route path='*' element={<NotFound />} />
           

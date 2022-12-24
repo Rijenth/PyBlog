@@ -1,7 +1,5 @@
-from flask import Flask, jsonify, json, request
+from flask import Flask, jsonify
 from datetime import date
-from src.App.Models.ArticleModel import ArticleModel
-from src.App.Actions.DatabaseActions import DatabaseActions
 from src.App.Actions.ArticleAction import ArticleAction
 class ArticlesController:
     def __init__(self, request):
