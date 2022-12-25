@@ -7,7 +7,10 @@ class UsersController:
         self.request = request
 
     def register(data):
-        AuthenticationAction().register(data)
+        try :
+            AuthenticationAction().register(data)
+        except Exception as e:
+            return jsonify({"message" : "Une erreur est survenue"}), 422
         return jsonify({}), 201
 
     def login(data):

@@ -29,11 +29,11 @@ DROP TABLE IF EXISTS `Users`;
 
 CREATE TABLE `Users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `username` varchar(255) NOT NULL,
+    `username` varchar(255) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL,
     `firstName` varchar(255) NOT NULL,
     `lastName` varchar(255) NOT NULL,
-    `email` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL UNIQUE,
     `admin` tinyint(1) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

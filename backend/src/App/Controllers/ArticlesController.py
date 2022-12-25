@@ -16,12 +16,18 @@ class ArticlesController:
 
     def postArticle(data):
         data['date'] = date.today().strftime("%Y-%m-%d")
-        ArticleAction().post(data)
+        try:
+            ArticleAction().post(data)
+        except Exception as e:
+            return jsonify({}), 422
         return jsonify({}), 201
 
     def updateArticle(id, data):
         # date de mise à jour ?
-        ArticleAction().update(id, data)
+        try:
+            ArticleAction().update(id, data)
+        except Exception as e:
+            return jsonify({}), 422
         return jsonify({}), 204
     
     def deleteArticle(id):
