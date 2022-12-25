@@ -1,15 +1,22 @@
 import React from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router';
 import RedirectButton from './RedirectButton';
-import Login from '../pages/Authentication/Login';
 
 class UserLoginForm extends React.Component {
     state = {
-        username: '',
-        password: '',
         error: null,
-        loggedIn: false
+        hour: null,
+        loggedIn: false,
+        password: '',
+        username: '',
+        welcomeMessage: 'Bonjour'
+    };
+
+    componentDidMount() {
+        const hour = new Date().getHours();
+        const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
+        const loggedIn = false;
+        this.setState({hour: hour, welcomeMessage: welcomeMessage, loggedIn: loggedIn});
     };
 
     onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -30,20 +37,25 @@ class UserLoginForm extends React.Component {
         axios.post('http://localhost:5000/api/users/login', {username, password})
             .then(res => {
                 if (res.status === 200) {
-                    return alert('Vous êtes connecté')
                     this.setState({loggedIn: true});
                 }
             })
-            .catch(error => {
+            .catch(e => {
                 return alert('Erreur ! Vérifiez vos identifiants');
             }
         );
     };
 
     render() {
-        const {username, password, error, loggedIn} = this.state;
+        const {username, password, loggedIn, welcomeMessage} = this.state;
         return (
-            loggedIn ? <Login /> :
+            loggedIn ? 
+            <div>
+                <h3>{welcomeMessage} {username}</h3>
+                <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
+                <button className="btn btn-primary">Deconnexion</button>
+            </div>  
+            :
             <div>
                 <h3>Connexion</h3>
                 <form onSubmit={this.handleSubmit}>
