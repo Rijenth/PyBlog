@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react';
 import RedirectButton from '../../components/RedirectButton';
-
 interface Article {
     id: number;
     title: string;
@@ -10,7 +9,11 @@ interface Article {
     date: string;
 }
 
-const IndexArticles = () => {    
+interface PropsIndexArticles {
+    isLoggedIn: boolean;
+}
+
+const IndexArticles = (props:PropsIndexArticles) => {    
     const baseUrl = 'http://localhost:5000/api/articles';
 
     const [articles, setArticles] = React.useState<Article[]>([]);
@@ -33,8 +36,12 @@ const IndexArticles = () => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
-                            <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
+                            {props.isLoggedIn ? 
+                                <>
+                                    <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
+                                    <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
+                                </> : null
+                            }
                             <a style={{paddingLeft: 10}} href={`/articles/${article.id}`}>
                             {article.title} - {article.author} - {article.date}
                             </a>

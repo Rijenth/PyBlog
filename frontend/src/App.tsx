@@ -12,11 +12,11 @@ import Register from './pages/Authentication/Register';
 function App() {
   const [isLoggedIn, setisLoggedIn] = React.useState(localStorage.getItem('token') ? true : false);
 
-  console.log("Etat du isLoggedIn", isLoggedIn)
+  console.log("Status de connexion : ", isLoggedIn)
 
   return (
     <div className='container'>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       <BrowserRouter>
         <Routes>
 
@@ -24,22 +24,12 @@ function App() {
           <Route path='/register' element={<Register />} />
 
           <Route path='/articles'>
-            <Route index element={<IndexArticles />} />
+            <Route index element={<IndexArticles isLoggedIn={isLoggedIn} />} />
             <Route path=':id' element={<GetArticle />} />
-
-
-              <Route path='create' element={
-                <Protected isLoggedIn={isLoggedIn}>
-                  <PostArticle />
-                </Protected>
-              } />
-
-
-
-            <Route path='edit/:id' element={<UpdateArticle />} />
-            <Route path='delete/:id' element={<DeleteArticle />} />
+            <Route path='create' element={<Protected isLoggedIn={isLoggedIn}><PostArticle /></Protected>}/>
+            <Route path='edit/:id' element={<Protected isLoggedIn={isLoggedIn}><UpdateArticle /></Protected>} />
+            <Route path='delete/:id' element={<Protected isLoggedIn={isLoggedIn}><DeleteArticle /></Protected>} />
           </Route>
-        
 
           <Route path='/about' element={<About />} />
           <Route path='*' element={<NotFound />} />
