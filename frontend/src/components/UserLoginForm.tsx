@@ -2,7 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import RedirectButton from './RedirectButton';
 
-class UserLoginForm extends React.Component {
+interface UserLoginFormProps {
+    setIsLoggedIn: (isLoggedIn: boolean) => void;
+}
+
+class UserLoginForm extends React.Component<UserLoginFormProps> {
     state = {
         error: null,
         hour: null,
@@ -18,7 +22,7 @@ class UserLoginForm extends React.Component {
         const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
         const token = localStorage.getItem('token');
         const loggedIn = token ? true : false;
-        const username = localStorage.getItem('username');
+        const username = localStorage.getItem('username') ? localStorage.getItem('username') : '';
         this.setState({
             hour: hour,
             welcomeMessage: welcomeMessage, 
@@ -44,6 +48,7 @@ class UserLoginForm extends React.Component {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         this.setState({loggedIn: false});
+        this.props.setIsLoggedIn(false);
     };
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -55,6 +60,7 @@ class UserLoginForm extends React.Component {
                     this.setState({loggedIn: true});
                     localStorage.setItem('token', res.data.token);
                     localStorage.setItem('username', username);
+                    this.props.setIsLoggedIn(true);
                 }
             })
             .catch(e => {
@@ -67,13 +73,13 @@ class UserLoginForm extends React.Component {
         const {username, password, loggedIn, welcomeMessage} = this.state;
         return (
             loggedIn ? 
-            <div>
-                <h3>{welcomeMessage} {username}</h3>
+            <div className="text-left">
+                <h3>{welcomeMessage} {username} !</h3>
                 <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
                 <button onClick={this.handleLogout} className="btn btn-primary">Deconnexion</button>
             </div>  
             :
-            <div>
+            <div className='text-left'>
                 <h3>Connexion</h3>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
