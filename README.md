@@ -29,48 +29,48 @@ Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER ave
 
 1. Home : 
     1. Endpoint: `/`
-    2. Method : GET
-    3. Response : 200 (OK)
-    4. Permet de vérifier si l'API est operationnelle
+        1. Method : GET
+        2. Response : 200 (OK)
+        3. Permet de vérifier si l'API est operationnelle
 
 2. User :
     1. Endpoint : `/api/users/register`
-    2. Method : POST
-    3. Response : 201 (Created) || 422 (Unprocessable Content)
-    3. Permet d'enregistrer un utilisateur dans la base de donnée
-    4. Data : Donnée d'inscription de l'utilisateur
+        1. Method : POST
+        2. Response : 201 (Created) || 422 (Unprocessable Content)
+        3. Permet d'enregistrer un utilisateur dans la base de donnée
+        4. Data : Donnée d'inscription de l'utilisateur
 
-    1. Endpoint : `/api/users/login`
-    2. Method : POST
-    3. Response : 200 (OK) || 401 (Unauthorized)
-    3. Permet de connecter un utilisateur en vérifiant ses informations
-    4. Data : username et mot de passe
+    2. Endpoint : `/api/users/login`
+        1. Method : POST
+        2. Response : 200 (OK) || 401 (Unauthorized)
+        3. Permet de connecter un utilisateur en vérifiant ses informations
+        4. Data : username et mot de passe
 
 3. Article :
     1. Endpoint : `/api/articles`
-    2. Method : GET
-    3. Response : 200 (OK)
-    3. Retourne un JSON contenant tous les articles présent en DB
+        1. Method : GET
+        2. Response : 200 (OK)
+        3. Retourne un JSON contenant tous les articles présent en DB
 
-    1. Endpoint : `/api/articles/<string:id>`
-    2. Method : GET
-    3. Response : 200 (OK) || 404 (Not Found)
-    3. Retourne un JSON contenant un article
+    2. Endpoint : `/api/articles/<string:id>`
+        1. Method : GET
+        2. Response : 200 (OK) || 404 (Not Found)
+        3. Retourne un JSON contenant un article
 
-    1. Endpoint : `/api/articles`
-    2. Method : POST
-    3. Response : 201 (Created) || 422 (Unprocessable Content)
-    3. Créer un article et le stock dans la DB
-    4. Data : Donnée de création d'un article
+    3. Endpoint : `/api/articles`
+        1. Method : POST
+        2. Response : 201 (Created) || 422 (Unprocessable Content)
+        3. Créer un article et le stock dans la DB
+        4. Data : Donnée de création d'un article
 
-    1. Endpoint : `/api/articles/<string:id>`
-    2. Method : PUT
-    3. Response : 204 (No Content) || 422 (Unprocessable Content)
-    3. Met à jour un article déjà existant dans la DB
-    4. Data : Donnée à mettre à jour de l'article
+    4. Endpoint : `/api/articles/<string:id>`
+        1. Method : PUT
+        2. Response : 204 (No Content) || 422 (Unprocessable Content)
+        3. Met à jour un article déjà existant dans la DB
+        4. Data : Donnée à mettre à jour de l'article
 
-    1. Endpoint : `/api/articles/<string:id>`
-    2. Method : DELETE
-    3. Response : 204 (No Content)
-    3. Supprimer un article de la DB
+    5. Endpoint : `/api/articles/<string:id>`
+        1. Method : DELETE
+        2. Response : 204 (No Content)
+        3. Supprimer un article de la DB
 
