@@ -1,12 +1,14 @@
-from flask import (Flask, jsonify, json, request)
+from flask import (Flask, jsonify, request)
 from flask_cors import CORS
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.ArticlesController import ArticlesController
 from src.App.Controllers.UsersController import UsersController
-import mysql.connector
+from flask_jwt_extended import JWTManager
 
 app=Flask(__name__)
 cors = CORS(app)
+app.config['JWT_SECRET_KEY'] = "952zWPh*6aKvy4aP8h6Dx"
+jwt = JWTManager(app)
 
 ###                 ###
 ###    Home Route   ###
@@ -14,6 +16,7 @@ cors = CORS(app)
 @app.route('/', methods=['GET'])
 def home():
     return HomeController.home()
+    
 
 ###                       ###
 ### User Routes ###

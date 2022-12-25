@@ -8,6 +8,7 @@ class UserLoginForm extends React.Component {
         hour: null,
         loggedIn: false,
         password: '',
+        token: null,
         username: '',
         welcomeMessage: 'Bonjour'
     };
@@ -15,8 +16,16 @@ class UserLoginForm extends React.Component {
     componentDidMount() {
         const hour = new Date().getHours();
         const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
-        const loggedIn = false;
-        this.setState({hour: hour, welcomeMessage: welcomeMessage, loggedIn: loggedIn});
+        const token = localStorage.getItem('token');
+        const loggedIn = token ? true : false;
+        const username = localStorage.getItem('username');
+        this.setState({
+            hour: hour,
+            welcomeMessage: welcomeMessage, 
+            loggedIn: loggedIn,
+            token: token,
+            username: username
+        });
     };
 
     onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,6 +40,12 @@ class UserLoginForm extends React.Component {
         
     };
 
+    handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        this.setState({loggedIn: false});
+    };
+
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {username, password} = this.state;
@@ -38,6 +53,8 @@ class UserLoginForm extends React.Component {
             .then(res => {
                 if (res.status === 200) {
                     this.setState({loggedIn: true});
+                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('username', username);
                 }
             })
             .catch(e => {
@@ -53,7 +70,7 @@ class UserLoginForm extends React.Component {
             <div>
                 <h3>{welcomeMessage} {username}</h3>
                 <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
-                <button className="btn btn-primary">Deconnexion</button>
+                <button onClick={this.handleLogout} className="btn btn-primary">Deconnexion</button>
             </div>  
             :
             <div>
