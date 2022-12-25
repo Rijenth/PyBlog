@@ -24,9 +24,12 @@ class DatabaseActions:
         else:
             return dict(zip(columns, data))
 
-    def _index(self):
+    def _index(self, query = None):
         self._connect()
-        self.cursor.execute("SELECT * FROM " + self.table)
+        if query != None:
+            self.cursor.execute(query)
+        else: 
+            self.cursor.execute("SELECT * FROM " + self.table)
         result = self.cursor.fetchall()
         self.connection.close()
         if(result == []):

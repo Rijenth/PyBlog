@@ -47,6 +47,9 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.removeItem('id');
+        localStorage.removeItem('firstName');
+        localStorage.removeItem('lastName');
         this.setState({loggedIn: false});
         this.props.setIsLoggedIn(false);
     };
@@ -60,6 +63,9 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
                     this.setState({loggedIn: true});
                     localStorage.setItem('token', res.data.token);
                     localStorage.setItem('username', username);
+                    localStorage.setItem('id', res.data.id);
+                    localStorage.setItem('firstName', res.data.firstName);
+                    localStorage.setItem('lastName', res.data.lastName);
                     this.props.setIsLoggedIn(true);
                 }
             })

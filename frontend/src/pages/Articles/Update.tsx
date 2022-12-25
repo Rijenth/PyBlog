@@ -6,7 +6,8 @@ interface Article {
     id: number;
     title: string;
     body: string;
-    author: string;
+    userId: number;
+    date: string;
 }
 
 const UpdateArticle = () => {
@@ -15,7 +16,6 @@ const UpdateArticle = () => {
     const [articleUpdated, setArticleUpdated] = React.useState(false);
     const [articleTitle, setArticleTitle] = React.useState('');
     const [articleBody, setArticleBody] = React.useState('');
-    const [articleAuthor, setArticleAuthor] = React.useState('');
 
     React.useEffect(() => {
         axios.get(`${baseUrl}/${id}`)
@@ -23,7 +23,6 @@ const UpdateArticle = () => {
             response.data.map((article: Article) => {
                 setArticleTitle(article.title);
                 setArticleBody(article.body);
-                setArticleAuthor(article.author);
             })
         })
         .catch(error => {
@@ -36,9 +35,8 @@ const UpdateArticle = () => {
 
         const title = document.getElementById('title') as HTMLInputElement
         const body = document.getElementById('body') as HTMLInputElement
-        const author = document.getElementById('author') as HTMLInputElement
 
-        if(title.value.trim() === '' || body.value.trim() === '' || author.value.trim() === '') {
+        if(title.value.trim() === '' || body.value.trim() === '') {
             alert('Tout les champs sont obligatoires.');
             return;
         }
@@ -46,7 +44,6 @@ const UpdateArticle = () => {
         axios.put(`${baseUrl}/${id}`, {
             title: title.value,
             body: body.value,
-            author: author.value
         })
             .then(response => {
                 if (response.status === 204) {
@@ -67,20 +64,13 @@ const UpdateArticle = () => {
                 <h2>Mettre à jour un article</h2>
                 <form>
                     <div className="form-group">
-                        <label htmlFor="title">Title</label>
+                        <label htmlFor="title">Titre</label>
                         <input required type="text" className="form-control" id="title" defaultValue={articleTitle}/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="body">Body</label>
+                        <label htmlFor="body">Contenu</label>
                         <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody}/> 
                     </div>
-
-                    {/* Supprimer quand on aura les sessions */}
-                    <div className="form-group">
-                        <label htmlFor="author">Author</label>
-                        <input required type="text" className="form-control" id="author" defaultValue={articleAuthor}/>
-                    </div>
-
                     <button onClick={handleUpdate} type="submit" className="btn btn-primary btn-sm">Confirmer les changements</button>
                     <RedirectButton buttonText='Annuler' buttonClass='btn btn-secondary btn-sm' buttonUrl='/articles'/>
                 </form>

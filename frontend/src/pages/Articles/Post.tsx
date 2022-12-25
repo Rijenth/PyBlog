@@ -5,22 +5,21 @@ import RedirectButton from '../../components/RedirectButton';
 
 const PostArticle = () => {
     const baseUrl = 'http://localhost:5000/api/articles';
-
     const [articlesCreated, setArticlesCreated] = React.useState(false)
+    const [userId, setUserId] = React.useState(localStorage.getItem('id') ? localStorage.getItem('id') : null)
 
     function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const title = document.getElementById('title') as HTMLInputElement
         const body = document.getElementById('body') as HTMLInputElement
-        const author = document.getElementById('author') as HTMLInputElement
         
-        if(title.value.trim().length !== 0 && body.value.trim().length !== 0 && author.value.trim().length !== 0) {
+        if(title.value.trim().length !== 0 && body.value.trim().length !== 0) {
             const article = {
                 title: title.value,
                 body: body.value,
-                author: author.value,
+                userId: userId
             };
-
+            
             axios.post(baseUrl, article)
             .then(response => {
                 if(response.status === 201) {
@@ -49,11 +48,6 @@ const PostArticle = () => {
                         <textarea required className="form-control" id="body" rows={3} placeholder="Le corps de votre article" defaultValue={""} />
                     </div>
 
-                    {/* Supprimer quand on aura les sessions */}
-                    <div className="form-group">
-                        <label htmlFor="author">Auteur</label>
-                        <input required type="text" className="form-control" id="author" placeholder="Entrer le nom de l'auteur" />
-                    </div>
                     <button onClick={handleClick} type="submit" className="btn btn-primary btn-sm">Envoyer</button>
                     <RedirectButton buttonText='Annuler' buttonClass='btn btn-secondary btn-sm' buttonUrl='/articles'/>
                 </form>

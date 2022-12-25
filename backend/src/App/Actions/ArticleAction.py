@@ -7,7 +7,8 @@ class ArticleAction(DatabaseActions):
         super().__init__('Articles')
     
     def index(self):
-        data = super()._index()
+        query = "SELECT Articles.*, concat(Users.firstName, ' ', Users.lastName) AS author FROM Articles JOIN Users ON Articles.userId = Users.id"
+        data = super()._index(query)
         result = []
         for article in data:
             result.append(ArticleModel(article).serialize())
@@ -18,14 +19,14 @@ class ArticleAction(DatabaseActions):
         return ArticleModel(data).serialize()
 
     def post(self, data):
-        query = "INSERT INTO " + self.table + " (title, body, author, date) VALUES (%s, %s, %s, %s)"
-        value = (data['title'], data['body'], data['author'], data['date'])
+        query = "INSERT INTO " + self.table + " (title, body, userId, date) VALUES (%s, %s, %s, %s)"
+        value = (data['title'], data['body'], data['userId'], data['date'])
         super()._execute(query, value)
 
 
     def update(self, id, data):
-        query = "UPDATE " + self.table + " SET title = %s, body = %s, author = %s WHERE id = %s"
-        value = (data['title'], data['body'], data['author'], id)
+        query = "UPDATE " + self.table + " SET title = %s, body = %s WHERE id = %s"
+        value = (data['title'], data['body'], id)
         super()._execute(query, value)
 
 

@@ -6,8 +6,9 @@ class ArticleModel(BasicModel):
         'id': int,
         'title': str,
         'body': str,
-        'author': str,
-        'date': str
+        'userId': int,
+        'date': str,
+        'author': str
     }
 
     def __init__(self, data):
@@ -18,6 +19,7 @@ class ArticleModel(BasicModel):
             'id': self.id,
             'title': self.title,
             'body': self.body,
-            'author': self.author,
-            'date': self.date
+            'userId': self.userId,
+            'date': self.date,
+            'author': self.author
         }
