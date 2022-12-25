@@ -14,7 +14,7 @@ class ArticleAction(DatabaseActions):
         return result
 
     def show(self, id):
-        data = super()._get(id)    
+        data = super()._get("id", id)    
         return ArticleModel(data).serialize()
 
     def post(self, data):

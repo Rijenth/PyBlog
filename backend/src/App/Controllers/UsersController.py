@@ -9,4 +9,8 @@ class UsersController:
     def register(data):
         AuthenticationAction().register(data)
         return jsonify({}), 201
-    
+
+    def login(data):
+        if(AuthenticationAction().login(data) == False):
+            return jsonify({"message" : "Wrong Credentials"}), 401    
+        return jsonify({}), 200

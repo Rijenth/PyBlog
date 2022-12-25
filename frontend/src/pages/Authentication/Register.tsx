@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import React, { KeyboardEventHandler } from 'react';
 import { Navigate } from 'react-router';
 import { array } from 'yargs';
 import RedirectButton from '../../components/RedirectButton';
@@ -12,6 +12,12 @@ const Register = () => {
 
     const handleChange = () => {
         setAdmin(!admin);
+    };
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.code === 'Space') {
+            e.preventDefault();
+        }
     };
 
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
@@ -28,7 +34,6 @@ const Register = () => {
             return alert('Tout les champs sont obligatoires');
         }
         if (password.value !== passwordConfirm.value) {
-            console.log("hello")
             return alert('Les mots de passe ne correspondent pas');
         }
         if (!emailRegex.test(email.value)) {
@@ -65,27 +70,27 @@ const Register = () => {
  
                 <div className="form-group">
                     <label htmlFor="lastName">Nom</label>
-                    <input required type="text" className="form-control" id="lastName" aria-describedby="lastNameHelp" placeholder="Entrez votre nom" />
+                    <input required type="text" className="form-control" id="lastName" aria-describedby="lastNameHelp"  onKeyDown={onKeyDown} placeholder="Entrez votre nom" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="firstName">Prénom</label>
-                    <input required type="text" className="form-control" id="firstName" aria-describedby="firstNameHelp" placeholder="Entrez votre prénom" />
+                    <input required type="text" className="form-control" id="firstName" aria-describedby="firstNameHelp"  onKeyDown={onKeyDown} placeholder="Entrez votre prénom" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <input required type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre email" />
+                    <input required type="email" className="form-control" id="email" aria-describedby="emailHelp"  onKeyDown={onKeyDown} placeholder="Entrez votre email" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="username">Nom d'utilisateur</label>
-                    <input required type="text" className="form-control" id="username" aria-describedby="usernameHelp" placeholder="Entrez votre nom d'utilisateur" />
+                    <input required type="text" className="form-control" id="username" aria-describedby="usernameHelp"  onKeyDown={onKeyDown} placeholder="Entrez votre nom d'utilisateur" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Mot de passe</label>
-                    <input required type="password" className="form-control" id="password" placeholder="Entrez votre mot de passe" />
+                    <input required type="password" className="form-control" id="password"  onKeyDown={onKeyDown} placeholder="Entrez votre mot de passe" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="passwordConfirm">Confirmation du mot de passe</label>
-                    <input required type="password" className="form-control" id="passwordConfirm" placeholder="Confirmez votre mot de passe" />
+                    <input required type="password" className="form-control" id="passwordConfirm"  onKeyDown={onKeyDown} placeholder="Confirmez votre mot de passe" />
                 </div>
                 <div className="form-group form-check">
                     <label style={{marginRight:10}} className="form-check-label" htmlFor="admin">Administrateur (optionnel)</label>

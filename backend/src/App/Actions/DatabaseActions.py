@@ -1,4 +1,5 @@
 import mysql.connector
+from flask import jsonify
 
 class DatabaseActions:
     __config = {
@@ -32,9 +33,11 @@ class DatabaseActions:
             return result
         return self._format(result)
 
-    def _get(self, id):
+    def _get(self, column, value):
         self._connect()
-        self.cursor.execute("SELECT * FROM " + self.table + " WHERE id = " + str(id))
+        query = "SELECT * FROM " + self.table + " WHERE " + column + "=%s"
+        value = (str(value),)
+        self.cursor.execute(query, value)
         result = self.cursor.fetchone()
         self.connection.close()
         if(result == None):

@@ -1,28 +1,39 @@
 import React from 'react';
-import RedirectButton from '../../components/RedirectButton';
+import UserLoginForm from '../../components/UserLoginForm';
+class Login extends React.Component {
+    state = {
+        loggedIn: false,
+        username: 'John Doe',
+        welcomeMessage: 'Bonjour',
+        hour: null
+    };
 
-const Login = () => {
-    return (
-        <div className="jumbotron text-left">
-            <h2>Bienvenue sur PyBlog</h2>
-            <p>React | Flask</p>
-            <hr />
-            <p>Connectez-vous pour accéder à toutes les fonctionnalités du site</p>
-            <hr />
-            <form>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre email" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Mot de passe</label>
-                    <input type="password" className="form-control" id="password" placeholder="Entrez votre mot de passe" />
-                </div>
-                <button type="submit" className="btn btn-primary btn">Se connecter</button>
-                <RedirectButton buttonText="Inscription" buttonClass='btn btn-primary btn' buttonUrl='/register'/>
-            </form>
-        </div>
-    );
+    componentDidMount() {
+        const hour = new Date().getHours();
+        const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
+        this.setState({hour: hour, welcomeMessage: welcomeMessage});
+    };
+
+    render() {
+        const {loggedIn, username, welcomeMessage} = this.state;
+
+        return (
+            <div className="jumbotron text-left">
+                <h2>Bienvenue sur PyBlog</h2>
+                <p>React | Flask</p>
+                <hr />
+                <p>Vous devez vous connecter pour accéder aux fonctionnalités du site</p>
+                <hr />
+                {(!loggedIn) ? <UserLoginForm /> : 
+                    <div>
+                        <h3>{welcomeMessage} {username}</h3>
+                        <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
+                    </div> 
+                }
+            </div>
+        );
+    };
 };
 
 export default Login;
+

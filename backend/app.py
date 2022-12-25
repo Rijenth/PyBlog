@@ -28,6 +28,13 @@ def register():
             data[key] = value.strip()
     return UsersController.register(data)
 
+@app.route('/api/users/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    for key, value in data.items():
+        data[key] = value.strip()
+    return UsersController.login(data)
+
 ###                 ###
 ### Articles Routes ###
 ###                 ###
