@@ -3,14 +3,17 @@ import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import RedirectButton from '../../components/RedirectButton';
 
-const DeleteArticle = () => {
-    const baseUrl = 'http://localhost:5000/api/articles';
+interface PropsDeleteArticle {
+    apiUrl: string;
+}
+
+const DeleteArticle = (props:PropsDeleteArticle) => {
     const { id } = useParams();
     const[articleDeleted, setArticleDeleted] = React.useState(false)
 
     function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        axios.delete(`${baseUrl}/${id}`)
+        axios.delete(`${props.apiUrl}/articles/${id}`)
         .then(response => {
             if(response.status === 204) {
                 setArticleDeleted(true);

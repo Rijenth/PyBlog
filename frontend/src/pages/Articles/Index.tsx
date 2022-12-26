@@ -12,15 +12,14 @@ interface Article {
 
 interface PropsIndexArticles {
     isLoggedIn: boolean;
+    apiUrl: string;
 }
 
 const IndexArticles = (props:PropsIndexArticles) => {    
-    const baseUrl = 'http://localhost:5000/api/articles';
-
     const [articles, setArticles] = React.useState<Article[]>([]);
 
     React.useEffect(() => {
-        axios.get(baseUrl)
+        axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
             .catch((error) => console.log(error));
     }, []);

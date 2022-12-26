@@ -4,8 +4,11 @@ import { Navigate } from 'react-router';
 import { array } from 'yargs';
 import RedirectButton from '../../components/RedirectButton';
 
-const Register = () => {
-    const baseUrl = 'http://localhost:5000/api/users/register';
+interface PropsRegister {
+    apiUrl: string;
+}
+
+const Register = (props:PropsRegister) => {
     const [admin, setAdmin] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
@@ -40,7 +43,7 @@ const Register = () => {
             return alert('L\'adresse email n\'est pas valide');
         }
 
-        axios.post(baseUrl, {
+        axios.post(`${props.apiUrl}/users/register`, {
             email: email.value,
             password: password.value,
             username: username.value,

@@ -3,8 +3,11 @@ import React from 'react';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 
-const PostArticle = () => {
-    const baseUrl = 'http://localhost:5000/api/articles';
+interface PostArticleProps {
+    apiUrl: string;
+}
+
+const PostArticle = (props:PostArticleProps) => {
     const [articlesCreated, setArticlesCreated] = React.useState(false)
     const [userId, setUserId] = React.useState(localStorage.getItem('id') ? localStorage.getItem('id') : null)
 
@@ -20,7 +23,7 @@ const PostArticle = () => {
                 userId: userId
             };
             
-            axios.post(baseUrl, article)
+            axios.post(`${props.apiUrl}/articles`, article)
             .then(response => {
                 if(response.status === 201) {
                     setArticlesCreated(true);

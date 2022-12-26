@@ -2,6 +2,7 @@ import React from 'react';
 import UserLoginForm from '../components/UserLoginForm'
 interface HomeProps {
     setIsLoggedIn: (loggedIn: boolean) => void;
+    apiUrl: string;
 }
 class Home extends React.Component<HomeProps> {    
     render() {
@@ -10,7 +11,7 @@ class Home extends React.Component<HomeProps> {
                 <h2>Bienvenue sur PyBlog</h2>
                 <p>React | Flask</p>
                 <hr />
-                <UserLoginForm setIsLoggedIn={this.props.setIsLoggedIn} /> 
+                <UserLoginForm apiUrl={this.props.apiUrl} setIsLoggedIn={this.props.setIsLoggedIn} /> 
             </div>
         );
     };

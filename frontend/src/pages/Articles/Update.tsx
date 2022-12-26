@@ -10,15 +10,18 @@ interface Article {
     date: string;
 }
 
-const UpdateArticle = () => {
-    const baseUrl = 'http://localhost:5000/api/articles';
+interface PropsUpdateArticle {
+    apiUrl: string;
+}
+
+const UpdateArticle = (props:PropsUpdateArticle) => {
     const { id } = useParams();
     const [articleUpdated, setArticleUpdated] = React.useState(false);
     const [articleTitle, setArticleTitle] = React.useState('');
     const [articleBody, setArticleBody] = React.useState('');
 
     React.useEffect(() => {
-        axios.get(`${baseUrl}/${id}`)
+        axios.get(`${props.apiUrl}/articles/${id}`)
         .then(response => {
             response.data.map((article: Article) => {
                 setArticleTitle(article.title);
@@ -41,7 +44,7 @@ const UpdateArticle = () => {
             return;
         }
 
-        axios.put(`${baseUrl}/${id}`, {
+        axios.put(`${props.apiUrl}/articles/${id}`, {
             title: title.value,
             body: body.value,
         })

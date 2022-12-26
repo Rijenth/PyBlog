@@ -4,6 +4,7 @@ import RedirectButton from './RedirectButton';
 
 interface UserLoginFormProps {
     setIsLoggedIn: (isLoggedIn: boolean) => void;
+    apiUrl: string;
 }
 
 class UserLoginForm extends React.Component<UserLoginFormProps> {
@@ -57,7 +58,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {username, password} = this.state;
-        axios.post('http://localhost:5000/api/users/login', {username, password})
+        axios.post(`${this.props.apiUrl}/users/login`, {username, password})
             .then(res => {
                 if (res.status === 200) {
                     this.setState({loggedIn: true});

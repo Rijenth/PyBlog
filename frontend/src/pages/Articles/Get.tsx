@@ -12,9 +12,12 @@ interface Article {
     author: string;
 }
 
-const GetArticle = () => {
+interface PropsGetArticle {
+    apiUrl: string;
+}
+
+const GetArticle = (props:PropsGetArticle) => {
     const [isLoading, setIsLoading] = React.useState(true);
-    const baseUrl = 'http://localhost:5000/api/articles';
     const { id } = useParams();    
     const [article, setArticle] = React.useState<Article[]>([]);
     const [error, setError] = React.useState(null);
@@ -22,7 +25,7 @@ const GetArticle = () => {
     React.useEffect(() => {
         const getArticle = async () => {
             try {
-                const response = await axios.get(`${baseUrl}/${id}`);
+                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
                 setArticle(response.data);
                 setIsLoading(false);
             } catch (err) {
