@@ -7,6 +7,7 @@ interface Article {
     body: string;
     userId: number;
     date: string;
+    author: string;
 }
 
 interface PropsIndexArticles {
@@ -43,7 +44,7 @@ const IndexArticles = (props:PropsIndexArticles) => {
                                 </> : null
                             }
                             <a style={{paddingLeft: 10}} href={`/articles/${article.id}`}>
-                            {article.title} - Auteur ? - {article.date}
+                            {article.title} - {article.author} - {article.date}
                             </a>
                         </li>
                     ))}

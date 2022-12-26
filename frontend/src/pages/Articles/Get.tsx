@@ -9,6 +9,7 @@ interface Article {
     body: string;
     userId: number;
     date: string;
+    author: string;
 }
 
 const GetArticle = () => {
@@ -45,7 +46,7 @@ const GetArticle = () => {
                     <div key={article.id} className="card" style={{width: 500}}>
                         <div className="card-body">
                             <h5 className="card-title">{article.title}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">Auteur ? - {article.date}</h6>
+                            <h6 className="card-subtitle mb-2 text-muted">{article.author} - {article.date}</h6>
                             <p className="card-text">{article.body}</p>
                         </div>
                     </div>

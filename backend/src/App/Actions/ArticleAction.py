@@ -15,7 +15,8 @@ class ArticleAction(DatabaseActions):
         return result
 
     def show(self, id):
-        data = super()._get("id", id)    
+        query = "SELECT Articles.*, concat(Users.firstName, ' ', Users.lastName) AS author FROM Articles JOIN Users ON Articles.userId = Users.id WHERE Articles.id = %s"
+        data = super()._get("id", (id,), query)    
         return ArticleModel(data).serialize()
 
     def post(self, data):
@@ -32,5 +33,4 @@ class ArticleAction(DatabaseActions):
 
     def delete(self, id):
         query = "DELETE FROM " + self.table + " WHERE id = %s"
-        value = (id,)
-        super()._execute(query, value)
+        super()._execute(query, (id,))

@@ -11,9 +11,7 @@ import Register from './pages/Authentication/Register';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = React.useState(localStorage.getItem('token') ? true : false);
-
-  console.log("Status de connexion : ", isLoggedIn)
-
+  
   return (
     <div className='container'>
       <Navbar isLoggedIn={isLoggedIn} />

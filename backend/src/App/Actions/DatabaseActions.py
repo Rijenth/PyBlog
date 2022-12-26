@@ -36,11 +36,13 @@ class DatabaseActions:
             return result
         return self._format(result)
 
-    def _get(self, column, value):
+    def _get(self, column, value, query = None):
         self._connect()
-        query = "SELECT * FROM " + self.table + " WHERE " + column + "=%s"
-        value = (str(value),)
-        self.cursor.execute(query, value)
+        if query != None:
+            self.cursor.execute(query, value)
+        else:
+            query = "SELECT * FROM " + self.table + " WHERE " + column + "=%s"
+            self.cursor.execute(query, (value,))
         result = self.cursor.fetchone()
         self.connection.close()
         if(result == None):

@@ -9,7 +9,10 @@ class ArticlesController:
         return jsonify(ArticleAction().index()), 200
 
     def showArticle(id):
-        article = ArticleAction().show(id)
+        try:
+            article = ArticleAction().show(id)
+        except Exception as e:
+            return jsonify({}), 404
         if len(article) == 0:
             return jsonify({}), 404
         return jsonify([article]), 200
