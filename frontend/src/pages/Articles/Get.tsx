@@ -44,17 +44,24 @@ const GetArticle = (props:PropsGetArticle) => {
 
     return (
         (article.length === 0) ? <NotFound /> : (
-            <div className="container">
+            <>
                 {article && article.map((article) => (
-                    <div key={article.id} className="card" style={{width: 500}}>
-                        <div className="card-body">
-                            <h5 className="card-title">{article.title}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{article.author} - {article.date}</h6>
-                            <p className="card-text">{article.body}</p>
+                    <div key={article.id} className='cardsBody'>
+                        <div className="articleHead">
+                            <h1>{article.title}</h1>
+                        </div>
+
+                        <div className="articleBody">
+                            <p>{article.body}</p>
+                        </div>
+
+                        <div className="footer">
+                            <p className='footer1'>Auteur : {article.author}</p>
+                            <p className='footer2'>Date de publication : {article.date}</p>
                         </div>
                     </div>
                 ))}
-            </div>
+            </>
         )
     );
 };
