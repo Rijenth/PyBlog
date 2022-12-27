@@ -9,7 +9,7 @@ from os import getenv
 def create_app():
     app=Flask(__name__)
     app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": getenv('FRONTEND_URL')}})
     JWTManager(app)
     return app
 
