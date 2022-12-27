@@ -21,7 +21,7 @@ const IndexArticles = (props:PropsIndexArticles) => {
     React.useEffect(() => {
         axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
-            .catch((error) => console.log(error));
+            .catch((error) => alert('Une erreur est survenue lors de la récupération des articles.'));
     }, []);
 
     return (

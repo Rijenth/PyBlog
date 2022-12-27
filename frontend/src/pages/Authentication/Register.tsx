@@ -57,8 +57,7 @@ const Register = (props:PropsRegister) => {
             }
         })
         .catch((error) => {
-            console.log(error)
-            return alert('Une erreur est survenue');
+            return alert('Une erreur est survenue lors de l\'inscription');
         });
     };
     

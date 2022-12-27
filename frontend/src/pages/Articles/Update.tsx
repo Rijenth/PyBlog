@@ -29,9 +29,9 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
             })
         })
         .catch(error => {
-            console.log(error);
+            alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.');
         });
-    }, []);
+    }, [id, props.apiUrl]);
 
     function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -47,7 +47,11 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
         axios.put(`${props.apiUrl}/articles/${id}`, {
             title: title.value,
             body: body.value,
-        })
+            }, {    
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                }
+            })
             .then(response => {
                 if (response.status === 204) {
                     setArticleUpdated(true);
@@ -56,7 +60,7 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
                 }
             })
             .catch(error => {
-                console.log(error);
+                alert('Une erreur est survenue lors de la mise à jour de l\'article.');
             }
         );      
     }

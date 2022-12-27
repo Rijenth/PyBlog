@@ -18,5 +18,5 @@ class UsersController:
         row = AuthenticationAction().login(data)
         if(row == []):
             return jsonify({"message" : "Wrong Credentials"}), 401   
-        access_token = create_access_token(identity=row['username'])
+        access_token = create_access_token(identity={"username" : row['username'], "id" : row['id']})
         return jsonify({'token' : access_token, 'id' : row['id'], "firstName" : row['firstName'], "lastName" : row['lastName']}), 200

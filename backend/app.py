@@ -3,11 +3,11 @@ from flask_cors import CORS
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.ArticlesController import ArticlesController
 from src.App.Controllers.UsersController import UsersController
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, jwt_required
 
 app=Flask(__name__)
 cors = CORS(app)
-app.config['JWT_SECRET_KEY'] = "952zWPh*6aKvy4aP8h6Dx"
+app.config['JWT_SECRET_KEY'] = "X^@4VH6ismjDXjkVvaE37xj!QtX1L4$Cn8e6WF4TuVvfN&"
 jwt = JWTManager(app)
 
 ###                 ###
@@ -15,8 +15,7 @@ jwt = JWTManager(app)
 ###                 ###
 @app.route('/', methods=['GET'])
 def home():
-    return HomeController.home()
-    
+    return HomeController.home() 
 
 ###                       ###
 ### User Routes ###
@@ -54,6 +53,7 @@ def showArticle(id):
     return ArticlesController.showArticle(int(id))
 
 @app.route('/api/articles', methods=['POST'])
+@jwt_required()
 def postArticle():
     data = request.get_json()    
     for key, value in data.items():
@@ -61,6 +61,7 @@ def postArticle():
     return ArticlesController.postArticle(data)
 
 @app.route('/api/articles/<string:id>', methods=['PUT'])
+@jwt_required()
 def updateArticle(id):
     data = request.get_json()
     try:
@@ -70,6 +71,7 @@ def updateArticle(id):
     return ArticlesController.updateArticle(int(id), data)
 
 @app.route('/api/articles/<string:id>', methods=['DELETE'])
+@jwt_required()
 def deleteArticle(id):
     try:
         int(id)

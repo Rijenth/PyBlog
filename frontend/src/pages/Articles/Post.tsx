@@ -23,14 +23,19 @@ const PostArticle = (props:PostArticleProps) => {
                 userId: userId
             };
             
-            axios.post(`${props.apiUrl}/articles`, article)
+            axios.post(`${props.apiUrl}/articles`, article, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                    }
+                }
+            )
             .then(response => {
                 if(response.status === 201) {
                     setArticlesCreated(true);
                 }
             })
             .catch(error => {
-                console.log(error);
+                alert('Une erreur est survenue lors de la création de l\'article.')
             });
         } else {
             return alert('Tout les champs doivent être complétés');

@@ -13,7 +13,11 @@ const DeleteArticle = (props:PropsDeleteArticle) => {
 
     function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        axios.delete(`${props.apiUrl}/articles/${id}`)
+        axios.delete(`${props.apiUrl}/articles/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            }
+        })
         .then(response => {
             if(response.status === 204) {
                 setArticleDeleted(true);
