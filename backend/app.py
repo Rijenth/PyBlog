@@ -4,11 +4,16 @@ from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.ArticlesController import ArticlesController
 from src.App.Controllers.UsersController import UsersController
 from flask_jwt_extended import JWTManager, jwt_required
+from os import getenv
 
-app=Flask(__name__)
-cors = CORS(app)
-app.config['JWT_SECRET_KEY'] = "X^@4VH6ismjDXjkVvaE37xj!QtX1L4$Cn8e6WF4TuVvfN&"
-jwt = JWTManager(app)
+def create_app():
+    app=Flask(__name__)
+    app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
+    CORS(app)
+    JWTManager(app)
+    return app
+
+app = create_app()
 
 ###                 ###
 ###    Home Route   ###
