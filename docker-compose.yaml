@@ -19,7 +19,7 @@ services:
     
     mysql:
       container_name: mysql
-      image: mysql
+      image: mysql:latest
       healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-pRijenth123+", "-P", "3306"]
         interval: 5s

@@ -1,12 +1,13 @@
-import mysql.connector
 from flask import jsonify
+import pymysql
+
 
 class DatabaseActions:
     __config = {
         'user': 'root',
         'password': 'Rijenth123+',
         'host': 'mysql',
-        'port': '3306',
+        'port': 3306,
         'database': 'PyBlog'
     }
 
@@ -14,7 +15,7 @@ class DatabaseActions:
         self.table = table
     
     def _connect(self):
-        self.connection = mysql.connector.connect(**self.__config)
+        self.connection = pymysql.connect(**self.__config)
         self.cursor = self.connection.cursor()
     
     def _format(self, data):
