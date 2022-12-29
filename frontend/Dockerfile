@@ -1,10 +1,10 @@
-from node:19-alpine3.15 as frontend
+FROM node:latest as frontend
 
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
