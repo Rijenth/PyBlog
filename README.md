@@ -14,6 +14,8 @@ Docker template for React App | Flask Backend
 
 `docker-compose up -d --build`
 
+// Attendre que le conteneur React soit completement opérationnel pour accéder à l'url
+
 
 
 ## explorer un conteneur
