@@ -22,7 +22,7 @@ const IndexArticles = (props:PropsIndexArticles) => {
         axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
             .catch((error) => alert('Une erreur est survenue lors de la récupération des articles.'));
-    }, []);
+    }, [props.apiUrl]);
 
     return (
         (articles.length === 0) ? ( 

@@ -36,7 +36,7 @@ const GetArticle = (props:PropsGetArticle) => {
             }
         };
         getArticle();
-    }, [isLoading, error, id]);
+    }, [isLoading, error, id, props.apiUrl]);
 
     if (isLoading) {
         return <div/>;

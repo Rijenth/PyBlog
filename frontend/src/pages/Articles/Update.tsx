@@ -26,6 +26,7 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
             response.data.map((article: Article) => {
                 setArticleTitle(article.title);
                 setArticleBody(article.body);
+                return;
             })
         })
         .catch(error => {

@@ -9,7 +9,7 @@ interface PostArticleProps {
 
 const PostArticle = (props:PostArticleProps) => {
     const [articlesCreated, setArticlesCreated] = React.useState(false)
-    const [userId, setUserId] = React.useState(localStorage.getItem('id') ? localStorage.getItem('id') : null)
+    const [userId] = React.useState(localStorage.getItem('id') ? localStorage.getItem('id') : null)
 
     function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();

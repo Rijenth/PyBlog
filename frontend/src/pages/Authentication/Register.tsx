@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { KeyboardEventHandler } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router';
-import { array } from 'yargs';
 import RedirectButton from '../../components/RedirectButton';
 
 interface PropsRegister {

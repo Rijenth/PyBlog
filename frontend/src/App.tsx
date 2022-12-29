@@ -11,7 +11,7 @@ import Register from './pages/Authentication/Register';
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = React.useState(localStorage.getItem('token') ? true : false);
-  const [apiUrl, setApiUrl] = React.useState('http://localhost:5000/api');
+  const [apiUrl] = React.useState('http://localhost:5000/api');
   
   return (
     <div className='container'>
