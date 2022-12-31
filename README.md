@@ -44,7 +44,7 @@ Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER ave
 
     2. Endpoint : `/api/users/login`
         1. Method : POST
-        2. Response : 200 (OK) || 401 (Unauthorized)
+        2. Response : 200 (OK) || 403 (Forbidden)
         3. Permet de connecter un utilisateur en vérifiant ses informations
         4. Data : username et mot de passe
 
@@ -56,7 +56,7 @@ Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER ave
 
     2. Endpoint : `/api/articles/<string:id>`
         1. Method : GET
-        2. Response : 200 (OK) || 404 (Not Found)
+        2. Response : 200 (OK) || 422 (Unprocessable Content)
         3. Retourne un JSON contenant un article
 
     3. Endpoint : `/api/articles`
@@ -73,6 +73,6 @@ Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER ave
 
     5. Endpoint : `/api/articles/<string:id>`
         1. Method : DELETE
-        2. Response : 204 (No Content)
+        2. Response : 204 (No Content) || 422 (Unprocessable Content)
         3. Supprimer un article de la DB
 
