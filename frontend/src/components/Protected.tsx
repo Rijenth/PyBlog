@@ -7,7 +7,7 @@ interface ProtectedProps {
 }
 
 const Protected = ({ isLoggedIn, children }: ProtectedProps): React.ReactElement => {
-    if (!isLoggedIn || localStorage.getItem('token') === null) {
+    if (!isLoggedIn || sessionStorage.getItem('token') === null) {
         return <Navigate to='/' replace />;
     }
     return children;

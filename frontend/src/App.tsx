@@ -10,7 +10,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/Authentication/Register';
 
 function App() {
-  const [isLoggedIn, setisLoggedIn] = React.useState(localStorage.getItem('token') ? true : false);
+  const [isLoggedIn, setisLoggedIn] = React.useState(sessionStorage.getItem('token') ? true : false);
   const [apiUrl] = React.useState('http://localhost:5000/api');
   
   return (

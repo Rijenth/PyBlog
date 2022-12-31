@@ -50,7 +50,7 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
             body: body.value,
             }, {    
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                 }
             })
             .then(response => {

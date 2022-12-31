@@ -21,9 +21,9 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     componentDidMount() {
         const hour = new Date().getHours();
         const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         const loggedIn = token ? true : false;
-        const username = localStorage.getItem('username') ? localStorage.getItem('username') : '';
+        const username = sessionStorage.getItem('username') ? sessionStorage.getItem('username') : '';
         this.setState({
             hour: hour,
             welcomeMessage: welcomeMessage, 
@@ -46,11 +46,11 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     };
 
     handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('id');
-        localStorage.removeItem('firstName');
-        localStorage.removeItem('lastName');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('id');
+        sessionStorage.removeItem('firstName');
+        sessionStorage.removeItem('lastName');
         this.setState({loggedIn: false});
         this.props.setIsLoggedIn(false);
     };
@@ -62,11 +62,11 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
             .then(res => {
                 if (res.status === 200) {
                     this.setState({loggedIn: true});
-                    localStorage.setItem('token', res.data.token);
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('id', res.data.id);
-                    localStorage.setItem('firstName', res.data.firstName);
-                    localStorage.setItem('lastName', res.data.lastName);
+                    sessionStorage.setItem('token', res.data.token);
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('id', res.data.id);
+                    sessionStorage.setItem('firstName', res.data.firstName);
+                    sessionStorage.setItem('lastName', res.data.lastName);
                     this.props.setIsLoggedIn(true);
                 }
             })

@@ -17,7 +17,7 @@ interface PropsIndexArticles {
 
 const IndexArticles = (props:PropsIndexArticles) => {    
     const [articles, setArticles] = React.useState<Article[]>([]);
-
+    
     React.useEffect(() => {
         axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
