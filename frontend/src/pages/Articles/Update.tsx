@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import RedirectButton from '../../components/RedirectButton';
+import UpdateArticleForm from '../../components/UpdateArticleForm'
 interface Article {
     id: number;
     title: string;
@@ -12,78 +12,46 @@ interface Article {
 
 interface PropsUpdateArticle {
     apiUrl: string;
+    userId: number;
 }
 
 const UpdateArticle = (props:PropsUpdateArticle) => {
+    const [article, setArticle] = React.useState<Article[]>([]);
+    const [canUpdate, setCanUpdate] = React.useState(false);
     const { id } = useParams();
-    const [articleUpdated, setArticleUpdated] = React.useState(false);
-    const [articleTitle, setArticleTitle] = React.useState('');
-    const [articleBody, setArticleBody] = React.useState('');
+    const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        axios.get(`${props.apiUrl}/articles/${id}`)
-        .then(response => {
-            response.data.map((article: Article) => {
-                setArticleTitle(article.title);
-                setArticleBody(article.body);
-                return true;
-            })
-        })
-        .catch(error => {
-            alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.');
-        });
-    }, [id, props.apiUrl]);
-
-    function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-
-        const title = document.getElementById('title') as HTMLInputElement
-        const body = document.getElementById('body') as HTMLInputElement
-
-        if(title.value.trim() === '' || body.value.trim() === '') {
-            alert('Tout les champs sont obligatoires.');
-            return;
-        }
-
-        axios.put(`${props.apiUrl}/articles/${id}`, {
-            title: title.value,
-            body: body.value,
-            }, {    
-                headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
-                }
-            })
-            .then(response => {
-                if (response.status === 204) {
-                    setArticleUpdated(true);
+        const getArticle = async () => {
+            try {
+                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
+                if(response.data[0].userId !== props.userId) {
+                    setCanUpdate(false);
                 } else {
-                    alert('Une erreur est survenue lors de la mise à jour de l\'article.');
+                    setArticle(response.data);
+                    setCanUpdate(true);
                 }
-            })
-            .catch(error => {
-                alert('Une erreur est survenue lors de la mise à jour de l\'article.');
+                setIsLoading(false);
+            } catch (err) {
+                alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
+            } finally {
+                setIsLoading(false);
             }
-        );      
+        };
+        getArticle();
+    }, [isLoading, id, props.apiUrl, props.userId, canUpdate]);
+
+    if (isLoading) {
+        return <div/>;
     }
 
     return (
-        (articleUpdated) ? <Navigate to='/articles' /> : (
-            <div>
-                <h2>Mettre à jour un article</h2>
-                <form>
-                    <div className="form-group">
-                        <label htmlFor="title">Titre</label>
-                        <input required type="text" className="form-control" id="title" defaultValue={articleTitle}/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="body">Contenu</label>
-                        <textarea required className="form-control" id="body" rows={3} defaultValue={articleBody}/> 
-                    </div>
-                    <button onClick={handleUpdate} type="submit" className="btn btn-primary btn-sm">Confirmer les changements</button>
-                    <RedirectButton buttonText='Annuler' buttonClass='btn btn-secondary btn-sm' buttonUrl='/articles'/>
-                </form>
-            </div>
-        )
+        (canUpdate === false) ? <Navigate to='/articles' /> : 
+        <UpdateArticleForm 
+            apiUrl={props.apiUrl} 
+            userId={props.userId} 
+            article={article[0]}
+        />
     );
 };
 

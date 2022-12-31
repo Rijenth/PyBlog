@@ -5,6 +5,7 @@ import RedirectButton from '../../components/RedirectButton';
 
 interface PropsDeleteArticle {
     apiUrl: string;
+    userId: number;
 }
 
 const DeleteArticle = (props:PropsDeleteArticle) => {

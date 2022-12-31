@@ -17,7 +17,8 @@ interface PropsIndexArticles {
 
 const IndexArticles = (props:PropsIndexArticles) => {    
     const [articles, setArticles] = React.useState<Article[]>([]);
-    
+    const userId = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0;
+
     React.useEffect(() => {
         axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
@@ -36,7 +37,7 @@ const IndexArticles = (props:PropsIndexArticles) => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            {props.isLoggedIn ? 
+                            {props.isLoggedIn && userId===article.userId ? 
                                 <>
                                     <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
                                     <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>

@@ -5,6 +5,7 @@ import RedirectButton from './RedirectButton';
 interface UserLoginFormProps {
     setIsLoggedIn: (isLoggedIn: boolean) => void;
     apiUrl: string;
+    setUserId: (id: number) => void;
 }
 
 class UserLoginForm extends React.Component<UserLoginFormProps> {
@@ -46,11 +47,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     };
 
     handleLogout = () => {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('username');
-        sessionStorage.removeItem('id');
-        sessionStorage.removeItem('firstName');
-        sessionStorage.removeItem('lastName');
+        sessionStorage.clear();
         this.setState({loggedIn: false});
         this.props.setIsLoggedIn(false);
     };
@@ -61,13 +58,21 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
         axios.post(`${this.props.apiUrl}/users/login`, {username, password})
             .then(res => {
                 if (res.status === 200) {
+                    const userData = {
+                        id: res.data.id,
+                        username: username,
+                        token: res.data.token,
+                        firstName: res.data.firstName,
+                        lastName: res.data.lastName
+                    }
+
+                    Object.entries(userData).forEach(([key, value]) => {
+                        sessionStorage.setItem(key, value);
+                    });
+                    
                     this.setState({loggedIn: true});
-                    sessionStorage.setItem('token', res.data.token);
-                    sessionStorage.setItem('username', username);
-                    sessionStorage.setItem('id', res.data.id);
-                    sessionStorage.setItem('firstName', res.data.firstName);
-                    sessionStorage.setItem('lastName', res.data.lastName);
                     this.props.setIsLoggedIn(true);
+                    this.props.setUserId(res.data.id);
                 }
             })
             .catch(e => {
