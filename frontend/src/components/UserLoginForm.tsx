@@ -59,13 +59,14 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
             .then(res => {
                 if (res.status === 200) {
                     const userData = {
-                        id: res.data.id,
+                        id: res.data.user.id,
                         username: username,
                         token: res.data.token,
-                        firstName: res.data.firstName,
-                        lastName: res.data.lastName
+                        firstName: res.data.user.firstName,
+                        lastName: res.data.user.lastName,
+                        admin: res.data.user.admin
                     }
-
+                    
                     Object.entries(userData).forEach(([key, value]) => {
                         sessionStorage.setItem(key, value);
                     });

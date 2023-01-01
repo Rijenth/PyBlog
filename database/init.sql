@@ -34,8 +34,10 @@ CREATE TABLE `Users` (
 
 ALTER TABLE `Articles` ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-INSERT into `Users` (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `admin`) VALUES 
-    (1, 'admin', '$2b$12$tv73iMZ1gQZZC4f/bXLPpO7Jxt6GcYFcjExnX7P7YNktpzHJ4X4A2', 'Admin', 'Admin', 'admin@admin.fr', 1);
+INSERT INTO `Users` (`id`, `username`, `password`, `firstName`, `lastName`, `email`, `admin`) VALUES
+    (1, 'admin', '$2b$12$tv73iMZ1gQZZC4f/bXLPpO7Jxt6GcYFcjExnX7P7YNktpzHJ4X4A2', 'Admin', 'Admin', 'admin@admin.fr', 1),
+    (2, 'rijenth', '$2b$12$HDdCzojvJPOUR3wNhS81ieQhcW7KPPvYSrNgK/uXYN8P5wXyNOB7a', 'rijenth', 'rijenth', 'rijenth@test.fr', 0),
+    (3, 'rijenthadmin', '$2b$12$HDdCzojvJPOUR3wNhS81ieQhcW7KPPvYSrNgK/uXYN8P5wXyNOB7a', 'rijenth', 'rijenth', 'rijenth@lol.fr', 1);
 
 INSERT INTO `Articles` (`id`, `title`, `body`, `userId`, `date`) VALUES 
     (1, 'Article 1', 'This is the body of article 1', '1', '2021-11-15 20:28:58'),

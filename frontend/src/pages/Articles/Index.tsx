@@ -18,13 +18,14 @@ interface PropsIndexArticles {
 const IndexArticles = (props:PropsIndexArticles) => {    
     const [articles, setArticles] = React.useState<Article[]>([]);
     const userId = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0;
+    const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
 
     React.useEffect(() => {
         axios.get(`${props.apiUrl}/articles`)
             .then((response) => setArticles(response.data))
             .catch((error) => alert('Une erreur est survenue lors de la récupération des articles.'));
     }, [props.apiUrl]);
-
+    
     return (
         (articles.length === 0) ? ( 
             <div className="container">
@@ -37,11 +38,11 @@ const IndexArticles = (props:PropsIndexArticles) => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            {props.isLoggedIn && userId===article.userId ? 
+                            {props.isLoggedIn && (userId===article.userId || isAdmin) ? 
                                 <>
                                     <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
                                     <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
-                                </> : null
+                                </> : <></>
                             }
                             <a style={{paddingLeft: 10}} href={`/articles/${article.id}`}>
                             {article.title} - {article.author} - {article.date}

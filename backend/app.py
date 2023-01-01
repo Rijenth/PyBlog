@@ -1,11 +1,14 @@
+from dotenv import load_dotenv
 from flask import (Flask, jsonify, request, abort)
-from functools import wraps
 from flask_cors import CORS
-from src.App.Controllers.HomeController import HomeController
-from src.App.Controllers.ArticlesController import ArticlesController
-from src.App.Controllers.UsersController import UsersController
 from flask_jwt_extended import JWTManager, jwt_required
+from functools import wraps
 from os import getenv
+from src.App.Controllers.ArticlesController import ArticlesController
+from src.App.Controllers.HomeController import HomeController
+from src.App.Controllers.UsersController import UsersController
+
+load_dotenv()
 
 def create_app():
     app=Flask(__name__)

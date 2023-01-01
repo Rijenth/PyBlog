@@ -20,18 +20,18 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
     const [canUpdate, setCanUpdate] = React.useState(false);
     const { id } = useParams();
     const [isLoading, setIsLoading] = React.useState(true);
+    const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
 
     React.useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${props.apiUrl}/articles/${id}`);
-                if(response.data[0].userId !== props.userId) {
-                    setCanUpdate(false);
-                } else {
+                if(response.data[0].userId === props.userId || isAdmin) {
                     setArticle(response.data);
                     setCanUpdate(true);
+                } else {
+                    setCanUpdate(false);
                 }
-                setIsLoading(false);
             } catch (err) {
                 alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
             } finally {

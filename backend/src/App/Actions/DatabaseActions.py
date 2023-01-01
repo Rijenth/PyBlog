@@ -1,14 +1,17 @@
 from flask import jsonify
+from os import getenv
 import pymysql
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class DatabaseActions:
     __config = {
-        'user': 'root',
-        'password': 'Rijenth123+',
-        'host': 'mysql',
-        'port': 3306,
-        'database': 'PyBlog'
+        'user': getenv('DB_USER'),
+        'password': getenv('DB_PASSWORD'),
+        'host': getenv('DB_HOST'),
+        'port': int(getenv('DB_PORT')),
+        'database': getenv('DB_NAME')
     }
 
     def __init__(self, table):
@@ -33,7 +36,7 @@ class DatabaseActions:
             self.cursor.execute("SELECT * FROM " + self.table)
         result = self.cursor.fetchall()
         self.connection.close()
-        if(result == []):
+        if(not result):
             return result
         return self._format(result)
 
@@ -46,8 +49,8 @@ class DatabaseActions:
             self.cursor.execute(query, (value,))
         result = self.cursor.fetchone()
         self.connection.close()
-        if(result == None):
-            return []
+        if(not result):
+            return result
         return self._format(result)
 
     def _execute(self, query, value):
