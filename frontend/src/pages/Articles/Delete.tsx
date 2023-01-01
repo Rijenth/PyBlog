@@ -1,8 +1,15 @@
 import axios from 'axios';
 import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import RedirectButton from '../../components/RedirectButton';
+import DeleteArticleForm from '../../components/DeleteArticleForm'
 
+interface Article {
+    id: number;
+    title: string;
+    body: string;
+    userId: number;
+    date: string;
+}
 interface PropsDeleteArticle {
     apiUrl: string;
     userId: number;
@@ -10,35 +17,42 @@ interface PropsDeleteArticle {
 
 const DeleteArticle = (props:PropsDeleteArticle) => {
     const { id } = useParams();
-    const[articleDeleted, setArticleDeleted] = React.useState(false)
+    const [canDelete, setCanDelete] = React.useState(false);
+    const [article, setArticle] = React.useState<Article[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        axios.delete(`${props.apiUrl}/articles/${id}`, {
-            headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+    React.useEffect(() => {
+        const getArticle = async () => {
+            try {
+                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
+                if(response.data[0].userId !== props.userId) {
+                    setCanDelete(false);
+                } else {
+                    setArticle(response.data);
+                    setCanDelete(true);
+                }
+                setIsLoading(false);
+            } catch (err) {
+                alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
+            } finally {
+                setIsLoading(false);
             }
-        })
-        .then(response => {
-            if(response.status === 204) {
-                setArticleDeleted(true);
-            }
-        })
-        .catch(error => {
-            alert('Une erreur est survenue lors de la suppression de l\'article.')
-        });
+        };
+        getArticle();
+    }, [isLoading, id, props.apiUrl, props.userId, canDelete]);
+
+    if (isLoading) {
+        return <div/>;
     }
 
     return (
-        (articleDeleted) ? <Navigate to='/articles' /> : (
-            <div className='container'>
-                <h2>Supprimer un article</h2>
-                <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
-                <button style={{marginRight:5}} onClick={handleClick} className="btn btn-primary btn-sm">Confirmer</button>
-                <RedirectButton buttonText='Annuler' buttonUrl='/articles' buttonClass='btn btn-secondary btn-sm' />
-            </div>
-        )
-    )
+        (canDelete === false) ? <Navigate to='/articles' /> : 
+        <DeleteArticleForm 
+            apiUrl={props.apiUrl} 
+            userId={props.userId} 
+            articleId={article[0].id}
+        />
+    );
 };
 
 export default DeleteArticle;
