@@ -22,3 +22,7 @@ class CommentsAction(DatabaseActions):
         query = "INSERT INTO " + self.table + " (body, author, userId, articleId, date) VALUES (%s, %s, %s, %s, %s)"
         value = (model.body, model.author, model.userId, model.articleId, model.date)
         super()._execute(query, value)
+
+    def delete(self, id):
+        query = "DELETE FROM " + self.table + " WHERE id = %s"
+        super()._execute(query, (id,))

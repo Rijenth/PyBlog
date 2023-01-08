@@ -91,6 +91,13 @@ textarea {
     margin: 10px;
 }
 
+.commentFormButton {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
 @media (max-width: 700px) {
     .cardsBody {
         width: 400px;

@@ -166,6 +166,17 @@ def postComment(id):
         return jsonify({'message': 'Wrong params!'}), 422
     return CommentsController.post(int(id), data)
 
+@app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['DELETE'])
+@authorized_origin
+@jwt_required()
+def deleteComment(articleId, commentId):
+    try:
+        int(commentId)
+        if(int(commentId) <= 0):
+            return jsonify({'message': 'Wrong params!'}), 422
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 422
+    return CommentsController.delete(int(commentId))
 
 
 if __name__ == '__main__':

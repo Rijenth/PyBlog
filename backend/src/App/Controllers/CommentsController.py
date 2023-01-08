@@ -28,3 +28,7 @@ class CommentsController:
         except Exception as e:
             return jsonify({e}), 422
         return jsonify({}), 201
+
+    def delete(id):
+        CommentsAction().delete(id)
+        return jsonify({}), 204
