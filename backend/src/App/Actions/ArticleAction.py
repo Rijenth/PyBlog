@@ -1,5 +1,5 @@
 from src.App.Actions.DatabaseActions import DatabaseActions
-from src.App.Models.ArticleModel import ArticleModel
+from src.App.Models.ArticlesModel import ArticlesModel
 
 class ArticleAction(DatabaseActions):
 
@@ -7,27 +7,25 @@ class ArticleAction(DatabaseActions):
         super().__init__('Articles')
     
     def index(self):
-        query = "SELECT Articles.*, concat(Users.firstName, ' ', Users.lastName) AS author FROM Articles JOIN Users ON Articles.userId = Users.id"
-        data = super()._index(query)
+        data = super()._index()
         result = []
         for article in data:
-            result.append(ArticleModel(article).serialize())
+            result.append(ArticlesModel(article).serialize())
         return result
 
     def show(self, id):
-        query = "SELECT Articles.*, concat(Users.firstName, ' ', Users.lastName) AS author FROM Articles JOIN Users ON Articles.userId = Users.id WHERE Articles.id = %s"
-        data = super()._get("id", (id,), query)    
-        return ArticleModel(data).serialize()
+        data = super()._get("id", (id,))   
+        return ArticlesModel(data).serializeWithRelationships()
 
-    def post(self, data):
-        query = "INSERT INTO " + self.table + " (title, body, userId, date) VALUES (%s, %s, %s, %s)"
-        value = (data['title'], data['body'], data['userId'], data['date'])
+    def post(self, model):
+        query= "INSERT INTO " + self.table + " (title, body, author, userId, date) VALUES (%s, %s, %s, %s, %s)"
+        value = (model.title, model.body, model.author, model.userId, model.date)
         super()._execute(query, value)
 
 
-    def update(self, id, data):
+    def update(self, id, model):
         query = "UPDATE " + self.table + " SET title = %s, body = %s WHERE id = %s"
-        value = (data['title'], data['body'], id)
+        value = (model.title, model.body, id)
         super()._execute(query, value)
 
 

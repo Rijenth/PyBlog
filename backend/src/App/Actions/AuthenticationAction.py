@@ -6,15 +6,15 @@ class AuthenticationAction(DatabaseActions):
     def __init__(self):
         super().__init__('Users')
 
-    def register(self, data):
+    def register(self, model):
         query = "INSERT INTO " + self.table + " (username, password, firstName, lastName, email, admin) VALUES (%s, %s, %s, %s, %s, %s)"
         value = (
-            data['username'], 
-            self.hashPassword(data['password']), 
-            data['firstName'], 
-            data['lastName'], 
-            data['email'], 
-            data['admin']
+            model.username, 
+            self.hashPassword(model.password), 
+            model.firstName, 
+            model.lastName, 
+            model.email, 
+            model.admin
         )
         super()._execute(query, value)
     
