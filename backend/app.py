@@ -7,6 +7,7 @@ from os import getenv
 from src.App.Controllers.ArticlesController import ArticlesController
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.UsersController import UsersController
+from src.App.Controllers.CommentsController import CommentsController
 
 load_dotenv()
 
@@ -106,6 +107,49 @@ def deleteArticle(id):
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 422
     return ArticlesController.deleteArticle(int(id))
+
+###                 ###
+### Comments Routes ###
+###                 ###
+@app.route('/api/articles/<string:articleId>/comments', methods=['GET'])
+@authorized_origin
+@jwt_required()
+def getAllComments(articleId):
+    try:
+        int(articleId)
+        if(int(articleId) <= 0):
+            return jsonify({'message': 'Wrong params!'}), 422
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 422
+    return CommentsController.index(int(articleId))
+
+@app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['GET'])
+def getSingleComment(articleId, commentId):
+    try:
+        int(commentId)
+        if(int(commentId) <= 0):
+            return jsonify({'message': 'Wrong params!'}), 422
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 422
+    return CommentsController.get(int(commentId))
+
+
+@app.route('/api/articles/<string:id>/comments', methods=['POST'])
+@authorized_origin
+@jwt_required()
+def postComment(id):
+    data = request.get_json()
+    try:
+        id = int(id)
+        userId = int(data['userId'])
+        articleId = int(data['articleId'])
+        if id <= 0 or userId <= 0 or articleId <= 0:
+            return jsonify({'message': 'Wrong params!'}), 422
+    except ValueError:
+        return jsonify({'message': 'Wrong params!'}), 422
+    return CommentsController.post(int(id), data)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
