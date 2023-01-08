@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from datetime import date
 from src.App.Actions.ArticleAction import ArticleAction
+from src.App.Models.ArticlesModel import ArticlesModel
 class ArticlesController:
     def __init__(self, request):
         self.request = request
@@ -20,7 +21,8 @@ class ArticlesController:
     def postArticle(data):
         data['date'] = date.today().strftime("%Y-%m-%d")
         try:
-            ArticleAction().post(data)
+            article = ArticlesModel(data)
+            ArticleAction().post(article)
         except Exception as e:
             return jsonify({}), 422
         return jsonify({}), 201
@@ -28,7 +30,8 @@ class ArticlesController:
     def updateArticle(id, data):
         # date de mise à jour ?
         try:
-            ArticleAction().update(id, data)
+            article = ArticlesModel(data)
+            ArticleAction().update(id, article)
         except Exception as e:
             return jsonify({}), 422
         return jsonify({}), 204
