@@ -8,6 +8,7 @@ interface Article {
     title: string;
     body: string;
     userId: number;
+    author: string;
     date: string;
 }
 
@@ -48,7 +49,7 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
                 }
             })
             .catch(error => {
-                alert('Une erreur est survenue lors de la mise à jour de l\'article.');
+                alert(error);
             }
         );      
     }

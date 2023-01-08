@@ -15,12 +15,14 @@ const PostArticle = (props:PostArticleProps) => {
         e.preventDefault();
         const title = document.getElementById('title') as HTMLInputElement
         const body = document.getElementById('body') as HTMLInputElement
-        
+        const username = sessionStorage.getItem('username');
+
         if(title.value.trim().length !== 0 && body.value.trim().length !== 0) {
             const article = {
                 title: title.value,
                 body: body.value,
-                userId: userId
+                userId: userId,
+                author: username
             };
             
             axios.post(`${props.apiUrl}/articles`, article, {
@@ -35,7 +37,7 @@ const PostArticle = (props:PostArticleProps) => {
                 }
             })
             .catch(error => {
-                alert('Une erreur est survenue lors de la création de l\'article.')
+                alert(error)
             });
         } else {
             return alert('Tout les champs doivent être complétés');

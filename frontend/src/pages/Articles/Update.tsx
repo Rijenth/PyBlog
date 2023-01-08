@@ -7,6 +7,7 @@ interface Article {
     title: string;
     body: string;
     userId: number;
+    author: string;
     date: string;
 }
 

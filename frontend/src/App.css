@@ -1,11 +1,15 @@
+textarea {
+    resize: none;
+    margin-bottom: 20px;
+}
+
 .cardsBody {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 auto;
-    width: 100%;
+    width: 80%;
     height: auto;
-    background-color: #f5f5f5;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
@@ -13,17 +17,17 @@
 
 .articleHead {
     display: flex;
-    justify-content: space-between;
-    margin: 20px;
+    margin: 10px;
+    margin-left: 0;
+    margin-top: 0;
+    padding: 10px;
     width: 100%;
     height: auto;
-    background-color: #f5f5f5;
+    background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .articleHead h1 {
-    margin: 10px;
     font-size: 2rem;
     font-weight: 500;
     color: #000;
@@ -31,43 +35,20 @@
 
 .footer {
     display: flex;
-    margin: 20px;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 5px solid white;
+    margin: 5px;
     width: 100%;
 }
 
-.footer1 {
-    margin-right: 20px;
-    width: 20em;
-    height: 50px;
-    text-align: center;
-    border: 5px solid #f5f5f5;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-}
 
-.footer2 {
-    margin-left: 10px;
-    width: 20em;
-    text-align: center;
-    height: 100px;
-    border: 5px solid #f5f5f5;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-}
-
-.articleBody {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.articleBody {    
     margin: 20px;
+    margin-left: 0;
     width: 100%;
     height: auto;
-    background-color: #f5f5f5;
-    border-radius: 10px;
     padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .articleBody h2 {
@@ -82,10 +63,34 @@
     color: #000;
 }
 
+.addCommentForm {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin: 0 auto;
+    margin-top: 30px;
+    max-width: 21em;
+    height: auto;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
 
+.articleComments {
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
 
+.comments {
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    margin: 10px;
+}
 
-/* Media query for .cardsBody */
 @media (max-width: 700px) {
     .cardsBody {
         width: 400px;
@@ -100,10 +105,18 @@
         width: 20em;
         height: auto;
     }
+
+    .articleComments {
+        max-width: 300px;
+    }
 }
 
 @media (min-width: 700px) {
    .footer2 {
+        height: auto;
+    }
+
+    .footer1 {
         height: auto;
     }
 }

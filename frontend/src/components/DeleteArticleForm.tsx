@@ -25,7 +25,7 @@ const DeleteArticleForm = (props:PropsDeleteArticle) => {
             }
         })
         .catch(error => {
-            alert('Une erreur est survenue lors de la suppression de l\'article.')
+            alert(error)
         });
     }
 

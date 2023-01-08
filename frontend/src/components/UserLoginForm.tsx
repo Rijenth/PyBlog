@@ -16,7 +16,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
         password: '',
         token: null,
         username: '',
-        welcomeMessage: 'Bonjour'
+        welcomeMessage: ''
     };
 
     componentDidMount() {
@@ -77,7 +77,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
                 }
             })
             .catch(e => {
-                return alert('Erreur ! Vérifiez vos identifiants');
+                return alert(e);
             }
         );
     };
