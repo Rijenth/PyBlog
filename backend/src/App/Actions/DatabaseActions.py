@@ -1,4 +1,3 @@
-from flask import jsonify
 from os import getenv
 import pymysql
 from dotenv import load_dotenv
@@ -21,6 +20,7 @@ class DatabaseActions:
         self.connection = pymysql.connect(**self.__config)
         self.cursor = self.connection.cursor()
     
+    # Format the result of a query to a dict as {column_name => value}
     def _format(self, data):
         columns = [column[0] for column in self.cursor.description]
         if isinstance(data[0], tuple):
