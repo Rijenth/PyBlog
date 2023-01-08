@@ -2,6 +2,8 @@ import axios from 'axios';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../404';
+import CommentForm from '../../components/CommentForm';
+import ArticleComments from '../../components/ArticleComments';
 
 interface Article {
     id: number;
@@ -10,27 +12,40 @@ interface Article {
     userId: number;
     date: string;
     author: string;
+    relationships: {
+        comments: Comments[];
+    }
 }
-
+interface Comments {
+    id: number;
+    body: string;
+    userId: number;
+    author: string;
+    date: string;
+}
 interface PropsGetArticle {
     apiUrl: string;
+    isLoggedIn: boolean;
 }
 
 const GetArticle = (props:PropsGetArticle) => {
     const [isLoading, setIsLoading] = React.useState(true);
     const { id } = useParams();    
     const [article, setArticle] = React.useState<Article[]>([]);
+    const [comments, setComments] = React.useState<Comments[]>([]);
     const [error, setError] = React.useState(null);
-
+    
     React.useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${props.apiUrl}/articles/${id}`);
                 setArticle(response.data);
+                setComments(response.data[0].relationships.Comments);
                 setIsLoading(false);
             } catch (err) {
                 setError(error);
                 setArticle([]);
+                setComments([]);
             } finally {
                 setIsLoading(false);
             }
@@ -56,11 +71,13 @@ const GetArticle = (props:PropsGetArticle) => {
                         </div>
 
                         <div className="footer">
-                            <p className='footer1'>Auteur : {article.author}</p>
-                            <p className='footer2'>Date de publication : {article.date}</p>
+                            <span>Auteur : {article.author}</span>
+                            <span>Publié le : {article.date}</span>
                         </div>
                     </div>
                 ))}
+                <CommentForm apiUrl={props.apiUrl} isLoggedIn={props.isLoggedIn} article={article[0]} />
+                <ArticleComments comments={comments} />
             </>
         )
     );
