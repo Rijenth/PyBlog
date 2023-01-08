@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from flask import (Flask, jsonify, request, abort)
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, decode_token
 from functools import wraps
 from os import getenv
 from src.App.Controllers.ArticlesController import ArticlesController
@@ -31,9 +31,26 @@ def authorized_origin(func):
         return func(*args, **kwargs)
     return decorated_function
 
-###                 ###
-###    Home Route   ###
-###                 ###
+###                              ###
+###    JWT Token Renewal Route   ###
+###                              ###
+@app.route('/api/renew-token', methods=['POST'])
+@authorized_origin
+@jwt_required()
+def renewToken():
+    headerAuth = request.headers.get('Authorization')
+    if headerAuth is None:
+        return jsonify({'message': 'Missing auth header !'}), 401
+
+    token = headerAuth.split(" ")[1]
+    try :
+        payload = decode_token(token)
+    except Exception:
+        return jsonify({'message': 'Invalid token !'}), 401 
+
+    new_token = create_access_token(identity=payload["identity"])
+    return jsonify({"token": new_token}), 200
+
 @app.route('/', methods=['GET'])
 @authorized_origin
 def home():
