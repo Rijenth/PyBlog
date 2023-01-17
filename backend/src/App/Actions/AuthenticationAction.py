@@ -16,7 +16,11 @@ class AuthenticationAction(DatabaseActions):
             model.email, 
             model.admin
         )
-        super()._execute(query, value)
+        try :
+            super()._execute(query, value)
+        except Exception as e:
+            return False
+        return True
     
     def login(self, data): 
         row = super()._get("username", data["username"])

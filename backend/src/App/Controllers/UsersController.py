@@ -11,9 +11,11 @@ class UsersController:
     def register(data):
         try :
             user = UsersModel(data)
-            AuthenticationAction().register(user)
+            registration = AuthenticationAction().register(user)
         except Exception as e:
-            return jsonify({"message" : "Une erreur est survenue"}), 422
+            return jsonify({"message" : e}), 422
+        if registration == False:
+            return jsonify({"message" : "This email address is already taken"}), 409
         return jsonify({}), 201
 
     def login(data):
