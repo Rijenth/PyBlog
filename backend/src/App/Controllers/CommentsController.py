@@ -20,11 +20,9 @@ class CommentsController:
         return jsonify(comments), 200
 
     def post(id, data):
-        data['date'] = date.today().strftime("%Y-%m-%d")
-        data['articleId'] = id
         comment = CommentsModel(data)
         try:
-            CommentsAction().post(comment)
+            CommentsAction().post(id, comment)
         except Exception as e:
             return jsonify({e}), 422
         return jsonify({}), 201

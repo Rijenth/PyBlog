@@ -17,6 +17,7 @@ def create_app():
     CORS(app, resources={r"/api/*": {"origins": getenv('FRONTEND_URL')}})
     JWTManager(app)
     return app
+
 app = create_app()
 
 ###                 ###
@@ -34,22 +35,6 @@ def authorized_origin(func):
 ###                              ###
 ###    JWT Token Renewal Route   ###
 ###                              ###
-@app.route('/api/renew-token', methods=['POST'])
-@authorized_origin
-@jwt_required()
-def renewToken():
-    headerAuth = request.headers.get('Authorization')
-    if headerAuth is None:
-        return jsonify({'message': 'Missing auth header !'}), 401
-
-    token = headerAuth.split(" ")[1]
-    try :
-        payload = decode_token(token)
-    except Exception:
-        return jsonify({'message': 'Invalid token !'}), 401 
-
-    new_token = create_access_token(identity=payload["identity"])
-    return jsonify({"token": new_token}), 200
 
 @app.route('/', methods=['GET'])
 @authorized_origin
@@ -57,7 +42,7 @@ def home():
     return HomeController.home() 
 
 ###                       ###
-### User Routes ###
+###      User Routes      ###
 ###                       ###
 @app.route('/api/users/register', methods=['POST'])
 @authorized_origin
@@ -98,10 +83,9 @@ def showArticle(id):
 @app.route('/api/articles', methods=['POST'])
 @authorized_origin
 @jwt_required()
+
 def postArticle():
-    data = request.get_json()    
-    for key, value in data.items():
-        data[key] = value.strip()
+    data = request.get_json()
     return ArticlesController.postArticle(data)
 
 @app.route('/api/articles/<string:id>', methods=['PUT'])

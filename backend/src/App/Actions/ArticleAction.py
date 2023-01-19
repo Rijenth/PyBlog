@@ -1,5 +1,6 @@
 from src.App.Actions.DatabaseActions import DatabaseActions
 from src.App.Models.ArticlesModel import ArticlesModel
+from datetime import date
 
 class ArticleAction(DatabaseActions):
 
@@ -15,11 +16,13 @@ class ArticleAction(DatabaseActions):
 
     def show(self, id):
         data = super()._get("id", (id,))   
+        if data is None:
+            return None
         return ArticlesModel(data).serializeWithRelationships()
 
     def post(self, model):
         query= "INSERT INTO " + self.table + " (title, body, author, userId, date) VALUES (%s, %s, %s, %s, %s)"
-        value = (model.title, model.body, model.author, model.userId, model.date)
+        value = (model.title, model.body, model.author, model.userId, date.today().strftime("%Y-%m-%d"))
         super()._execute(query, value)
 
 

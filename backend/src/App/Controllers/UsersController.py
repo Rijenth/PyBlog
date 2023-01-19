@@ -23,9 +23,12 @@ class UsersController:
         if(row == []):
             return jsonify({"message" : "Wrong Credentials"}), 403
         user =  UsersModel(row).serialize()
-        return jsonify(
-            {
-                'token' : create_access_token(identity={"username" : user['username'], "id" : user['id']}), 
-                "user" : user
-            }
-        ), 200
+        return jsonify({
+            'token' : create_access_token(
+                identity= {
+                    "username" : user['username'], 
+                    "id" : user['id'],
+                }
+            ), 
+            "user" : user
+        }), 200

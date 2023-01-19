@@ -1,5 +1,4 @@
 from flask import Flask, jsonify
-from datetime import date
 from src.App.Actions.ArticleAction import ArticleAction
 from src.App.Models.ArticlesModel import ArticlesModel
 class ArticlesController:
@@ -13,18 +12,17 @@ class ArticlesController:
         try:
             article = ArticleAction().show(id)
         except Exception as e:
-            return jsonify({}), 404
+            return jsonify({e}), 404
         if len(article) == 0:
             return jsonify({}), 404
         return jsonify([article]), 200
 
     def postArticle(data):
-        data['date'] = date.today().strftime("%Y-%m-%d")
         try:
             article = ArticlesModel(data)
             ArticleAction().post(article)
         except Exception as e:
-            return jsonify({}), 422
+            return jsonify({e}), 422
         return jsonify({}), 201
 
     def updateArticle(id, data):

@@ -6,18 +6,27 @@ class BasicModel(RelationshipActions):
 
     relationships = []
 
-    def __init__(self, data):
-        self.hydrate(data)
+    hidden = []
 
-    def hydrate(self, data):
-        for key, value in self.attributes.items():
+    def __init__(self, data):
+        if 'id' in data:
+            self.hydrate(data, "read")
+        else:
+            self.hydrate(data, "create")
+
+    def hydrate(self, data, operation):
+        if operation == "create":
+            list = self.attributes.items()
+        elif operation == "read":
+            list = self.serializable.items()
+        for key, value in list:
             if key in data:
                 setattr(self, key, value(data[key]))
-
+            
     def serialize(self):
         data = {}
         for key in self.serializable:
-            if(hasattr(self, key)):
+            if hasattr(self, key) and key not in self.hidden:
                 data[key] = getattr(self, key)
         return data
 

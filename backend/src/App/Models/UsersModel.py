@@ -3,7 +3,6 @@ from flask import Flask
 
 class UsersModel(BasicModel):
     attributes = {
-        'id': int,
         'username': str,
         'firstName': str,
         'lastName': str,
@@ -21,5 +20,4 @@ class UsersModel(BasicModel):
         'admin': bool
     }
 
-    def __init__(self, data):
-        super().__init__(data)
+    hidden = ['password']

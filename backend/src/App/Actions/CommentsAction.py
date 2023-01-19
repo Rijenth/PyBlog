@@ -1,6 +1,6 @@
 from src.App.Actions.DatabaseActions import DatabaseActions
 from src.App.Models.CommentsModel import CommentsModel
-
+from datetime import date
 class CommentsAction(DatabaseActions):
     
     def __init__(self):
@@ -16,11 +16,13 @@ class CommentsAction(DatabaseActions):
 
     def show(self, id):
         data = super()._get("id", (id,))
+        if data is None:
+            return None
         return CommentsModel(data).serializeWithRelationships()
 
-    def post(self, model):
+    def post(self, articleId, model):
         query = "INSERT INTO " + self.table + " (body, author, userId, articleId, date) VALUES (%s, %s, %s, %s, %s)"
-        value = (model.body, model.author, model.userId, model.articleId, model.date)
+        value = (model.body, model.author, model.userId, articleId, date.today().strftime("%Y-%m-%d"))
         super()._execute(query, value)
 
     def delete(self, id):

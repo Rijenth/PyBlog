@@ -3,6 +3,12 @@ from src.App.Models.BasicModel import BasicModel
 
 class CommentsModel(BasicModel):
     attributes = {
+        'body': str,
+        'userId': int,
+        'author': str
+    }
+
+    serializable = {
         'id': int,
         'body': str,
         'userId': int,
@@ -11,18 +17,7 @@ class CommentsModel(BasicModel):
         'author': str
     }
 
-    serializable = {
-        'id': int,
-        'body': str,
-        'date': str,
-        'author': str,
-        'userId': int
-    }
-
     relationships = ['Article', 'User']
-
-    def __init__(self, data):
-        super().__init__(data)
 
     def Article(self):
        return self.belongsTo('Articles', 'id', self.articleId)
