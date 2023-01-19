@@ -28,7 +28,8 @@ class UsersController:
                 identity= {
                     "username" : user['username'], 
                     "id" : user['id'],
-                }
+                },
+                expires_delta=False
             ), 
             "user" : user
         }), 200
