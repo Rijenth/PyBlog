@@ -21,13 +21,12 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
     const [canUpdate, setCanUpdate] = React.useState(false);
     const { id } = useParams();
     const [isLoading, setIsLoading] = React.useState(true);
-    const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
 
     React.useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${props.apiUrl}/articles/${id}`);
-                if(response.data[0].userId === props.userId || isAdmin) {
+                if(response.data[0].userId === props.userId) {
                     setArticle(response.data);
                     setCanUpdate(true);
                 } else {

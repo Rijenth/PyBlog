@@ -17,21 +17,19 @@ class ArticlesController:
             return jsonify({}), 404
         return jsonify([article]), 200
 
-    def postArticle(data):
+    def postArticle(model):
         try:
-            article = ArticlesModel(data)
-            ArticleAction().post(article)
+            ArticleAction().post(model)
         except Exception as e:
             return jsonify({e}), 422
         return jsonify({}), 201
 
-    def updateArticle(id, data):
+    def updateArticle(id, model):
         # date de mise à jour ?
         try:
-            article = ArticlesModel(data)
-            ArticleAction().update(id, article)
+            ArticleAction().update(id, model)
         except Exception as e:
-            return jsonify({}), 422
+            return jsonify({e}), 422
         return jsonify({}), 204
     
     def deleteArticle(id):

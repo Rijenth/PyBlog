@@ -35,6 +35,8 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
         axios.put(`${props.apiUrl}/articles/${props.article.id}`, {
             title: title.value,
             body: body.value,
+            userId: props.userId,
+            author: props.article.author,
             }, 
             {    
                 headers: {

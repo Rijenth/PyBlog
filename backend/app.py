@@ -8,6 +8,9 @@ from src.App.Controllers.ArticlesController import ArticlesController
 from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.UsersController import UsersController
 from src.App.Controllers.CommentsController import CommentsController
+from src.App.Models.ArticlesModel import ArticlesModel
+from src.App.Models.CommentsModel import CommentsModel
+from src.App.Models.UsersModel import UsersModel
 
 load_dotenv()
 
@@ -86,18 +89,26 @@ def showArticle(id):
 
 def postArticle():
     data = request.get_json()
-    return ArticlesController.postArticle(data)
 
-@app.route('/api/articles/<string:id>', methods=['PUT'])
+    try:
+        article = ArticlesModel(data)
+    except Exception as e:
+        return jsonify({'message': str(e)}), 422
+
+    return ArticlesController.postArticle(article)
+
+@app.route('/api/articles/<int:id>', methods=['PUT'])
 @authorized_origin
 @jwt_required()
 def updateArticle(id):
     data = request.get_json()
+    
     try:
-        int(id)
-    except ValueError:
-        return jsonify({'message': 'Wrong params!'}), 422
-    return ArticlesController.updateArticle(int(id), data)
+        article = ArticlesModel(data)
+    except Exception as e:
+        return jsonify({'message': str(e)}), 422
+        
+    return ArticlesController.updateArticle(id, article)
 
 @app.route('/api/articles/<string:id>', methods=['DELETE'])
 @authorized_origin
