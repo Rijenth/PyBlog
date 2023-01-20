@@ -1,4 +1,5 @@
 from src.App.Models.BasicModel import BasicModel
+from datetime import date
 
 
 class CommentsModel(BasicModel):
@@ -13,7 +14,7 @@ class CommentsModel(BasicModel):
         'body': str,
         'userId': int,
         'articleId': int,
-        'date': str,
+        'date': date,
         'author': str
     }
 

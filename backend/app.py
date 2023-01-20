@@ -81,7 +81,7 @@ def showArticle(id):
         int(id)
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 422
-    return ArticlesController.showArticle(int(id))
+    return ArticlesController.showArticle(id)
 
 @app.route('/api/articles', methods=['POST'])
 @authorized_origin
@@ -133,7 +133,7 @@ def getAllComments(articleId):
             return jsonify({'message': 'Wrong params!'}), 422
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.index(int(articleId))
+    return CommentsController.index(articleId)
 
 @app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['GET'])
 def getSingleComment(articleId, commentId):
@@ -143,7 +143,7 @@ def getSingleComment(articleId, commentId):
             return jsonify({'message': 'Wrong params!'}), 422
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.get(int(commentId))
+    return CommentsController.get(commentId)
 
 
 @app.route('/api/articles/<string:id>/comments', methods=['POST'])
