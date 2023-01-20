@@ -1,5 +1,6 @@
 from src.App.Models.BasicModel import BasicModel
 from flask import Flask
+from datetime import date
      
 class ArticlesModel(BasicModel): 
     attributes = {
@@ -14,7 +15,7 @@ class ArticlesModel(BasicModel):
         'title': str,
         'body': str,
         'userId': int,
-        'date': str,
+        'date': date,
         'author': str,
     }
 
