@@ -53,6 +53,8 @@ class BasicModel(RelationshipActions):
         data = self.serialize()
         data["relationships"] = {}
         for relationship in self.relationships:
+            if relationship == self.table:
+                continue
             if(hasattr(self, relationship) and callable(getattr(self, relationship))):
                 data["relationships"][relationship] = getattr(self, relationship)()
         return data
