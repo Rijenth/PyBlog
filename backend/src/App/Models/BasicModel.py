@@ -28,46 +28,43 @@ class BasicModel(RelationshipActions):
         else:
             self.hydrate(data, self.attributes.items())
 
+    def getAttributes(self, key):
+        if isinstance(getattr(self, key), date):
+            return getattr(self, key).strftime('%Y-%m-%d')
+        elif isinstance(getattr(self, key), datetime):
+            return getattr(self, key).strftime('%Y-%m-%d %H:%M:%S')
+        return getattr(self, key)
+
     def hydrate(self, data, attributes):
-        for key, value in attributes:
-            if key in data:
-                self.setAttributes(data, key, value)
-            if(key not in data):
-                setattr(self, key, None)
         self.missingAttributes(data, attributes)
-        self.wrongTypeAttributes(data, attributes)
+        for attribut, type in attributes:            
+            if attribut in data:
+                self.setAttributes(data, attribut, type)       
 
     def missingAttributes(self, data, attributes):
         if not all(key in data for key, value in attributes):
             missing = [x for x, y in attributes if x not in data]
-            raise Exception('Missing attribute(s) : ' + str(missing))
+            raise AttributeError('Missing attribute(s) : ' + str(missing))
 
     def serialize(self):
         data = {}
         for key in self.serializable:
             if hasattr(self, key) and key not in self.hidden:
-                data[key] = getattr(self, key)
+                data[key] = self.getAttributes(key)
         return data
 
     def serializeWithRelationships(self):
         data = self.serialize()
         data["relationships"] = {}
         for relationship in self.relationships:
-            if relationship == self.table:
-                continue
             if(hasattr(self, relationship) and callable(getattr(self, relationship))):
                 data["relationships"][relationship] = getattr(self, relationship)()
         return data
 
-    def setAttributes(self, data, key, value):
-        if isinstance(data[key], date):
-            setattr(self, key, data[key].strftime("%Y-%m-%d"))
-        elif isinstance(data[key], datetime):
-            setattr(self, key, data[key].strftime("%Y-%m-%d %H:%M:%S"))
+    def setAttributes(self, data, attribut, type):
+        if type is bool and data[attribut] in (0, 1):
+            setattr(self, attribut, bool(data[attribut]))
         else:
-            setattr(self, key, value(data[key]))
-
-    def wrongTypeAttributes(self, data, attributes):
-        for key, value in attributes:
-            if key in data and not isinstance(data[key], value):
-                raise Exception('Attributes ' + key + ' must be of type ' + str(value.__name__))
+            setattr(self, attribut, data[attribut])
+        if not isinstance(getattr(self, attribut), type):
+            raise TypeError('Attribute ' + attribut + ' must be of type : ' + str(type.__name__))
