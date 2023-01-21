@@ -24,7 +24,7 @@ class AuthenticationAction(DatabaseActions):
     
     def login(self, data): 
         row = super()._get("username", data["username"])
-        if(len(row) == 0):
+        if(not row or len(row) == 0):
             return []
         elif(self.checkPassword(data['password'].encode('utf-8'), row['password'].encode('utf-8')) == False):
             return []

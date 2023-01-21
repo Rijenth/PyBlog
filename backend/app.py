@@ -62,8 +62,6 @@ def register():
 @authorized_origin
 def login():
     data = request.get_json()
-    for key, value in data.items():
-        data[key] = value.strip()
     return UsersController.login(data)
 
 ###                 ###

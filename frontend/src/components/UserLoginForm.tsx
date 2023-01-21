@@ -55,6 +55,11 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {username, password} = this.state;
+        
+        if (!username || !password) {
+            return alert('Veuillez remplir tous les champs');
+        }
+
         axios.post(`${this.props.apiUrl}/users/login`, {username, password})
             .then(res => {
                 if (res.status === 200) {

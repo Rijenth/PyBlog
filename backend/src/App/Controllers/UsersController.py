@@ -11,9 +11,10 @@ class UsersController:
     def register(data):
         try :
             user = UsersModel(data)
-            registration = AuthenticationAction().register(user)
         except Exception as e:
-            return jsonify({"message" : e}), 422
+            return jsonify({"message" : str(e)}), 422
+
+        registration = AuthenticationAction().register(user)
         if registration == False:
             return jsonify({"message" : "This email address is already taken"}), 409
         return jsonify({}), 201
@@ -22,14 +23,21 @@ class UsersController:
         row = AuthenticationAction().login(data)
         if(row == []):
             return jsonify({"message" : "Wrong Credentials"}), 403
-        user =  UsersModel(row).serialize()
+
+        row['admin'] = row['admin'] == 1
+        
+        try:
+            user = UsersModel(row)
+        except Exception as e:
+            return jsonify({'message': str(e)}), 422
+
         return jsonify({
             'token' : create_access_token(
                 identity= {
-                    "username" : user['username'], 
-                    "id" : user['id'],
+                    "username" : user.username, 
+                    "id" : user.id,
                 },
                 expires_delta=False
             ), 
-            "user" : user
+            "user" : user.serialize()
         }), 200
