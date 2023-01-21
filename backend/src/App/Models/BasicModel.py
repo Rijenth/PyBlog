@@ -67,4 +67,4 @@ class BasicModel(RelationshipActions):
         else:
             setattr(self, attribut, data[attribut])
         if not isinstance(getattr(self, attribut), type):
-            raise TypeError('Attribute ' + attribut + ' must be of type : ' + str(type.__name__))
+            raise TypeError('Attribute ' + '[' + attribut + ']' + ' must be of type : ' + '[' + str(type.__name__) + ']' + ' in ' + '[' + (self.__class__.__name__) + ']')

@@ -21,10 +21,9 @@ class UsersController:
 
     def login(data):
         row = AuthenticationAction().login(data)
+        
         if(row == []):
             return jsonify({"message" : "Wrong Credentials"}), 403
-
-        row['admin'] = row['admin'] == 1
         
         try:
             user = UsersModel(row)

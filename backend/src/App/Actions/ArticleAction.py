@@ -15,10 +15,7 @@ class ArticleAction(DatabaseActions):
         return result
 
     def show(self, id):
-        data = super()._get("id", (id,))   
-        if data is None:
-            return None
-        return ArticlesModel(data).serializeWithRelationships()
+        return super()._get("id", (id,))   
 
     def post(self, model):
         query= "INSERT INTO " + self.table + " (title, body, author, userId, date) VALUES (%s, %s, %s, %s, %s)"

@@ -9,12 +9,14 @@ class ArticlesController:
         return jsonify(ArticleAction().index()), 200
 
     def showArticle(id):
-        try:
-            article = ArticleAction().show(id)
-        except Exception as e:
-            return jsonify({e}), 404
-        if len(article) == 0:
+
+        data = ArticleAction().show(id)
+
+        if not data:
             return jsonify({}), 404
+
+        article = ArticlesModel(data).serializeWithRelationships()
+
         return jsonify([article]), 200
 
     def postArticle(model):
