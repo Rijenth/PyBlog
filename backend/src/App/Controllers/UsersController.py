@@ -3,6 +3,7 @@ from src.App.Actions.UserAction import UserAction
 from src.App.Actions.AuthenticationAction import AuthenticationAction
 from flask_jwt_extended import create_access_token
 from src.App.Models.UsersModel import UsersModel
+from datetime import timedelta
 
 class UsersController:
     def __init__(self, request):
@@ -36,7 +37,7 @@ class UsersController:
                     "username" : user.username, 
                     "id" : user.id,
                 },
-                expires_delta=False
+                expires_delta=timedelta(minutes=30)
             ), 
             "user" : user.serialize()
         }), 200

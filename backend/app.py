@@ -1,7 +1,8 @@
+from datetime import timedelta
 from dotenv import load_dotenv
 from flask import (Flask, jsonify, request, abort)
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, decode_token
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, decode_token, get_jwt_identity
 from functools import wraps
 from os import getenv
 from src.App.Controllers.ArticlesController import ArticlesController
@@ -38,6 +39,20 @@ def authorized_origin(func):
 ###                              ###
 ###    JWT Token Renewal Route   ###
 ###                              ###
+@app.route('/api/token/refresh', methods=['POST'])
+@authorized_origin
+@jwt_required()
+def refresh():
+    try:
+        identity = get_jwt_identity()
+    except Exception as e:
+        return jsonify({'message': str(e)}), 422
+    return jsonify({
+        'token': create_access_token(
+            identity=identity, 
+            expires_delta=timedelta(minutes=30)
+        )
+    }), 200
 
 @app.route('/', methods=['GET'])
 @authorized_origin

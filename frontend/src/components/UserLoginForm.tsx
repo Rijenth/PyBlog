@@ -78,7 +78,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
                     
                     this.setState({loggedIn: true});
                     this.props.setIsLoggedIn(true);
-                    this.props.setUserId(res.data.id);
+                    this.props.setUserId(userData.id);
                 }
             })
             .catch(e => {
