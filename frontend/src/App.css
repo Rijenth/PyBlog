@@ -1,131 +1,131 @@
 textarea {
-    resize: none;
-    margin-bottom: 20px;
+  resize: none;
+  margin-bottom: 20px;
 }
 
 .cardsBody {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 auto;
-    width: 80%;
-    height: auto;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  width: 80%;
+  height: auto;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .articleHead {
-    display: flex;
-    margin: 10px;
-    margin-left: 0;
-    margin-top: 0;
-    padding: 10px;
-    width: 100%;
-    height: auto;
-    background-color: white;
-    border-radius: 10px;
+  display: flex;
+  margin: 10px;
+  margin-left: 0;
+  margin-top: 0;
+  padding: 10px;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  border-radius: 10px;
 }
 
 .articleHead h1 {
-    font-size: 2rem;
-    font-weight: 500;
-    color: #000;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #000;
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    border: 5px solid white;
-    margin: 5px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 5px solid white;
+  margin: 5px;
+  width: 100%;
 }
 
 
 .articleBody {    
-    margin: 20px;
-    margin-left: 0;
-    width: 100%;
-    height: auto;
-    padding: 10px;
+  margin: 20px;
+  margin-left: 0;
+  width: 100%;
+  height: auto;
+  padding: 10px;
 }
 
 .articleBody h2 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #000;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #000;
 }
 
 .articleBody p {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #000;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #000;
 }
 
 .addCommentForm {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    margin: 0 auto;
-    margin-top: 30px;
-    max-width: 21em;
-    height: auto;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin: 0 auto;
+  margin-top: 30px;
+  max-width: 21em;
+  height: auto;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .articleComments {
-    display: flex;
-    flex-direction: column;
-    max-width: 50%;
-    margin: 0 auto;
-    margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  margin: 0 auto;
+  margin-top: 30px;
 }
 
 .comments {
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin: 10px;
 }
 
 .commentFormButton {
-    display: flex;
-    justify-content: left;
-    flex-direction: row;
-    margin-top: 10px;
+  display: flex;
+  justify-content: left;
+  flex-direction: row;
+  margin-top: 10px;
 }
 
 @media (max-width: 700px) {
-    .cardsBody {
-        width: 400px;
-    }
+  .cardsBody {
+      width: 400px;
+  }
 
-    .footer1 {
-        width: 20em;
-        height: auto;
-    }
+  .footer1 {
+      width: 20em;
+      height: auto;
+  }
 
-    .footer2 {
-        width: 20em;
-        height: auto;
-    }
+  .footer2 {
+      width: 20em;
+      height: auto;
+  }
 
-    .articleComments {
-        max-width: 300px;
-    }
+  .articleComments {
+      max-width: 300px;
+  }
 }
 
 @media (min-width: 700px) {
-   .footer2 {
-        height: auto;
-    }
+ .footer2 {
+      height: auto;
+  }
 
-    .footer1 {
-        height: auto;
-    }
+  .footer1 {
+      height: auto;
+  }
 }
 
 
