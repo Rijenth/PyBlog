@@ -1,6 +1,7 @@
 textarea {
   resize: none;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .cardsBody {
@@ -69,7 +70,7 @@ textarea {
   align-items: left;
   margin: 0 auto;
   margin-top: 30px;
-  max-width: 21em;
+  max-width: fit-content;
   height: auto;
   border-radius: 10px;
   padding: 10px;
