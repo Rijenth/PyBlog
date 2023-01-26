@@ -25,6 +25,11 @@ class CommentsAction(DatabaseActions):
         value = (model.body, model.author, model.userId, articleId, date.today().strftime("%Y-%m-%d"))
         super()._execute(query, value)
 
+    def update(self, id, model):
+        query = "UPDATE " + self.table + " SET body = %s, author = %s, userId = %s WHERE id = %s"
+        value = (model.body, model.author, model.userId, id)
+        super()._execute(query, value)
+
     def delete(self, id):
         query = "DELETE FROM " + self.table + " WHERE id = %s"
         super()._execute(query, (id,))

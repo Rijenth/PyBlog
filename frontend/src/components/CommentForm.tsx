@@ -27,16 +27,16 @@ const CommentForm = (props:PropsCommentForm) => {
         e.preventDefault(); 
         const body = document.getElementsByName('comment')[0] as HTMLInputElement;
         const username = sessionStorage.getItem('username');
+        const userId = Number(sessionStorage.getItem('id'));
         
         if(body.value.trim().length !== 0) {
             const newComment = {
-                articleId: props.article.id,
                 body: body.value,
-                userId: props.article.userId,
+                userId: userId,
                 author: username
             }
 
-            axios.post(`${props.apiUrl}/articles/${newComment.articleId}/comments`, newComment, {
+            axios.post(`${props.apiUrl}/articles/${props.article.id}/comments`, newComment, {
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                     }
@@ -44,6 +44,9 @@ const CommentForm = (props:PropsCommentForm) => {
             )
             .then(res => {
                 if (res.status === 201) {
+
+                    // Retirer ce windows.reloead et utiliser useState pour mettre à jour la liste des commentaires
+                    
                     window.location.reload();
                 }
             })

@@ -26,6 +26,14 @@ class CommentsController:
         except Exception as e:
             return jsonify({e}), 422
         return jsonify({}), 201
+    
+    def update(articleId, commentId, data):
+        comment = CommentsModel(data)
+        try:
+            CommentsAction().update(commentId, comment)
+        except Exception as e:
+            return jsonify({e}), 422
+        return jsonify({}), 204
 
     def delete(id):
         CommentsAction().delete(id)

@@ -165,14 +165,21 @@ def getSingleComment(articleId, commentId):
 def postComment(id):
     data = request.get_json()
     try:
-        id = int(id)
-        userId = int(data['userId'])
-        articleId = int(data['articleId'])
-        if id <= 0 or userId <= 0 or articleId <= 0:
+        articleId = int(id)
+        if articleId <= 0 or int(data['userId']) <= 0:
             return jsonify({'message': 'Wrong params!'}), 422
     except ValueError:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.post(int(id), data)
+    return CommentsController.post(articleId, data)
+
+@app.route('/api/articles/<int:articleId>/comments/<int:commentId>', methods=['PUT'])
+@authorized_origin
+@jwt_required()
+def updateComment(articleId, commentId):
+    data = request.get_json()
+    if articleId <= 0 or commentId <= 0:
+        return jsonify({'message': 'Wrong params!'}), 422
+    return CommentsController.update(articleId, commentId, data)
 
 @app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['DELETE'])
 @authorized_origin
