@@ -1,5 +1,6 @@
-import React from 'react';
 import axios from 'axios';
+import { MouseEvent, useContext, useEffect, useState } from 'react';
+import AppContext from '../context/AppContext';
 
 interface Comment {
     id: number;
@@ -11,27 +12,28 @@ interface Comment {
 
 interface PropsCommentForm {
     comments: Comment[];
-    apiUrl: string;
     articleId: number;
 }
 
 const ArticleComments = (props:PropsCommentForm) => {
-    const [articleComments, setArticleComments] = React.useState<Comment[]>([]);
-    const [switchButton, setSwitchButton] = React.useState<boolean>(false);
-    const [targetComment, setTargetComment] = React.useState<string|null>(null)
+    const [articleComments, setArticleComments] = useState<Comment[]>([]);
+    const { apiUrl } = useContext(AppContext);
+    const [switchButton, setSwitchButton] = useState<boolean>(false);
+    const [targetComment, setTargetComment] = useState<string|null>(null)
 
-    React.useEffect(() => {
+
+    useEffect(() => {
         setArticleComments(props.comments);
     }, [props.comments]);
 
-    function handleDelete (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleDelete (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const commentId = e.currentTarget.value;
         
         if (window.confirm('Voulez-vous vraiment supprimer ce commentaire ?')) {
             const deleteComment = async () => {
                 try {
-                    await axios.delete(`${props.apiUrl}/articles/${props.articleId}/comments/${commentId}`, {
+                    await axios.delete(`${apiUrl}/articles/${props.articleId}/comments/${commentId}`, {
                         headers: {
                             'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                         }
@@ -45,13 +47,13 @@ const ArticleComments = (props:PropsCommentForm) => {
         }
     }
 
-    function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleUpdate (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         setSwitchButton(true);
         setTargetComment(e.currentTarget.value);
     }
 
-    function handleSend (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleSend (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const body = document.getElementById('newCommentBody') as HTMLInputElement;
         const comment = articleComments.find((comment) => comment.id === Number(targetComment));
@@ -65,7 +67,7 @@ const ArticleComments = (props:PropsCommentForm) => {
                 };
 
                 const updateComment = async () => {
-                    axios.put(`${props.apiUrl}/articles/${props.articleId}/comments/${comment.id}`, newComment, {
+                    axios.put(`${apiUrl}/articles/${props.articleId}/comments/${comment.id}`, newComment, {
                         headers: {
                             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                         }
@@ -90,7 +92,7 @@ const ArticleComments = (props:PropsCommentForm) => {
         } 
     }
     
-    function handleCancellation (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleCancellation (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         setSwitchButton(false);
         setTargetComment(null);

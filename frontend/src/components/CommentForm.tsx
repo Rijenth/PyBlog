@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React from 'react';
 import ArticleContext from '../context/ArticleContext';
-import { useContext } from 'react';
+import { MouseEvent, useContext } from 'react';
+import AppContext from '../context/AppContext';
 
 interface Article {
     id: number;
@@ -13,21 +13,21 @@ interface Article {
 }
 
 interface PropsCommentForm {
-    apiUrl: string;
     isLoggedIn: boolean;
     article: Article;
 }
 
 const CommentForm = (props:PropsCommentForm) => {
     const { updateParent, setUpdateParent } = useContext(ArticleContext);
+    const { apiUrl } = useContext(AppContext)
 
-    function handleCancel (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleCancel (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const comment = document.getElementsByName('comment')[0] as HTMLInputElement;
         comment.value = '';
     }
     
-    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault(); 
         const body = document.getElementsByName('comment')[0] as HTMLInputElement;
         const username = sessionStorage.getItem('username');
@@ -40,7 +40,7 @@ const CommentForm = (props:PropsCommentForm) => {
                 author: username
             }
 
-            axios.post(`${props.apiUrl}/articles/${props.article.id}/comments`, newComment, {
+            axios.post(`${apiUrl}/articles/${props.article.id}/comments`, newComment, {
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                     }

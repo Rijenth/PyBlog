@@ -82,8 +82,8 @@ const GetArticle = (props:PropsGetArticle) => {
                             </div>
                         </div>
                     ))}
-                    <CommentForm apiUrl={apiUrl} isLoggedIn={props.isLoggedIn} article={article[0]} />
-                    <ArticleComments articleId={article[0].id} apiUrl={apiUrl} comments={comments} />
+                    <CommentForm isLoggedIn={props.isLoggedIn} article={article[0]} />
+                    <ArticleComments articleId={article[0].id} comments={comments} />
                 </>
             )}
         </ArticleContext.Provider>
