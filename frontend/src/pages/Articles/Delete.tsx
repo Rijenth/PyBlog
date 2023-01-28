@@ -1,27 +1,28 @@
 import axios from 'axios';
-import React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import DeleteArticleForm from '../../components/DeleteArticleForm'
+import AppContext from '../../context/AppContext';
+import React, { useContext, useEffect, useState } from 'react';
 
 interface Article {
     id: number;
 }
 interface PropsDeleteArticle {
-    apiUrl: string;
     userId: number;
 }
 
 const DeleteArticle = (props:PropsDeleteArticle) => {
     const { id } = useParams();
-    const [canDelete, setCanDelete] = React.useState(false);
-    const [article, setArticle] = React.useState<Article[]>([]);
-    const [isLoading, setIsLoading] = React.useState(true);
+    const { apiUrl } = useContext(AppContext)
+    const [canDelete, setCanDelete] = useState(false);
+    const [article, setArticle] = useState<Article[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
 
-    React.useEffect(() => {
+    useEffect(() => {
         const getArticle = async () => {
             try {
-                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
+                const response = await axios.get(`${apiUrl}/articles/${id}`);
                 if(response.data[0].userId === props.userId || isAdmin) {
                     setArticle(response.data);
                     setCanDelete(true);
@@ -35,7 +36,7 @@ const DeleteArticle = (props:PropsDeleteArticle) => {
             }
         };
         getArticle();
-    }, [isLoading, id, props.apiUrl, props.userId, canDelete]);
+    }, [isLoading, id, apiUrl, props.userId, canDelete]);
     
     if (isLoading) {
         return <div/>;
@@ -44,7 +45,6 @@ const DeleteArticle = (props:PropsDeleteArticle) => {
     return (
         (canDelete === false) ? <Navigate to='/articles' /> : 
         <DeleteArticleForm 
-            apiUrl={props.apiUrl} 
             userId={props.userId} 
             articleId={article[0].id}
         />

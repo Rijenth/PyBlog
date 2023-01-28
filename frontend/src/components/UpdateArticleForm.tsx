@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React from 'react';
+import { useContext, useState, MouseEvent } from 'react';
 import { Navigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 import RedirectButton from './RedirectButton'
 
 interface Article {
@@ -13,15 +14,15 @@ interface Article {
 }
 
 interface propsUpdateArticleForm {
-    apiUrl: string;
     userId: number;
     article: Article
 }
 
 const UpdateArticleForm = (props:propsUpdateArticleForm) => {
-    const [articleUpdated, setArticleUpdated] = React.useState(false);
+    const [articleUpdated, setArticleUpdated] = useState(false);
+    const { apiUrl } = useContext(AppContext);
 
-    function handleUpdate (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleUpdate (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
 
         const title = document.getElementById('title') as HTMLInputElement
@@ -32,7 +33,7 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
             return;
         }
 
-        axios.put(`${props.apiUrl}/articles/${props.article.id}`, {
+        axios.put(`${apiUrl}/articles/${props.article.id}`, {
             title: title.value,
             body: body.value,
             userId: props.userId,

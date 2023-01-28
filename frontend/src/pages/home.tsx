@@ -1,18 +1,17 @@
-import React from 'react';
+import { Component } from 'react';
 import UserLoginForm from '../components/UserLoginForm'
 interface HomeProps {
     setIsLoggedIn: (loggedIn: boolean) => void;
-    apiUrl: string;
     setUserId: (id: number) => void;
 }
-class Home extends React.Component<HomeProps> {    
+class Home extends Component<HomeProps> {    
     render() {
         return (
             <div className="jumbotron text-center">
                 <h2>Bienvenue sur PyBlog</h2>
                 <p>React | Flask</p>
                 <hr />
-                <UserLoginForm apiUrl={this.props.apiUrl} setUserId={this.props.setUserId} setIsLoggedIn={this.props.setIsLoggedIn} /> 
+                <UserLoginForm setUserId={this.props.setUserId} setIsLoggedIn={this.props.setIsLoggedIn} /> 
             </div>
         );
     };

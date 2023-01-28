@@ -1,14 +1,22 @@
-import React from 'react';
+import { ChangeEvent, Component, ContextType, FormEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 import RedirectButton from './RedirectButton';
+import AppContext from '../context/AppContext';
 
 interface UserLoginFormProps {
     setIsLoggedIn: (isLoggedIn: boolean) => void;
-    apiUrl: string;
     setUserId: (id: number) => void;
 }
 
-class UserLoginForm extends React.Component<UserLoginFormProps> {
+interface AppContext {
+    apiUrl: string;
+}
+
+class UserLoginForm extends Component<UserLoginFormProps> {
+    static contextType = AppContext;
+
+    declare context: ContextType<typeof AppContext>
+
     state = {
         error: null,
         hour: null,
@@ -34,13 +42,13 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
         });
     };
 
-    onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.code === 'Space') {
             e.preventDefault();
         }
     };
 
-    handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    handleChange = (event:ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
         this.setState({[name]: value});
         
@@ -52,7 +60,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
         this.props.setIsLoggedIn(false);
     };
 
-    handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {username, password} = this.state;
         
@@ -60,7 +68,7 @@ class UserLoginForm extends React.Component<UserLoginFormProps> {
             return alert('Veuillez remplir tous les champs');
         }
 
-        axios.post(`${this.props.apiUrl}/users/login`, {username, password})
+        axios.post(`${this.context.apiUrl}/users/login`, {username, password})
             .then(res => {
                 if (res.status === 200) {
                     const userData = {

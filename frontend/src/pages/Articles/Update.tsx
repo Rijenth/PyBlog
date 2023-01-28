@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import UpdateArticleForm from '../../components/UpdateArticleForm'
+import AppContext from '../../context/AppContext';
 interface Article {
     id: number;
     title: string;
@@ -12,20 +13,20 @@ interface Article {
 }
 
 interface PropsUpdateArticle {
-    apiUrl: string;
     userId: number;
 }
 
 const UpdateArticle = (props:PropsUpdateArticle) => {
-    const [article, setArticle] = React.useState<Article[]>([]);
-    const [canUpdate, setCanUpdate] = React.useState(false);
+    const [article, setArticle] = useState<Article[]>([]);
+    const { apiUrl } = useContext(AppContext);
+    const [canUpdate, setCanUpdate] = useState(false);
     const { id } = useParams();
-    const [isLoading, setIsLoading] = React.useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const getArticle = async () => {
             try {
-                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
+                const response = await axios.get(`${apiUrl}/articles/${id}`);
                 if(response.data[0].userId === props.userId) {
                     setArticle(response.data);
                     setCanUpdate(true);
@@ -39,7 +40,7 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
             }
         };
         getArticle();
-    }, [isLoading, id, props.apiUrl, props.userId, canUpdate]);
+    }, [isLoading, id, apiUrl, props.userId, canUpdate]);
 
     if (isLoading) {
         return <div/>;
@@ -48,7 +49,6 @@ const UpdateArticle = (props:PropsUpdateArticle) => {
     return (
         (canUpdate === false) ? <Navigate to='/articles' /> : 
         <UpdateArticleForm 
-            apiUrl={props.apiUrl} 
             userId={props.userId} 
             article={article[0]}
         />

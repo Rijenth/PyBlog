@@ -1,20 +1,21 @@
 import axios from 'axios';
-import React from 'react';
+import { useContext, useState, MouseEvent } from 'react';
 import { Navigate } from 'react-router-dom';
+import AppContext from '../context/AppContext';
 import RedirectButton from './RedirectButton'
 
 interface PropsDeleteArticle {
-    apiUrl: string;
     userId: number;
     articleId: number;
 }
 
 const DeleteArticleForm = (props:PropsDeleteArticle) => {
-    const[articleDeleted, setArticleDeleted] = React.useState(false)
+    const[articleDeleted, setArticleDeleted] = useState(false)
+    const { apiUrl } = useContext(AppContext);
 
-    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-        axios.delete(`${props.apiUrl}/articles/${props.articleId}`, {
+        axios.delete(`${apiUrl}/articles/${props.articleId}`, {
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
             }

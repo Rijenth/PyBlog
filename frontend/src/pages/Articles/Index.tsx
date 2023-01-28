@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import AppContext from '../../context/AppContext';
 import RedirectButton from '../../components/RedirectButton';
 interface Article {
     id: number;
@@ -12,19 +13,19 @@ interface Article {
 
 interface PropsIndexArticles {
     isLoggedIn: boolean;
-    apiUrl: string;
 }
 
 const IndexArticles = (props:PropsIndexArticles) => {    
-    const [articles, setArticles] = React.useState<Article[]>([]);
+    const [articles, setArticles] = useState<Article[]>([]);
+    const { apiUrl } = useContext(AppContext);
     const userId = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0;
     const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
 
-    React.useEffect(() => {
-        axios.get(`${props.apiUrl}/articles`)
+    useEffect(() => {
+        axios.get(`${apiUrl}/articles`)
             .then((response) => setArticles(response.data))
             .catch((error) => alert(error));
-    }, [props.apiUrl]);
+    }, [apiUrl]);
     
     return (
         (articles.length === 0) ? ( 

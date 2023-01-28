@@ -1,28 +1,28 @@
 import axios from 'axios';
-import React from 'react';
+import { KeyboardEvent, MouseEvent, useContext, useState } from 'react';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
+import AppContext from '../../context/AppContext';
 
-interface PropsRegister {
-    apiUrl: string;
-}
 
-const Register = (props:PropsRegister) => {
-    const [admin, setAdmin] = React.useState(false);
-    const [success, setSuccess] = React.useState(false);
+const Register = () => {
+    const [admin, setAdmin] = useState(false);
+    const [success, setSuccess] = useState(false);
     const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
+    const { apiUrl } = useContext(AppContext);    
+
 
     const handleChange = () => {
         setAdmin(!admin);
     };
 
-    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.code === 'Space') {
             e.preventDefault();
         }
     };
 
-    function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+    function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const email = document.getElementById('email') as HTMLInputElement;
         const password = document.getElementById('password') as HTMLInputElement;
@@ -42,7 +42,7 @@ const Register = (props:PropsRegister) => {
             return alert('L\'adresse email n\'est pas valide');
         }
 
-        axios.post(`${props.apiUrl}/users/register`, {
+        axios.post(`${apiUrl}/users/register`, {
             email: email.value,
             password: password.value,
             username: username.value,

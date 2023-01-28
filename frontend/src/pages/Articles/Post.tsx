@@ -1,17 +1,15 @@
 import axios from 'axios';
-import React from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
+import AppContext from '../../context/AppContext';
 
-interface PostArticleProps {
-    apiUrl: string;
-}
+const PostArticle = () => {
+    const [articlesCreated, setArticlesCreated] = useState(false)
+    const { apiUrl } = useContext(AppContext)
+    const [userId] = useState(sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : null)
 
-const PostArticle = (props:PostArticleProps) => {
-    const [articlesCreated, setArticlesCreated] = React.useState(false)
-    const [userId] = React.useState(sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : null)
-
-    function handleClick (e: React.MouseEvent<HTMLButtonElement>) {
+    function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const title = document.getElementById('title') as HTMLInputElement
         const body = document.getElementById('body') as HTMLInputElement
@@ -25,7 +23,7 @@ const PostArticle = (props:PostArticleProps) => {
                 author: username
             };
             
-            axios.post(`${props.apiUrl}/articles`, article, {
+            axios.post(`${apiUrl}/articles`, article, {
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                     }

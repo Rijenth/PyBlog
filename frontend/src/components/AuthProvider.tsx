@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
+import AppContext from '../context/AppContext';
 import jwt_decode from 'jwt-decode';
 
 interface tokenData {
@@ -6,13 +7,14 @@ interface tokenData {
 }
 
 interface AuthProviderProps {
-    apiUrl: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
-export const AuthContext = React.createContext({});
+export const AuthContext = createContext({});
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ apiUrl, children }) => {
+const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
+  const { apiUrl } = useContext(AppContext);    
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem('token') ? true : false
   );

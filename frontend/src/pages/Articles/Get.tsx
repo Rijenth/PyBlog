@@ -1,10 +1,11 @@
 import axios from 'axios';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../404';
 import CommentForm from '../../components/CommentForm';
 import ArticleComments from '../../components/ArticleComments';
 import ArticleContext from '../../context/ArticleContext';
+import { useContext, useEffect, useState } from 'react';
+import AppContext from '../../context/AppContext';
 
 interface Article {
     id: number;
@@ -25,21 +26,21 @@ interface Comments {
     date: string;
 }
 interface PropsGetArticle {
-    apiUrl: string;
     isLoggedIn: boolean;
 }
 
 const GetArticle = (props:PropsGetArticle) => {
-    const [isLoading, setIsLoading] = React.useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();    
-    const [article, setArticle] = React.useState<Article[]>([]);
-    const [comments, setComments] = React.useState<Comments[]>([]);
-    const [updateParent, setUpdateParent] = React.useState(false);
+    const [article, setArticle] = useState<Article[]>([]);
+    const [comments, setComments] = useState<Comments[]>([]);
+    const [updateParent, setUpdateParent] = useState(false);
+    const { apiUrl } = useContext(AppContext);    
     
-    React.useEffect(() => {
+    useEffect(() => {
         const getArticle = async () => {
             try {
-                const response = await axios.get(`${props.apiUrl}/articles/${id}`);
+                const response = await axios.get(`${apiUrl}/articles/${id}`);
                 if (response.status === 200) {
                     setArticle(response.data);
                     setComments(response.data[0].relationships.Comments);
@@ -55,7 +56,7 @@ const GetArticle = (props:PropsGetArticle) => {
             }
         };
         getArticle();
-    }, [isLoading, id, props.apiUrl, updateParent]);
+    }, [isLoading, id, apiUrl, updateParent]);
 
     if (isLoading) {
         return <div/>;
@@ -81,8 +82,8 @@ const GetArticle = (props:PropsGetArticle) => {
                             </div>
                         </div>
                     ))}
-                    <CommentForm apiUrl={props.apiUrl} isLoggedIn={props.isLoggedIn} article={article[0]} />
-                    <ArticleComments articleId={article[0].id} apiUrl={props.apiUrl} comments={comments} />
+                    <CommentForm apiUrl={apiUrl} isLoggedIn={props.isLoggedIn} article={article[0]} />
+                    <ArticleComments articleId={article[0].id} apiUrl={apiUrl} comments={comments} />
                 </>
             )}
         </ArticleContext.Provider>
