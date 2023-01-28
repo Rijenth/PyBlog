@@ -16,13 +16,13 @@ interface PropsCommentForm {
 }
 
 const ArticleComments = (props:PropsCommentForm) => {
-    const [articleComments, setArticleComments] = React.useState<Comment[]>(props.comments);
+    const [articleComments, setArticleComments] = React.useState<Comment[]>([]);
     const [switchButton, setSwitchButton] = React.useState<boolean>(false);
     const [targetComment, setTargetComment] = React.useState<string|null>(null)
 
     React.useEffect(() => {
-        setArticleComments(articleComments);
-    }, [articleComments]);
+        setArticleComments(props.comments);
+    }, [props.comments]);
 
     function handleDelete (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();

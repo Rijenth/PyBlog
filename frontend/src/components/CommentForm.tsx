@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React from 'react';
+import AppContext from './AppContext';
+import { useContext } from 'react';
 
 interface Article {
     id: number;
@@ -17,6 +19,8 @@ interface PropsCommentForm {
 }
 
 const CommentForm = (props:PropsCommentForm) => {
+    const { updateParent, setUpdateParent } = useContext(AppContext);
+
     function handleCancel (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         const comment = document.getElementsByName('comment')[0] as HTMLInputElement;
@@ -44,10 +48,7 @@ const CommentForm = (props:PropsCommentForm) => {
             )
             .then(res => {
                 if (res.status === 201) {
-
-                    // Retirer ce windows.reloead et utiliser useState pour mettre à jour la liste des commentaires
-                    
-                    window.location.reload();
+                    setUpdateParent(!updateParent); 
                 }
             })
             .catch(err => {
