@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import AppContext from './AppContext';
+import ArticleContext from '../context/ArticleContext';
 import { useContext } from 'react';
 
 interface Article {
@@ -19,7 +19,7 @@ interface PropsCommentForm {
 }
 
 const CommentForm = (props:PropsCommentForm) => {
-    const { updateParent, setUpdateParent } = useContext(AppContext);
+    const { updateParent, setUpdateParent } = useContext(ArticleContext);
 
     function handleCancel (e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();

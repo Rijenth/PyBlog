@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import NotFound from '../404';
 import CommentForm from '../../components/CommentForm';
 import ArticleComments from '../../components/ArticleComments';
-import AppContext from '../../components/AppContext';
+import ArticleContext from '../../context/ArticleContext';
 
 interface Article {
     id: number;
@@ -62,7 +62,7 @@ const GetArticle = (props:PropsGetArticle) => {
     }
     
     return (
-        <AppContext.Provider value={{updateParent, setUpdateParent}}>
+        <ArticleContext.Provider value={{updateParent, setUpdateParent}}>
             {(article.length === 0) ? <NotFound /> : (
                 <>
                     {article && article.map((article) => (
@@ -85,7 +85,7 @@ const GetArticle = (props:PropsGetArticle) => {
                     <ArticleComments articleId={article[0].id} apiUrl={props.apiUrl} comments={comments} />
                 </>
             )}
-        </AppContext.Provider>
+        </ArticleContext.Provider>
     );
 };
 

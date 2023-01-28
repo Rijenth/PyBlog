@@ -5,9 +5,9 @@ interface ContextProps {
   setUpdateParent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AppContext = React.createContext<ContextProps>({
+const ArticleContext = React.createContext<ContextProps>({
   updateParent: false,
   setUpdateParent: () => {},
 });
 
-export default AppContext;
+export default ArticleContext;
