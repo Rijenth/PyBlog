@@ -1,6 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
 import AppContext from '../context/AppContext';
 import jwt_decode from 'jwt-decode';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setLoginState } from '../store/userAuthReducer';
 
 interface tokenData {
     exp: number;
@@ -15,9 +18,8 @@ export const AuthContext = createContext({});
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const { apiUrl } = useContext(AppContext);    
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    sessionStorage.getItem('token') ? true : false
-  );
+  const loginState = useSelector((state: any) => state.userAuth.loginState);
+  const dispatch = useDispatch();
 
   const refreshAccessToken = async (token: string) => {
     try {
@@ -33,11 +35,11 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         sessionStorage.setItem('token', data.token);
       } else {
         sessionStorage.clear();
-        setIsLoggedIn(false);
+        dispatch(setLoginState(false));
         alert('Your session has expired. Please log in again.');
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -61,7 +63,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, refreshAccessToken }}
+      value={{ loginState, refreshAccessToken }}
     >
         {children}
     </AuthContext.Provider>

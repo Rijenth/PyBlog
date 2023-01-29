@@ -1,18 +1,16 @@
 import axios from 'axios';
 import { KeyboardEvent, MouseEvent, useContext, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
 
-interface RegisterProps {
-    isLoggedIn: boolean;
-}
-
-const Register = (props: RegisterProps) => {
+const RegisterUser = () => {
     const [admin, setAdmin] = useState(false);
     const [success, setSuccess] = useState(false);
     const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
     const { apiUrl } = useContext(AppContext);
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
 
 
     const handleChange = () => {
@@ -64,7 +62,7 @@ const Register = (props: RegisterProps) => {
     };
     
     return (
-        (success || props.isLoggedIn) ? <Navigate to='/' /> :
+        (success || loginState) ? <Navigate to='/' /> :
         <div className="jumbotron text-left">
             <h2>Formulaire d'inscription</h2>
             <hr />
@@ -107,4 +105,4 @@ const Register = (props: RegisterProps) => {
     );
 };
 
-export default Register;
+export default RegisterUser;

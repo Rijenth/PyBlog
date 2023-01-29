@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { MouseEvent, useContext, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
@@ -7,7 +8,7 @@ import AppContext from '../../context/AppContext';
 const PostArticle = () => {
     const [articlesCreated, setArticlesCreated] = useState(false)
     const { apiUrl } = useContext(AppContext)
-    const [userId] = useState(sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : null)
+    const userId = useSelector((state: any) => state.userAuth.userId);
 
     function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();

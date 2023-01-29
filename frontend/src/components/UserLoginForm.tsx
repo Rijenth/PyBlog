@@ -2,15 +2,24 @@ import { ChangeEvent, FC, FormEvent, KeyboardEvent, useContext, useEffect, useSt
 import axios from 'axios';
 import RedirectButton from './RedirectButton';
 import AppContext from '../context/AppContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginState, setUserId } from '../store/userAuthReducer';
 
-interface UserLoginFormProps {
-    setIsLoggedIn: (isLoggedIn: boolean) => void;
-    setUserId: (id: number) => void;
-}
+/* 
+Il semble y avoir plusieurs problèmes potentiels dans ce code. Tout d'abord, 
+il utilise des éléments de DOM pour récupérer les valeurs des champs de formulaire, 
+ce qui n'est pas une bonne pratique en termes de maintenabilité et de performances. 
+Il utilise également des alertes pour afficher les erreurs, qui devraient plutôt être 
+affichées de manière plus gracieuse à l'utilisateur. 
+Enfin, il semble y avoir des problèmes de gestion d'erreurs dans la gestion de la réponse de l'API 
+qui devraient être améliorés.
+*/
 
-const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
+const UserLoginForm: FC = () => {
     const {apiUrl} = useContext(AppContext);
-    const [success, setSuccess] = useState(false);
+    const dispatch = useDispatch();
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
+    const userId = useSelector((state: any) => state.userAuth.userId);
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState<string>('');
     const [welcomeMessage, setWelcomeMessage] = useState('');
@@ -19,7 +28,6 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
         const hour = new Date().getHours();
         const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
         const username = sessionStorage.getItem('username') ? sessionStorage.getItem('username') : '';
-        setSuccess(sessionStorage.getItem('token') ? true : false)
         setUsername(username ? username : '');
         setWelcomeMessage(welcomeMessage); 
     }, []);
@@ -31,6 +39,10 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
     };
 
     const handleChange = (event:ChangeEvent<HTMLInputElement>) => {
+        /*
+        Cette fonction devrait être retiré car elle inonde la console,
+        récuperer les valeurs des inputs avec un const[formData, setFormData] = useState({username: '', password: ''})
+        */
         const {name, value} = event.target;
         if (name === 'username') {
             setUsername(value);
@@ -42,8 +54,8 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
 
     const handleLogout = () => {
         sessionStorage.clear();
-        setSuccess(false);
-        setIsLoggedIn(false);
+        dispatch(setLoginState(false));
+        dispatch(setUserId(0));
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -58,7 +70,7 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
             if (res.status === 200) {
                 const userData = {
                     id: res.data.user.id,
-                    username: username,
+                    username: res.data.user.username,
                     token: res.data.token,
                     firstName: res.data.user.firstName,
                     lastName: res.data.user.lastName,
@@ -69,9 +81,8 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
                     sessionStorage.setItem(key, value);
                 });
 
-                setUserId(userData.id);
-                setIsLoggedIn(true);
-                setSuccess(true);
+                dispatch(setLoginState(true));
+                dispatch(setUserId(userData.id));
             }
         } catch(e) {
             return alert(e);
@@ -79,7 +90,7 @@ const UserLoginForm: FC<UserLoginFormProps> = ({setIsLoggedIn, setUserId}) => {
     };
 
     return (
-        success ? 
+        loginState ? 
         <div className="text-left">
             <h3>{welcomeMessage} {username} !</h3>
             <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import ArticleContext from '../context/ArticleContext';
 import { MouseEvent, useContext } from 'react';
 import AppContext from '../context/AppContext';
+import { useSelector } from 'react-redux';
 
 interface Article {
     id: number;
@@ -13,13 +14,15 @@ interface Article {
 }
 
 interface PropsCommentForm {
-    isLoggedIn: boolean;
     article: Article;
 }
 
 const CommentForm = (props:PropsCommentForm) => {
     const { updateParent, setUpdateParent } = useContext(ArticleContext);
     const { apiUrl } = useContext(AppContext)
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
+    const userId = useSelector((state: any) => state.userAuth.userId);
+
 
     function handleCancel (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -31,7 +34,6 @@ const CommentForm = (props:PropsCommentForm) => {
         e.preventDefault(); 
         const body = document.getElementsByName('comment')[0] as HTMLInputElement;
         const username = sessionStorage.getItem('username');
-        const userId = Number(sessionStorage.getItem('id'));
         
         if(body.value.trim().length !== 0) {
             const newComment = {
@@ -60,7 +62,7 @@ const CommentForm = (props:PropsCommentForm) => {
     }
 
     return (
-        (!props.isLoggedIn) ? 
+        (!loginState) ? 
             <></> : 
             <div className='addCommentForm'>
                 <div className="CommentFormHeader">

@@ -25,17 +25,14 @@ interface Comments {
     author: string;
     date: string;
 }
-interface PropsGetArticle {
-    isLoggedIn: boolean;
-}
 
-const GetArticle = (props:PropsGetArticle) => {
+const GetArticle = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();    
     const [article, setArticle] = useState<Article[]>([]);
     const [comments, setComments] = useState<Comments[]>([]);
     const [updateParent, setUpdateParent] = useState(false);
-    const { apiUrl } = useContext(AppContext);    
+    const { apiUrl } = useContext(AppContext);   
     
     useEffect(() => {
         const getArticle = async () => {
@@ -82,7 +79,7 @@ const GetArticle = (props:PropsGetArticle) => {
                             </div>
                         </div>
                     ))}
-                    <CommentForm isLoggedIn={props.isLoggedIn} article={article[0]} />
+                    <CommentForm article={article[0]} />
                     <ArticleComments articleId={article[0].id} comments={comments} />
                 </>
             )}

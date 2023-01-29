@@ -1,9 +1,10 @@
-import React from 'react';
-interface NavbarProps {
-    isLoggedIn: boolean;
-}
+import { useSelector } from 'react-redux';
 
-const Navbar = (props:NavbarProps) => {
+const Navbar = () => {
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
+
+    console.log('logged in : ' + loginState)
+
     return (
         <nav className="navbar navbar-default">
             <div className="container">
@@ -21,7 +22,7 @@ const Navbar = (props:NavbarProps) => {
                         <li><a href="/">Accueil</a></li>
                         <li><a href="/articles">Articles</a></li>
 
-                        {props.isLoggedIn && <li><a href="/articles/create">Créer un article</a></li>}
+                        {loginState && <li><a href="/articles/create">Créer un article</a></li>}
 
                         <li><a href="/about">À propos</a></li>
                     </ul>

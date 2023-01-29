@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import AppContext from '../context/AppContext';
 
 interface Comment {
@@ -20,7 +21,7 @@ const ArticleComments = (props:PropsCommentForm) => {
     const { apiUrl } = useContext(AppContext);
     const [switchButton, setSwitchButton] = useState<boolean>(false);
     const [targetComment, setTargetComment] = useState<string|null>(null)
-
+    const userId = useSelector((state: any) => state.userAuth.userId);
 
     useEffect(() => {
         setArticleComments(props.comments);
@@ -62,7 +63,7 @@ const ArticleComments = (props:PropsCommentForm) => {
             if (body.value !== comment.body) {
                 const newComment = {
                     body: body.value,
-                    userId: Number(sessionStorage.getItem('id')),
+                    userId: userId,
                     author: sessionStorage.getItem('username')
                 };
 
@@ -105,13 +106,13 @@ const ArticleComments = (props:PropsCommentForm) => {
                 <div key={comment.id} className="comments">
                     <p>{comment.author} - {comment.date}</p>
                     {
-                        (targetComment === comment.id.toString()) && (comment.userId === Number(sessionStorage.getItem('id'))) && (switchButton === true)
+                        (targetComment === comment.id.toString()) && (comment.userId === userId) && (switchButton === true)
                         ? <textarea id='newCommentBody' defaultValue={comment.body} cols={30} rows={2}></textarea>
                         : <span>{comment.body}</span>
                     }
                     <div className='commentFormButton'>
                         {
-                            comment.userId === Number(sessionStorage.getItem('id')) 
+                            comment.userId === userId
                             ?  
                             <>
                                 {

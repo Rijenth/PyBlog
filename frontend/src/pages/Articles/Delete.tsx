@@ -2,28 +2,27 @@ import axios from 'axios';
 import { Navigate, useParams } from 'react-router-dom';
 import DeleteArticleForm from '../../components/DeleteArticleForm'
 import AppContext from '../../context/AppContext';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 interface Article {
     id: number;
 }
-interface PropsDeleteArticle {
-    userId: number;
-}
 
-const DeleteArticle = (props:PropsDeleteArticle) => {
+const DeleteArticle = () => {
     const { id } = useParams();
     const { apiUrl } = useContext(AppContext)
     const [canDelete, setCanDelete] = useState(false);
     const [article, setArticle] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
+    const userId = useSelector((state: any) => state.userAuth.userId);
 
     useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${apiUrl}/articles/${id}`);
-                if(response.data[0].userId === props.userId || isAdmin) {
+                if(response.data[0].userId === userId || isAdmin) {
                     setArticle(response.data);
                     setCanDelete(true);
                 } else {
@@ -36,7 +35,7 @@ const DeleteArticle = (props:PropsDeleteArticle) => {
             }
         };
         getArticle();
-    }, [isLoading, id, apiUrl, props.userId, canDelete]);
+    }, [isLoading, id, apiUrl, userId, canDelete]);
     
     if (isLoading) {
         return <div/>;
@@ -45,7 +44,7 @@ const DeleteArticle = (props:PropsDeleteArticle) => {
     return (
         (canDelete === false) ? <Navigate to='/articles' /> : 
         <DeleteArticleForm 
-            userId={props.userId} 
+            userId={userId} 
             articleId={article[0].id}
         />
     );

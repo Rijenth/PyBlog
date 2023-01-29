@@ -1,13 +1,15 @@
-import React from 'react';
+import { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedProps {
-    isLoggedIn: boolean;
     children: React.ReactElement;
 }
 
-const Protected = ({ isLoggedIn, children }: ProtectedProps): React.ReactElement => {
-    if (!isLoggedIn || sessionStorage.getItem('token') === null) {
+const Protected = ({ children }: ProtectedProps): ReactElement => {
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
+
+    if (!loginState || sessionStorage.getItem('token') === null) {
         return <Navigate to='/' replace />;
     }
 

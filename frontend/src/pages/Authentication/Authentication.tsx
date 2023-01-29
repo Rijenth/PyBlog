@@ -1,5 +1,5 @@
-import Register from './Register';
+import RegisterUser from './RegisterUser';
 
 export {
-    Register
+    RegisterUser
 }

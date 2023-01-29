@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import AppContext from '../../context/AppContext';
 import RedirectButton from '../../components/RedirectButton';
+import { useSelector } from 'react-redux';
 interface Article {
     id: number;
     title: string;
@@ -11,15 +12,14 @@ interface Article {
     author: string;
 }
 
-interface PropsIndexArticles {
-    isLoggedIn: boolean;
-}
-
-const IndexArticles = (props:PropsIndexArticles) => {    
+const IndexArticles = () => {    
     const [articles, setArticles] = useState<Article[]>([]);
     const { apiUrl } = useContext(AppContext);
-    const userId = sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0;
+    const userId = useSelector((state: any) => state.userAuth.userId);
     const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
+
+    console.log(loginState)
 
     useEffect(() => {
         axios.get(`${apiUrl}/articles`)
@@ -39,7 +39,7 @@ const IndexArticles = (props:PropsIndexArticles) => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            {props.isLoggedIn && (userId===article.userId || isAdmin) ? 
+                            {loginState && (userId===article.userId || isAdmin) ? 
                                 <>
                                     <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
                                     <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
