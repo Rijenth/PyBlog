@@ -1,44 +1,47 @@
-import About from './pages/about';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {IndexArticles, GetArticle, PostArticle, UpdateArticle, DeleteArticle} from './pages/Articles/Article';
+import About from './pages/about';
 import Home from './pages/home';
+import NotFound from './pages/404';
 import AuthProvider from './components/AuthProvider';
 import Navbar from './components/navbar';
 import Protected from './components/Protected';
-import NotFound from './pages/404';
-import { useState } from 'react';
-import Register from './pages/Authentication/Register';
+import { Provider } from 'react-redux';
+import RegisterUser from './pages/Authentication/RegisterUser';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from '../src/store/store';
 import './App.css';
 
-function App() {
-  const [isLoggedIn, setisLoggedIn] = useState(sessionStorage.getItem('token') ? true : false);
-  const [userId, setUserId] = useState(sessionStorage.getItem('id') ? Number(sessionStorage.getItem('id')) : 0);
-  
+function App() {  
   return (
-      <div className='container'>
-        <Navbar isLoggedIn={isLoggedIn} />
-        <AuthProvider>
-          <BrowserRouter>
-            <Routes>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <div className='container'>
+          <Navbar />
+          <AuthProvider>
+            <BrowserRouter>
+              <Routes>
 
-              <Route index path='/' element={<Home setUserId={setUserId} setIsLoggedIn={setisLoggedIn} />} />
-              <Route path='/register' element={<Register isLoggedIn={isLoggedIn} />} />
+                <Route index path='/' element={<Home />} />
+                <Route path='/register' element={<RegisterUser />} />
 
-              <Route path='/articles'>
-                <Route index element={<IndexArticles isLoggedIn={isLoggedIn} />} />
-                <Route path=':id' element={<GetArticle isLoggedIn={isLoggedIn} />} />
-                <Route path='create' element={<Protected isLoggedIn={isLoggedIn}><PostArticle /></Protected>}/>
-                <Route path='edit/:id' element={<Protected isLoggedIn={isLoggedIn}><UpdateArticle userId={userId} /></Protected>} />
-                <Route path='delete/:id' element={<Protected isLoggedIn={isLoggedIn}><DeleteArticle userId={userId} /></Protected>} />
-              </Route>
+                <Route path='/articles'>
+                  <Route index element={<IndexArticles />} />
+                  <Route path=':id' element={<GetArticle />} />
+                  <Route path='create' element={<Protected><PostArticle /></Protected>}/>
+                  <Route path='edit/:id' element={<Protected><UpdateArticle /></Protected>} />
+                  <Route path='delete/:id' element={<Protected><DeleteArticle /></Protected>} />
+                </Route>
 
-              <Route path='/about' element={<About />} />
-              <Route path='*' element={<NotFound />} />
-              
-            </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </div>
+                <Route path='/about' element={<About />} />
+                <Route path='*' element={<NotFound />} />
+                
+              </Routes>
+            </BrowserRouter>
+          </AuthProvider>
+        </div>
+      </PersistGate>
+    </Provider>
   );
 }
 
