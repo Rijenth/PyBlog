@@ -22,7 +22,7 @@ function App() {
             <Routes>
 
               <Route index path='/' element={<Home setUserId={setUserId} setIsLoggedIn={setisLoggedIn} />} />
-              <Route path='/register' element={<Register />} />
+              <Route path='/register' element={<Register isLoggedIn={isLoggedIn} />} />
 
               <Route path='/articles'>
                 <Route index element={<IndexArticles isLoggedIn={isLoggedIn} />} />

@@ -4,12 +4,15 @@ import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
 
+interface RegisterProps {
+    isLoggedIn: boolean;
+}
 
-const Register = () => {
+const Register = (props: RegisterProps) => {
     const [admin, setAdmin] = useState(false);
     const [success, setSuccess] = useState(false);
     const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
-    const { apiUrl } = useContext(AppContext);    
+    const { apiUrl } = useContext(AppContext);
 
 
     const handleChange = () => {
@@ -61,7 +64,7 @@ const Register = () => {
     };
     
     return (
-        (success) ? <Navigate to='/' /> :
+        (success || props.isLoggedIn) ? <Navigate to='/' /> :
         <div className="jumbotron text-left">
             <h2>Formulaire d'inscription</h2>
             <hr />
