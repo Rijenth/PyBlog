@@ -51,6 +51,7 @@ const CommentForm = (props:PropsCommentForm) => {
             .then(res => {
                 if (res.status === 201) {
                     setUpdateParent(!updateParent); 
+                    handleCancel(e);
                 }
             })
             .catch(err => {
