@@ -22,6 +22,7 @@ const ArticleComments = (props:PropsCommentForm) => {
     const [switchButton, setSwitchButton] = useState<boolean>(false);
     const [targetComment, setTargetComment] = useState<string|null>(null)
     const userId = useSelector((state: any) => state.userAuth.userId);
+    const loginState = useSelector((state: any) => state.userAuth.loginState);
 
     useEffect(() => {
         setArticleComments(props.comments);
@@ -112,7 +113,7 @@ const ArticleComments = (props:PropsCommentForm) => {
                     }
                     <div className='commentFormButton'>
                         {
-                            comment.userId === userId
+                            comment.userId === userId && loginState
                             ?  
                             <>
                                 {
