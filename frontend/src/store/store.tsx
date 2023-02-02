@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import userAuth from './userAuthReducer';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
 
 const persistConfig = {
     key: 'root',

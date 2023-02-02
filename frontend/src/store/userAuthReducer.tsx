@@ -3,11 +3,13 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 interface UserState {
     loginState: boolean;
     userId: number;
+    admin: boolean;
 }
 
 const initialState: UserState = {
     loginState: false,
-    userId: 0
+    userId: 0,
+    admin: false
 }
 
 const userAuth = createSlice({
@@ -19,8 +21,11 @@ const userAuth = createSlice({
         },
         setUserId: (state, action: PayloadAction<number>) => {
             state.userId = action.payload
+        },
+        setAdmin: (state, action: PayloadAction<boolean>) => {
+            state.admin = action.payload
         }
     }
 })
-export const {setLoginState, setUserId} = userAuth.actions
+export const {setLoginState, setUserId, setAdmin} = userAuth.actions
 export default userAuth
