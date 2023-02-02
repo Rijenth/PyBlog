@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useContext, useState, MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
+import handleLogout from '../functions/handleLogout';
 import RedirectButton from './RedirectButton'
 
 interface Article {
@@ -21,6 +23,7 @@ interface propsUpdateArticleForm {
 const UpdateArticleForm = (props:propsUpdateArticleForm) => {
     const [articleUpdated, setArticleUpdated] = useState(false);
     const { apiUrl } = useContext(AppContext);
+    const dispatch = useDispatch();
 
     function handleUpdate (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -52,7 +55,12 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
                 }
             })
             .catch(error => {
-                alert(error);
+                if (error.response.status === 401) {
+                    handleLogout(dispatch);
+                    alert('Your session has expired. Please log in again.')
+                } else {
+                    alert('An error occured. Please contact the support.')
+                }
             }
         );      
     }

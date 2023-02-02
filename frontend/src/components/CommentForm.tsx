@@ -3,6 +3,8 @@ import ArticleContext from '../context/ArticleContext';
 import { MouseEvent, useContext } from 'react';
 import AppContext from '../context/AppContext';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import handleLogout from '../functions/handleLogout';
 
 interface Article {
     id: number;
@@ -22,7 +24,7 @@ const CommentForm = (props:PropsCommentForm) => {
     const { apiUrl } = useContext(AppContext)
     const loginState = useSelector((state: any) => state.userAuth.loginState);
     const userId = useSelector((state: any) => state.userAuth.userId);
-
+    const dispatch = useDispatch();
 
     function handleCancel (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -55,7 +57,12 @@ const CommentForm = (props:PropsCommentForm) => {
                 }
             })
             .catch(err => {
-                alert(err);
+                if (err.response.status === 401) {
+                    handleLogout(dispatch);
+                    alert('Your session has expired. Please log in again.');
+                } else {
+                    alert('An error occured. Please contact the support.');
+                }
             })
         } else {
             alert('Veuillez entrer un commentaire');

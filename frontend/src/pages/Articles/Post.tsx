@@ -1,14 +1,17 @@
 import axios from 'axios';
-import { MouseEvent, useContext, useState } from 'react';
+import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
+import handleLogout from '../../functions/handleLogout';
 
 const PostArticle = () => {
     const [articlesCreated, setArticlesCreated] = useState(false)
     const { apiUrl } = useContext(AppContext)
     const userId = useSelector((state: any) => state.userAuth.userId);
+    const dispatch = useDispatch();
 
     function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -36,7 +39,12 @@ const PostArticle = () => {
                 }
             })
             .catch(error => {
-                alert(error)
+                if (error.response.status === 401) {
+                    handleLogout(dispatch);
+                    alert('Your session has expired. Please log in again.');
+                } else {
+                    alert('An error occured. Please contact the support.')
+                }
             });
         } else {
             return alert('Tout les champs doivent être complétés');

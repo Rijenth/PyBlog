@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useContext, useState, MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import AppContext from '../context/AppContext';
+import handleLogout from '../functions/handleLogout';
 import RedirectButton from './RedirectButton'
 
 interface PropsDeleteArticle {
@@ -12,6 +14,7 @@ interface PropsDeleteArticle {
 const DeleteArticleForm = (props:PropsDeleteArticle) => {
     const[articleDeleted, setArticleDeleted] = useState(false)
     const { apiUrl } = useContext(AppContext);
+    const dispatch = useDispatch();
 
     function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -26,7 +29,12 @@ const DeleteArticleForm = (props:PropsDeleteArticle) => {
             }
         })
         .catch(error => {
-            alert(error)
+            if (error.response.status === 401) {
+                handleLogout(dispatch);
+                alert('Your session has expired. Please log in again.')
+            } else {
+                alert('An error occured. Please contact the support.')
+            }
         });
     }
 

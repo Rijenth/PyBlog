@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import AppContext from '../context/AppContext';
+import handleLogout from '../functions/handleLogout';
 
 interface Comment {
     id: number;
@@ -23,6 +25,7 @@ const ArticleComments = (props:PropsCommentForm) => {
     const [targetComment, setTargetComment] = useState<string|null>(null)
     const userId = useSelector((state: any) => state.userAuth.userId);
     const loginState = useSelector((state: any) => state.userAuth.loginState);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setArticleComments(props.comments);
@@ -41,8 +44,13 @@ const ArticleComments = (props:PropsCommentForm) => {
                         }
                     });
                     setArticleComments(articleComments.filter((comment) => comment.id !== Number(commentId)));
-                } catch (err) {
-                    console.log(err);
+                } catch (err: any) {
+                    if (err.response.status === 401) {
+                        handleLogout(dispatch);
+                        alert('Your session has expired. Please log in again.')
+                    } else {
+                        alert('An error occured. Please contact the support.')
+                    }
                 }
             };
             deleteComment();
@@ -86,7 +94,12 @@ const ArticleComments = (props:PropsCommentForm) => {
                         }
                     })
                     .catch(err => {
-                        alert(err);
+                        if (err.response.status === 401) {
+                            handleLogout(dispatch);
+                            alert('Your session has expired. Please log in again.')
+                        } else {
+                            alert('An error occured. Please contact the support.')
+                        }
                     })
                 };
                 updateComment();
