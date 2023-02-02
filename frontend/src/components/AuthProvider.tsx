@@ -3,7 +3,9 @@ import AppContext from '../context/AppContext';
 import jwt_decode from 'jwt-decode';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setLoginState } from '../store/userAuthReducer';
+import { setLoginState, setUserId } from '../store/userAuthReducer';
+import { Navigate } from 'react-router';
+import handleLogout from '../functions/handleLogout';
 
 interface tokenData {
     exp: number;
@@ -17,26 +19,37 @@ export const AuthContext = createContext({});
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const { apiUrl } = useContext(AppContext);    
-
   const loginState = useSelector((state: any) => state.userAuth.loginState);
   const dispatch = useDispatch();
 
-  const refreshAccessToken = async (token: string) => {
+  const logout = () => {
+    handleLogout(dispatch);
+    alert('Your session has expired. Please log in again.');
+  };
+
+  const refreshAccessToken = async () => {
+    const refreshToken = sessionStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+      logout();
+    }
+
     try {
       const response = await fetch(`${apiUrl}/token/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${refreshToken}`
         },
       });
+
       const data = await response.json();
+
       if (response.ok) {
+        console.log("token refreshed");
         sessionStorage.setItem('token', data.token);
       } else {
-        sessionStorage.clear();
-        dispatch(setLoginState(false));
-        alert('Your session has expired. Please log in again.');
+        logout();
       }
     } catch (error) {
       console.log(error);
@@ -44,27 +57,28 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-      const checkTokenExpiration = async () => {
+    const checkTokenExpiration = async () => {
+      console.log("round in checkTokenExpiration");
+
       const token = sessionStorage.getItem('token');
+
       if (token) {
         const decodedToken = jwt_decode<tokenData>(token);
         const expirationDate = new Date(decodedToken.exp * 1000);
         const timeLeft = expirationDate.getTime() - new Date().getTime();
-        if (timeLeft < 600000) {
-          await refreshAccessToken(token);
+
+        if (timeLeft < 5000) {
+          await refreshAccessToken();
         }
       }
     };
-    checkTokenExpiration();
-    const intervalId = setInterval(checkTokenExpiration, 300000);
-    return () => clearInterval(intervalId);
-// eslint-disable-next-line
+    if (loginState) {
+      checkTokenExpiration();
+    }
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ loginState, refreshAccessToken }}
-    >
+    <AuthContext.Provider value={{}} >
         {children}
     </AuthContext.Provider>
     );
