@@ -4,6 +4,7 @@ import RedirectButton from './RedirectButton';
 import AppContext from '../context/AppContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoginState, setUserId } from '../store/userAuthReducer';
+import handleLogout from '../functions/handleLogout';
 
 /* 
 Il semble y avoir plusieurs problèmes potentiels dans ce code. Tout d'abord, 
@@ -52,11 +53,10 @@ const UserLoginForm: FC = () => {
         }
     };
 
-    const handleLogout = () => {
-        sessionStorage.clear();
-        dispatch(setLoginState(false));
-        dispatch(setUserId(0));
-    };
+    function logout(e: any) {
+        e.preventDefault();
+        handleLogout(dispatch);
+    }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -71,17 +71,26 @@ const UserLoginForm: FC = () => {
                 const userData = {
                     id: res.data.user.id,
                     username: res.data.user.username,
-                    token: res.data.token,
                     firstName: res.data.user.firstName,
                     lastName: res.data.user.lastName,
                     admin: res.data.user.admin
+                }
+
+                const jwt = {
+                    token: res.data.token,
+                    refreshToken: res.data.refreshToken
                 }
                 
                 Object.entries(userData).forEach(([key, value]) => {
                     sessionStorage.setItem(key, value);
                 });
 
+                Object.entries(jwt).forEach(([key, value]) => {
+                    sessionStorage.setItem(key, value);
+                });
+
                 dispatch(setLoginState(true));
+
                 dispatch(setUserId(userData.id));
             }
         } catch(e) {
@@ -90,11 +99,11 @@ const UserLoginForm: FC = () => {
     };
 
     return (
-        loginState ? 
+        (loginState) ? 
         <div className="text-left">
             <h3>{welcomeMessage} {username} !</h3>
             <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
-            <button onClick={handleLogout} className="btn btn-primary">Deconnexion</button>
+            <button onClick={logout} className="btn btn-primary">Deconnexion</button>
         </div>  
         :
         <div className='text-left'>
