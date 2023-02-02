@@ -6,8 +6,6 @@ const Navbar = () => {
     const loginState = useSelector((state: any) => state.userAuth.loginState);
     const dispatch = useDispatch();
 
-    console.log('logged in : ' + loginState)
-
     function logout(e: any) {
         e.preventDefault();
         handleLogout(dispatch);

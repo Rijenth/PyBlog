@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
-// Refresh jwt token using route ${apiUrl}/token/refresh
 
 const refreshToken = async (token: string) => {
     const [success, setSuccess] = useState(false);

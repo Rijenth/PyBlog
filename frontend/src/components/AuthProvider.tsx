@@ -44,7 +44,6 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("token refreshed");
         sessionStorage.setItem('token', data.token);
       } else {
         logout();
@@ -56,8 +55,6 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const checkTokenExpiration = async () => {
-      console.log("round in checkTokenExpiration");
-
       const token = sessionStorage.getItem('token');
 
       if (token) {
