@@ -19,8 +19,6 @@ const IndexArticles = () => {
     const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
     const loginState = useSelector((state: any) => state.userAuth.loginState);
 
-    console.log(loginState)
-
     useEffect(() => {
         axios.get(`${apiUrl}/articles`)
             .then((response) => setArticles(response.data))
