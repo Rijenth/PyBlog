@@ -17,12 +17,14 @@ interface Article {
 
 interface propsUpdateArticleForm {
     userId: number;
-    article: Article
+    article: Article;
+    isUpdatedByAdmin: boolean;
 }
 
 const UpdateArticleForm = (props:propsUpdateArticleForm) => {
     const [articleUpdated, setArticleUpdated] = useState(false);
     const { apiUrl } = useContext(AppContext);
+    const username = sessionStorage.getItem('username');
     const dispatch = useDispatch();
 
     function handleUpdate (e: MouseEvent<HTMLButtonElement>) {
@@ -34,6 +36,14 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
         if(title.value.trim() === '' || body.value.trim() === '') {
             alert('Tout les champs sont obligatoires.');
             return;
+        }
+
+        if (props.isUpdatedByAdmin) {
+            if (!window.confirm('Vous êtes sur le point de modifier un article créé par un autre utilisateur. Êtes-vous sûr de vouloir continuer ?')) {
+                return;
+            }
+
+            body.value = body.value + ' (Le contenu original a été modifié par l\'administrateur : ' + username + ')';
         }
 
         axios.put(`${apiUrl}/articles/${props.article.id}`, {

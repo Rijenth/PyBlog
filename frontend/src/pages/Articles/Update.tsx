@@ -20,16 +20,23 @@ const UpdateArticle = () => {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const userId = useSelector((state: any) => state.userAuth.userId);
+    const admin = useSelector((state: any) => state.userAuth.admin);
+    const [isUpdatedByAdmin, setIsUpdatedByAdmin] = useState(false);
 
     useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${apiUrl}/articles/${id}`);
-                if(response.data[0].userId === userId) {
+
+                if(response.data[0].userId === userId || admin) {
                     setArticle(response.data);
                     setCanUpdate(true);
                 } else {
                     setCanUpdate(false);
+                }
+
+                if (response.data[0].userId !== userId) {
+                    setIsUpdatedByAdmin(true);
                 }
             } catch (err) {
                 alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
@@ -49,6 +56,7 @@ const UpdateArticle = () => {
         <UpdateArticleForm 
             userId={userId} 
             article={article[0]}
+            isUpdatedByAdmin={isUpdatedByAdmin}
         />
     );
 };
