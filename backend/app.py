@@ -2,7 +2,12 @@ from datetime import timedelta
 from dotenv import load_dotenv
 from flask import (Flask, jsonify, request, abort)
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, decode_token, get_jwt_identity
+from flask_jwt_extended import (
+    JWTManager, 
+    jwt_required, 
+    create_access_token, 
+    get_jwt_identity, 
+    )
 from functools import wraps
 from os import getenv
 from src.App.Controllers.ArticlesController import ArticlesController
@@ -10,14 +15,14 @@ from src.App.Controllers.HomeController import HomeController
 from src.App.Controllers.UsersController import UsersController
 from src.App.Controllers.CommentsController import CommentsController
 from src.App.Models.ArticlesModel import ArticlesModel
-from src.App.Models.CommentsModel import CommentsModel
-from src.App.Models.UsersModel import UsersModel
 
 load_dotenv()
 
 def create_app():
     app=Flask(__name__)
     app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY')
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(seconds=10)
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
     CORS(app, resources={r"/api/*": {"origins": getenv('FRONTEND_URL')}})
     JWTManager(app)
     return app
@@ -41,16 +46,16 @@ def authorized_origin(func):
 ###                              ###
 @app.route('/api/token/refresh', methods=['POST'])
 @authorized_origin
-@jwt_required()
+@jwt_required(refresh=True)
 def refresh():
-    try:
-        identity = get_jwt_identity()
-    except Exception as e:
-        return jsonify({'message': str(e)}), 422
+    refreshToken = request.headers.get('Authorization').split(" ")[1]
+    
+    if not refreshToken:
+        return jsonify({'message': 'Missing refresh token'}), 422
+        
     return jsonify({
         'token': create_access_token(
-            identity=identity, 
-            expires_delta=timedelta(minutes=30)
+            identity=get_jwt_identity()
         )
     }), 200
 

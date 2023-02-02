@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from src.App.Actions.UserAction import UserAction
 from src.App.Actions.AuthenticationAction import AuthenticationAction
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 from src.App.Models.UsersModel import UsersModel
 from datetime import timedelta
 
@@ -36,8 +36,13 @@ class UsersController:
                 identity= {
                     "username" : user.username, 
                     "id" : user.id,
-                },
-                expires_delta=timedelta(minutes=30)
+                }
             ), 
-            "user" : user.serialize()
+            "refreshToken" : create_refresh_token(
+                identity= {
+                    "username" : user.username,
+                    "id" : user.id,
+                },
+            ),
+            "user" : user.serialize(),
         }), 200
