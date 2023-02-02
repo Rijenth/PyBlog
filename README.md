@@ -21,13 +21,13 @@ Cette erreur est causé si on defini un MYSQL_ROOT_PASSWORD et un MYSQL_USER ave
         3. Permet de vérifier si l'API est operationnelle
 
 2. User :
-    1. Endpoint : `/api/users/register`
+    1. Endpoint : `/api/users`
         1. Method : POST
         2. Response : 201 (Created) || 422 (Unprocessable Content)
         3. Permet d'enregistrer un utilisateur dans la base de donnée
         4. Data : Donnée d'inscription de l'utilisateur
 
-    2. Endpoint : `/api/users/login`
+    2. Endpoint : `/api/login`
         1. Method : POST
         2. Response : 200 (OK) || 403 (Forbidden)
         3. Permet de connecter un utilisateur en vérifiant ses informations

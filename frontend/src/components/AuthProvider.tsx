@@ -1,10 +1,8 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, FC, ReactNode, useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 import jwt_decode from 'jwt-decode';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setLoginState, setUserId } from '../store/userAuthReducer';
-import { Navigate } from 'react-router';
 import handleLogout from '../functions/handleLogout';
 
 interface tokenData {

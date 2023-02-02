@@ -66,7 +66,7 @@ const UserLoginForm: FC = () => {
         }
 
         try {
-            const res = await axios.post(`${apiUrl}/users/login`, {username, password});
+            const res = await axios.post(`${apiUrl}/login`, {username, password});
             if (res.status === 200) {
                 const userData = {
                     id: res.data.user.id,

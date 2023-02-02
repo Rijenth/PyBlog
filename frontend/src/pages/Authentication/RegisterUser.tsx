@@ -43,7 +43,7 @@ const RegisterUser = () => {
             return alert('L\'adresse email n\'est pas valide');
         }
 
-        axios.post(`${apiUrl}/users/register`, {
+        axios.post(`${apiUrl}/users`, {
             email: email.value,
             password: password.value,
             username: username.value,

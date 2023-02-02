@@ -67,18 +67,13 @@ def home():
 ###                       ###
 ###      User Routes      ###
 ###                       ###
-@app.route('/api/users/register', methods=['POST'])
+@app.route('/api/users', methods=['POST'])
 @authorized_origin
 def register():
     data = request.get_json()
-    for key, value in data.items():
-        if(type(value) == bool):
-            data[key] = value
-        else :
-            data[key] = value.strip()
     return UsersController.register(data)
 
-@app.route('/api/users/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 @authorized_origin
 def login():
     data = request.get_json()
@@ -89,114 +84,79 @@ def login():
 ###                 ###
 @app.route('/api/articles', methods=['GET'])
 @authorized_origin
-def indexArticles():
+def index_articles():
     return ArticlesController.indexArticles()
 
-@app.route('/api/articles/<string:id>', methods=['GET'])
+@app.route('/api/articles/<int:article_id>', methods=['GET'])
 @authorized_origin
-def showArticle(id):
-    try:
-        int(id)
-    except ValueError:
-        return jsonify({'message': 'Wrong params!'}), 422
-    return ArticlesController.showArticle(id)
+def get_article(article_id):
+    return ArticlesController.showArticle(article_id)
 
 @app.route('/api/articles', methods=['POST'])
 @authorized_origin
 @jwt_required()
-
-def postArticle():
+def post_article():
     data = request.get_json()
-
     try:
         article = ArticlesModel(data)
     except Exception as e:
         return jsonify({'message': str(e)}), 422
-
     return ArticlesController.postArticle(article)
 
-@app.route('/api/articles/<int:id>', methods=['PUT'])
+@app.route('/api/articles/<int:article_id>', methods=['PUT'])
 @authorized_origin
 @jwt_required()
-def updateArticle(id):
+def update_article(article_id):
     data = request.get_json()
-    
     try:
         article = ArticlesModel(data)
     except Exception as e:
-        return jsonify({'message': str(e)}), 422
-        
-    return ArticlesController.updateArticle(id, article)
+        return jsonify({'message': str(e)}), 422 
+    return ArticlesController.updateArticle(article_id, article)
 
-@app.route('/api/articles/<string:id>', methods=['DELETE'])
+@app.route('/api/articles/<int:article_id>', methods=['DELETE'])
 @authorized_origin
 @jwt_required()
-def deleteArticle(id):
-    try:
-        int(id)
-    except ValueError:
-        return jsonify({'message': 'Wrong params!'}), 422
-    return ArticlesController.deleteArticle(int(id))
+def delete_article(article_id):
+    return ArticlesController.deleteArticle(article_id)
 
 ###                 ###
 ### Comments Routes ###
 ###                 ###
-@app.route('/api/articles/<string:articleId>/comments', methods=['GET'])
+@app.route('/api/articles/<int:article_id>/comments', methods=['GET'])
 @authorized_origin
 @jwt_required()
-def getAllComments(articleId):
-    try:
-        int(articleId)
-        if(int(articleId) <= 0):
-            return jsonify({'message': 'Wrong params!'}), 422
-    except ValueError:
+def index_comments(article_id):
+    if(article_id <= 0):
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.index(articleId)
-
-@app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['GET'])
-def getSingleComment(articleId, commentId):
-    try:
-        int(commentId)
-        if(int(commentId) <= 0):
-            return jsonify({'message': 'Wrong params!'}), 422
-    except ValueError:
-        return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.get(commentId)
+    return CommentsController.index(article_id)
 
 
-@app.route('/api/articles/<string:id>/comments', methods=['POST'])
+@app.route('/api/articles/<int:article_id>/comments', methods=['POST'])
 @authorized_origin
 @jwt_required()
-def postComment(id):
+def post_comment(article_id):
     data = request.get_json()
-    try:
-        articleId = int(id)
-        if articleId <= 0 or int(data['userId']) <= 0:
-            return jsonify({'message': 'Wrong params!'}), 422
-    except ValueError:
+    if article_id <= 0 or int(data['userId']) <= 0:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.post(articleId, data)
+    return CommentsController.post(article_id, data)
 
-@app.route('/api/articles/<int:articleId>/comments/<int:commentId>', methods=['PUT'])
+@app.route('/api/articles/<int:article_id>/comments/<int:comment_id>', methods=['PUT'])
 @authorized_origin
 @jwt_required()
-def updateComment(articleId, commentId):
+def update_comment(article_id, comment_id):
     data = request.get_json()
-    if articleId <= 0 or commentId <= 0:
+    if article_id <= 0 or comment_id <= 0:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.update(articleId, commentId, data)
+    return CommentsController.update(article_id, comment_id, data)
 
-@app.route('/api/articles/<string:articleId>/comments/<string:commentId>', methods=['DELETE'])
+@app.route('/api/comments/<int:comment_id>', methods=['DELETE'])
 @authorized_origin
 @jwt_required()
-def deleteComment(articleId, commentId):
-    try:
-        int(commentId)
-        if(int(commentId) <= 0):
-            return jsonify({'message': 'Wrong params!'}), 422
-    except ValueError:
+def delete_comment(comment_id):
+    if comment_id <= 0:
         return jsonify({'message': 'Wrong params!'}), 422
-    return CommentsController.delete(int(commentId))
+    return CommentsController.delete(comment_id)
 
 
 if __name__ == '__main__':

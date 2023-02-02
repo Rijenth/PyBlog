@@ -38,7 +38,7 @@ const ArticleComments = (props:PropsCommentForm) => {
         if (window.confirm('Voulez-vous vraiment supprimer ce commentaire ?')) {
             const deleteComment = async () => {
                 try {
-                    await axios.delete(`${apiUrl}/articles/${props.articleId}/comments/${commentId}`, {
+                    await axios.delete(`${apiUrl}/comments/${commentId}`, {
                         headers: {
                             'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
                         }
