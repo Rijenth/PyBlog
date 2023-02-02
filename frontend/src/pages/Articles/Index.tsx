@@ -16,8 +16,8 @@ const IndexArticles = () => {
     const [articles, setArticles] = useState<Article[]>([]);
     const { apiUrl } = useContext(AppContext);
     const userId = useSelector((state: any) => state.userAuth.userId);
-    const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
     const loginState = useSelector((state: any) => state.userAuth.loginState);
+    const admin = useSelector((state: any) => state.userAuth.admin);
 
     useEffect(() => {
         axios.get(`${apiUrl}/articles`)
@@ -37,7 +37,7 @@ const IndexArticles = () => {
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
-                            {loginState && (userId===article.userId || isAdmin) ? 
+                            {loginState && (userId===article.userId || admin) ? 
                                 <>
                                     <RedirectButton buttonText='Edit' buttonUrl={`/articles/edit/${article.id}`} buttonClass='btn btn-primary btn-sm'/>
                                     <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>

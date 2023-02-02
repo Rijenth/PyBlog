@@ -15,14 +15,14 @@ const DeleteArticle = () => {
     const [canDelete, setCanDelete] = useState(false);
     const [article, setArticle] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const isAdmin = JSON.parse(sessionStorage.getItem('admin') ?? 'false') || false;
+    const admin = useSelector((state: any) => state.userAuth.admin);
     const userId = useSelector((state: any) => state.userAuth.userId);
 
     useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${apiUrl}/articles/${id}`);
-                if(response.data[0].userId === userId || isAdmin) {
+                if(response.data[0].userId === userId || admin) {
                     setArticle(response.data);
                     setCanDelete(true);
                 } else {

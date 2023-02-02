@@ -3,7 +3,7 @@ import axios from 'axios';
 import RedirectButton from './RedirectButton';
 import AppContext from '../context/AppContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState, setUserId } from '../store/userAuthReducer';
+import { setAdmin, setLoginState, setUserId } from '../store/userAuthReducer';
 import handleLogout from '../functions/handleLogout';
 
 /* 
@@ -73,7 +73,6 @@ const UserLoginForm: FC = () => {
                     username: res.data.user.username,
                     firstName: res.data.user.firstName,
                     lastName: res.data.user.lastName,
-                    admin: res.data.user.admin
                 }
 
                 const jwt = {
@@ -90,11 +89,11 @@ const UserLoginForm: FC = () => {
                 });
 
                 dispatch(setLoginState(true));
-
                 dispatch(setUserId(userData.id));
+                dispatch(setAdmin(res.data.user.admin));
             }
         } catch(e) {
-            return alert(e);
+            return alert("An error occured, please contact the administrator");
         }
     };
 
