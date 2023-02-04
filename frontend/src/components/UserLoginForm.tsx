@@ -5,6 +5,7 @@ import AppContext from '../context/AppContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAdmin, setLoginState, setUserId } from '../store/userAuthReducer';
 import handleLogout from '../functions/handleLogout';
+import handleError from '../functions/handleError';
 
 const UserLoginForm: FC = () => {
     const {apiUrl} = useContext(AppContext);
@@ -79,7 +80,7 @@ const UserLoginForm: FC = () => {
                     setAuthError('');
                 }
             }
-        } catch(e : any) {
+        } catch(e: any) {
             setAuthError(e.response.data.message);
         }
     };
@@ -94,11 +95,7 @@ const UserLoginForm: FC = () => {
         :
         <div className='text-left'>
             { authError && 
-                <div className='alertBox'>
-                    <span className='errorMessage'>
-                        {authError}
-                    </span>
-                </div>
+                handleError([authError])
             }
             <h3>Connexion</h3>
             <form onSubmit={handleSubmit}>
