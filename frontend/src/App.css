@@ -99,6 +99,22 @@ textarea {
   margin-top: 10px;
 }
 
+.alertBox {
+  margin: 0 auto;
+  width: 80%;
+  height: auto;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px 0 rgba(175, 20, 20, 0.2);
+  background-color: #f1d5d5;
+}
+
+.errorMessage {
+  color: rgba(255, 0, 0, 0.658);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
 @media (max-width: 700px) {
   .cardsBody {
       width: 400px;

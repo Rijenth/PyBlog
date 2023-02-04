@@ -1,20 +1,10 @@
-import { ChangeEvent, FC, FormEvent, KeyboardEvent, useContext, useEffect, useState } from 'react';
+import { FC, FormEvent, KeyboardEvent, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import RedirectButton from './RedirectButton';
 import AppContext from '../context/AppContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAdmin, setLoginState, setUserId } from '../store/userAuthReducer';
 import handleLogout from '../functions/handleLogout';
-
-/* 
-Il semble y avoir plusieurs problèmes potentiels dans ce code. Tout d'abord, 
-il utilise des éléments de DOM pour récupérer les valeurs des champs de formulaire, 
-ce qui n'est pas une bonne pratique en termes de maintenabilité et de performances. 
-Il utilise également des alertes pour afficher les erreurs, qui devraient plutôt être 
-affichées de manière plus gracieuse à l'utilisateur. 
-Enfin, il semble y avoir des problèmes de gestion d'erreurs dans la gestion de la réponse de l'API 
-qui devraient être améliorés.
-*/
 
 const UserLoginForm: FC = () => {
     const {apiUrl} = useContext(AppContext);
@@ -23,6 +13,7 @@ const UserLoginForm: FC = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState<string>('');
     const [welcomeMessage, setWelcomeMessage] = useState('');
+    const [authError, setAuthError] = useState('');
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -38,20 +29,6 @@ const UserLoginForm: FC = () => {
         }
     };
 
-    const handleChange = (event:ChangeEvent<HTMLInputElement>) => {
-        /*
-        Cette fonction devrait être retiré car elle inonde la console,
-        récuperer les valeurs des inputs avec un const[formData, setFormData] = useState({username: '', password: ''})
-        */
-        const {name, value} = event.target;
-        if (name === 'username') {
-            setUsername(value);
-        }
-        if (name === 'password') {
-            setPassword(value);
-        }
-    };
-
     function logout(e: any) {
         e.preventDefault();
         handleLogout(dispatch);
@@ -61,7 +38,14 @@ const UserLoginForm: FC = () => {
         event.preventDefault();
 
         if (!username || !password) {
-            return alert('Veuillez remplir tous les champs');
+            if (!username && password) {
+                setAuthError('Veuillez saisir un nom d\'utilisateur');
+            } else if (username && !password) {
+                setAuthError('Veuillez saisir un mot de passe');
+            } else {
+                setAuthError('Veuillez saisir un nom d\'utilisateur et un mot de passe');
+            }
+            return;
         }
 
         try {
@@ -90,9 +74,13 @@ const UserLoginForm: FC = () => {
                 dispatch(setLoginState(true));
                 dispatch(setUserId(userData.id));
                 dispatch(setAdmin(res.data.user.admin));
+                setUsername(userData.username);
+                if (authError) {
+                    setAuthError('');
+                }
             }
-        } catch(e) {
-            return alert("An error occured, please contact the administrator");
+        } catch(e : any) {
+            setAuthError(e.response.data.message);
         }
     };
 
@@ -105,20 +93,26 @@ const UserLoginForm: FC = () => {
         </div>  
         :
         <div className='text-left'>
+            { authError && 
+                <div className='alertBox'>
+                    <span className='errorMessage'>
+                        {authError}
+                    </span>
+                </div>
+            }
             <h3>Connexion</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="username">Nom d'utilisateur</label>
-                    <input type="text" className="form-control" name="username" value={username} onKeyDown={onKeyDown} onChange={handleChange} />
+                    <input type="text" className="form-control" name="username" value={username} onKeyDown={onKeyDown} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Mot de passe</label>
-                    <input type="password" className="form-control" name="password" value={password} onKeyDown={onKeyDown} onChange={handleChange} />
+                    <input type="password" className="form-control" name="password" value={password} onKeyDown={onKeyDown} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <button type="submit" className="btn btn-primary">Connexion</button>
                 <RedirectButton buttonText="Inscription" buttonClass='btn btn-primary btn' buttonUrl='/register'/>
             </form>
-            {/* {error && <p>{error}</p>} */}
         </div>
     );
 };

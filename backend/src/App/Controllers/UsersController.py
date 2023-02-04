@@ -24,7 +24,7 @@ class UsersController:
         row = AuthenticationAction().login(data)
         
         if(row == []):
-            return jsonify({"message" : "Wrong Credentials"}), 403
+            return jsonify({"message" : "This user doesn't exist or password doesn't match"}), 403
         
         try:
             user = UsersModel(row)
