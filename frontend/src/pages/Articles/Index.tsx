@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import AppContext from '../../context/AppContext';
 import RedirectButton from '../../components/RedirectButton';
 import { useSelector } from 'react-redux';
+import handleError from '../../functions/handleError';
 interface Article {
     id: number;
     title: string;
@@ -18,16 +19,22 @@ const IndexArticles = () => {
     const userId = useSelector((state: any) => state.userAuth.userId);
     const loginState = useSelector((state: any) => state.userAuth.loginState);
     const admin = useSelector((state: any) => state.userAuth.admin);
+    const [error, setError] = useState<string>('');
 
     useEffect(() => {
         axios.get(`${apiUrl}/articles`)
             .then((response) => setArticles(response.data))
-            .catch((error) => alert(error));
+            .catch((err: any) => 
+                setError(err.message)
+            );
     }, [apiUrl]);
-    
+
     return (
-        (articles.length === 0) ? ( 
+        (articles.length === 0 || error) ? ( 
             <div className="container">
+                {error && 
+                    handleError([error])
+                }
                 <h2>Articles</h2>
                 <p>Aucun article n'est disponible</p>
             </div> 

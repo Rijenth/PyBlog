@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import AppContext from '../context/AppContext';
 import handleLogout from '../functions/handleLogout';
+import handleError from '../functions/handleError';
 
 interface Comment {
     id: number;
@@ -26,6 +27,7 @@ const ArticleComments = (props:PropsCommentForm) => {
     const userId = useSelector((state: any) => state.userAuth.userId);
     const loginState = useSelector((state: any) => state.userAuth.loginState);
     const dispatch = useDispatch();
+    const [error, setError] = useState<string>('');
 
     useEffect(() => {
         setArticleComments(props.comments);
@@ -49,7 +51,7 @@ const ArticleComments = (props:PropsCommentForm) => {
                         handleLogout(dispatch);
                         alert('Your session has expired. Please log in again.')
                     } else {
-                        alert('An error occured. Please contact the support.')
+                        alert('An error has occurred. Unable to perform requested action.')
                     }
                 }
             };
@@ -61,6 +63,7 @@ const ArticleComments = (props:PropsCommentForm) => {
         e.preventDefault();
         setSwitchButton(true);
         setTargetComment(e.currentTarget.value);
+        setError('');
     }
 
     function handleSend (e: MouseEvent<HTMLButtonElement>) {
@@ -69,41 +72,49 @@ const ArticleComments = (props:PropsCommentForm) => {
         const comment = articleComments.find((comment) => comment.id === Number(targetComment));
 
         if (body && comment) {
-            if (body.value !== comment.body) {
-                const newComment = {
-                    body: body.value,
-                    userId: userId,
-                    author: localStorage.getItem('username')
-                };
-
-                const updateComment = async () => {
-                    axios.put(`${apiUrl}/articles/${props.articleId}/comments/${comment.id}`, newComment, {
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                        }
-                    })
-                    .then(res => {
-                        if (res.status === 204) {
-                            setArticleComments(articleComments.map((comment) => {
-                                if (comment.id === Number(targetComment)) {
-                                    comment.body = body.value;
-                                }
-                                return comment;
-                            }));
-                            handleCancellation(e);
-                        }
-                    })
-                    .catch(err => {
-                        if (err.response.status === 401) {
-                            handleLogout(dispatch);
-                            alert('Your session has expired. Please log in again.')
-                        } else {
-                            alert('An error occured. Please contact the support.')
-                        }
-                    })
-                };
-                updateComment();
+            if (body.value === comment.body) {
+                handleCancellation(e);
+                return;
             }
+
+            if (body.value.length === 0) {
+                setError('Le commentaire doit contenir au moins 1 caractère.');
+                return;
+            }
+
+            const newComment = {
+                body: body.value,
+                userId: userId,
+                author: localStorage.getItem('username')
+            };
+
+            const updateComment = async () => {
+                axios.put(`${apiUrl}/articles/${props.articleId}/comments/${comment.id}`, newComment, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    }
+                })
+                .then(res => {
+                    if (res.status === 204) {
+                        setArticleComments(articleComments.map((comment) => {
+                            if (comment.id === Number(targetComment)) {
+                                comment.body = body.value;
+                            }
+                            return comment;
+                        }));
+                        handleCancellation(e);
+                    }
+                })
+                .catch(err => {
+                    if (err.response.status === 401) {
+                        handleLogout(dispatch);
+                        alert('Your session has expired. Please log in again.')
+                    } else {
+                        setError(err.message);
+                    }
+                })
+            };
+            updateComment();  
         } 
     }
     
@@ -111,14 +122,17 @@ const ArticleComments = (props:PropsCommentForm) => {
         e.preventDefault();
         setSwitchButton(false);
         setTargetComment(null);
+        setError('');
     }
 
     return (
-        
         <div className='articleComments'>
             {articleComments && articleComments.map((comment) => (
                 <div key={comment.id} className="comments">
                     <p>{comment.author} - {comment.date}</p>
+                    {
+                        (targetComment === comment.id.toString()) && (error) ? handleError([error]): <></>
+                    }
                     {
                         (targetComment === comment.id.toString()) && (comment.userId === userId) && (switchButton === true)
                         ? <textarea id='newCommentBody' defaultValue={comment.body} cols={30} rows={2}></textarea>

@@ -33,7 +33,7 @@ const DeleteArticleForm = (props:PropsDeleteArticle) => {
                 handleLogout(dispatch);
                 alert('Your session has expired. Please log in again.')
             } else {
-                alert('An error occured. Please contact the support.')
+                alert('An error has occurred. Unable to perform requested action.')
             }
         });
     }

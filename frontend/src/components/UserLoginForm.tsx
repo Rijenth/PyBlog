@@ -14,7 +14,7 @@ const UserLoginForm: FC = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState<string>('');
     const [welcomeMessage, setWelcomeMessage] = useState('');
-    const [authError, setAuthError] = useState('');
+    const [authError, setAuthError] = useState<string>('');
 
     useEffect(() => {
         const hour = new Date().getHours();
@@ -39,12 +39,12 @@ const UserLoginForm: FC = () => {
         event.preventDefault();
 
         if (!username || !password) {
-            if (!username && password) {
-                setAuthError('Veuillez saisir un nom d\'utilisateur');
-            } else if (username && !password) {
-                setAuthError('Veuillez saisir un mot de passe');
-            } else {
+            if (!username && !password) {
                 setAuthError('Veuillez saisir un nom d\'utilisateur et un mot de passe');
+            } else if (!username) {
+                setAuthError('Veuillez saisir un nom d\'utilisateur');
+            } else if (!password) {
+                setAuthError('Veuillez saisir un mot de passe');
             }
             return;
         }

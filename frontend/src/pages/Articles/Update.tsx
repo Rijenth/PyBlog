@@ -38,8 +38,9 @@ const UpdateArticle = () => {
                 if (response.data[0].userId !== userId) {
                     setIsUpdatedByAdmin(true);
                 }
-            } catch (err) {
-                alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
+            } catch (err: any) {
+                console.log(err)
+                alert(err.message);
             } finally {
                 setIsLoading(false);
             }

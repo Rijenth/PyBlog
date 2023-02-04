@@ -1,17 +1,19 @@
 import axios from 'axios';
-import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
 import handleLogout from '../../functions/handleLogout';
+import handleError from '../../functions/handleError';
 
 const PostArticle = () => {
     const [articlesCreated, setArticlesCreated] = useState(false)
     const { apiUrl } = useContext(AppContext)
     const userId = useSelector((state: any) => state.userAuth.userId);
     const dispatch = useDispatch();
+    const [error, setError] = useState<string>('');
 
     function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -43,17 +45,20 @@ const PostArticle = () => {
                     handleLogout(dispatch);
                     alert('Your session has expired. Please log in again.');
                 } else {
-                    alert('An error occured. Please contact the support.')
+                    setError('An error has occurred. Unable to perform requested action.')
                 }
             });
         } else {
-            return alert('Tout les champs doivent être complétés');
+            setError('Tout les champs doivent être complétés');
         }
     }
 
     return (
         (articlesCreated) ? <Navigate to='/articles' /> : (
             <div>
+                {error &&
+                    handleError([error])
+                }
                 <h2>Créer un article</h2>
                 <form>
                     <div className="form-group">

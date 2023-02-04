@@ -5,31 +5,28 @@ import AppContext from '../../context/AppContext';
 import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-interface Article {
-    id: number;
-}
-
 const DeleteArticle = () => {
     const { id } = useParams();
     const { apiUrl } = useContext(AppContext)
     const [canDelete, setCanDelete] = useState(false);
-    const [article, setArticle] = useState<Article[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const admin = useSelector((state: any) => state.userAuth.admin);
     const userId = useSelector((state: any) => state.userAuth.userId);
+    const [articleId, setArticleId] = useState<number>(0);
 
     useEffect(() => {
         const getArticle = async () => {
             try {
                 const response = await axios.get(`${apiUrl}/articles/${id}`);
-                if(response.data[0].userId === userId || admin) {
-                    setArticle(response.data);
+                if((response.data[0].userId === userId) || admin) {
+                    setArticleId(response.data[0].id);
                     setCanDelete(true);
                 } else {
                     setCanDelete(false);
                 }
-            } catch (err) {
-                alert('Une erreur est survenue lors de la récupération de l\'article à mettre à jour.')
+            } catch (err: any) {
+                console.log(err)
+                alert(err.message);
             } finally {
                 setIsLoading(false);
             }
@@ -45,7 +42,7 @@ const DeleteArticle = () => {
         (canDelete === false) ? <Navigate to='/articles' /> : 
         <DeleteArticleForm 
             userId={userId} 
-            articleId={article[0].id}
+            articleId={articleId}
         />
     );
 };
