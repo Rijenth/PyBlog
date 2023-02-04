@@ -127,8 +127,6 @@ def delete_article(article_id):
 @authorized_origin
 @jwt_required()
 def index_comments(article_id):
-    if(article_id <= 0):
-        return jsonify({'message': 'Wrong params!'}), 422
     return CommentsController.index(article_id)
 
 
@@ -154,8 +152,6 @@ def update_comment(article_id, comment_id):
 @authorized_origin
 @jwt_required()
 def delete_comment(comment_id):
-    if comment_id <= 0:
-        return jsonify({'message': 'Wrong params!'}), 422
     return CommentsController.delete(comment_id)
 
 
