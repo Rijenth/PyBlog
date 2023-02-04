@@ -9,7 +9,7 @@ interface ProtectedProps {
 const Protected = ({ children }: ProtectedProps): ReactElement => {
     const loginState = useSelector((state: any) => state.userAuth.loginState);
 
-    if (!loginState || sessionStorage.getItem('token') === null) {
+    if (!loginState || localStorage.getItem('token') === null) {
         return <Navigate to='/' replace />;
     }
 

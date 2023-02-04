@@ -24,7 +24,7 @@ interface propsUpdateArticleForm {
 const UpdateArticleForm = (props:propsUpdateArticleForm) => {
     const [articleUpdated, setArticleUpdated] = useState(false);
     const { apiUrl } = useContext(AppContext);
-    const username = sessionStorage.getItem('username');
+    const username = localStorage.getItem('username');
     const dispatch = useDispatch();
 
     function handleUpdate (e: MouseEvent<HTMLButtonElement>) {
@@ -54,7 +54,7 @@ const UpdateArticleForm = (props:propsUpdateArticleForm) => {
             }, 
             {    
                 headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
                 }
             })
             .then(response => {

@@ -35,7 +35,7 @@ const CommentForm = (props:PropsCommentForm) => {
     function handleClick (e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault(); 
         const body = document.getElementsByName('comment')[0] as HTMLInputElement;
-        const username = sessionStorage.getItem('username');
+        const username = localStorage.getItem('username');
         
         if(body.value.trim().length !== 0) {
             const newComment = {
@@ -46,7 +46,7 @@ const CommentForm = (props:PropsCommentForm) => {
 
             axios.post(`${apiUrl}/articles/${props.article.id}/comments`, newComment, {
                 headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
                     }
                 }
             )

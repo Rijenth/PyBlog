@@ -17,7 +17,7 @@ const PostArticle = () => {
         e.preventDefault();
         const title = document.getElementById('title') as HTMLInputElement
         const body = document.getElementById('body') as HTMLInputElement
-        const username = sessionStorage.getItem('username');
+        const username = localStorage.getItem('username');
 
         if(title.value.trim().length !== 0 && body.value.trim().length !== 0) {
             const article = {
@@ -29,7 +29,7 @@ const PostArticle = () => {
             
             axios.post(`${apiUrl}/articles`, article, {
                 headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'), 
                     }
                 }
             )

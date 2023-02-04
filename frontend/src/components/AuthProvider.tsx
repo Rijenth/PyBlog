@@ -26,7 +26,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   const refreshAccessToken = async () => {
-    const refreshToken = sessionStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem('refreshToken');
 
     if (!refreshToken) {
       logout();
@@ -44,7 +44,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        sessionStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);
       } else {
         logout();
       }
@@ -55,7 +55,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const checkTokenExpiration = async () => {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
 
       if (token) {
         const decodedToken = jwt_decode<tokenData>(token);
@@ -69,8 +69,9 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     };
     if (loginState) {
       checkTokenExpiration();
+      console.log("token expiration checked")
     }
-  }, []);
+  }, [loginState]);
 
   return (
     <AuthContext.Provider value={{}} >

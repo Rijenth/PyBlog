@@ -40,7 +40,7 @@ const ArticleComments = (props:PropsCommentForm) => {
                 try {
                     await axios.delete(`${apiUrl}/comments/${commentId}`, {
                         headers: {
-                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'), 
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'), 
                         }
                     });
                     setArticleComments(articleComments.filter((comment) => comment.id !== Number(commentId)));
@@ -73,13 +73,13 @@ const ArticleComments = (props:PropsCommentForm) => {
                 const newComment = {
                     body: body.value,
                     userId: userId,
-                    author: sessionStorage.getItem('username')
+                    author: localStorage.getItem('username')
                 };
 
                 const updateComment = async () => {
                     axios.put(`${apiUrl}/articles/${props.articleId}/comments/${comment.id}`, newComment, {
                         headers: {
-                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
                         }
                     })
                     .then(res => {

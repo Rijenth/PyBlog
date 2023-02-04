@@ -15,7 +15,7 @@ const refreshToken = async (token: string) => {
         });
         const data = await response.json();
         if (response.ok) {
-            sessionStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.token);
             setSuccess(true);
         }
     } catch (error) {

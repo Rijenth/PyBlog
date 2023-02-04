@@ -20,7 +20,7 @@ const DeleteArticleForm = (props:PropsDeleteArticle) => {
         e.preventDefault();
         axios.delete(`${apiUrl}/articles/${props.articleId}`, {
             headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
             }
         })
         .then(response => {

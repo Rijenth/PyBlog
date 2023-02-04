@@ -20,7 +20,6 @@ const UserLoginForm: FC = () => {
     const {apiUrl} = useContext(AppContext);
     const dispatch = useDispatch();
     const loginState = useSelector((state: any) => state.userAuth.loginState);
-    const userId = useSelector((state: any) => state.userAuth.userId);
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState<string>('');
     const [welcomeMessage, setWelcomeMessage] = useState('');
@@ -28,7 +27,7 @@ const UserLoginForm: FC = () => {
     useEffect(() => {
         const hour = new Date().getHours();
         const welcomeMessage = (hour < 16) ? 'Bonjour' : 'Bonsoir';
-        const username = sessionStorage.getItem('username') ? sessionStorage.getItem('username') : '';
+        const username = localStorage.getItem('username');
         setUsername(username ? username : '');
         setWelcomeMessage(welcomeMessage); 
     }, []);
@@ -81,11 +80,11 @@ const UserLoginForm: FC = () => {
                 }
                 
                 Object.entries(userData).forEach(([key, value]) => {
-                    sessionStorage.setItem(key, value);
+                    localStorage.setItem(key, value);
                 });
 
                 Object.entries(jwt).forEach(([key, value]) => {
-                    sessionStorage.setItem(key, value);
+                    localStorage.setItem(key, value);
                 });
 
                 dispatch(setLoginState(true));

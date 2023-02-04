@@ -4,12 +4,20 @@ import handleLogout from '../functions/handleLogout';
 
 const Navbar = () => {
     const loginState = useSelector((state: any) => state.userAuth.loginState);
+    const userId = useSelector((state: any) => state.userAuth.userId);
     const dispatch = useDispatch();
 
     function logout(e: any) {
         e.preventDefault();
         handleLogout(dispatch);
     }
+
+    console.log(
+        "logged in : ",
+        loginState,
+        "userId : ",
+        userId
+    );
 
     return (
         <nav className="navbar navbar-default">
