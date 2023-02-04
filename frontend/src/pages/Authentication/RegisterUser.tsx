@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import RedirectButton from '../../components/RedirectButton';
 import AppContext from '../../context/AppContext';
+import handleError from '../../functions/handleError';
 
 const RegisterUser = () => {
     const [admin, setAdmin] = useState(false);
@@ -11,7 +12,7 @@ const RegisterUser = () => {
     const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
     const { apiUrl } = useContext(AppContext);
     const loginState = useSelector((state: any) => state.userAuth.loginState);
-
+    const [error, setError] = useState<Array<string>>([]);
 
     const handleChange = () => {
         setAdmin(!admin);
@@ -32,15 +33,21 @@ const RegisterUser = () => {
         const firstName = document.getElementById('firstName') as HTMLInputElement;
         const lastName = document.getElementById('lastName') as HTMLInputElement;
         const fields = [email.value, password.value, passwordConfirm.value, username.value, firstName.value, lastName.value];
+        let errorMessages = [];
 
         if(fields.includes('')) {
-            return alert('Tout les champs sont obligatoires');
-        }
-        if (password.value !== passwordConfirm.value) {
-            return alert('Les mots de passe ne correspondent pas');
+            errorMessages.push('Tous les champs doivent être remplis');
         }
         if (!emailRegex.test(email.value)) {
-            return alert('L\'adresse email n\'est pas valide');
+            errorMessages.push('L\'email n\'est pas valide');
+        }
+        if (password.value !== passwordConfirm.value) {
+            errorMessages.push('Les mots de passe ne correspondent pas');
+        }
+
+        if (errorMessages.length > 0) {
+            setError(errorMessages);
+            return;
         }
 
         axios.post(`${apiUrl}/users`, {
@@ -53,11 +60,12 @@ const RegisterUser = () => {
         })
         .then((response) => {
             if(response.status === 201) {
+                alert('Inscription réussie ! Vous pouvez maintenant vous connecter')
                 setSuccess(true);
             }
         })
-        .catch((error) => {
-            return alert(error);
+        .catch((err: any) => {
+            setError([err.response.data.message]);
         });
     };
     
@@ -69,7 +77,9 @@ const RegisterUser = () => {
             <p>Inscrivez-vous pour accéder à toutes les fonctionnalités du site</p>
             <hr />
             <form>
- 
+                { error && 
+                    handleError(error)
+                }
                 <div className="form-group">
                     <label htmlFor="lastName">Nom</label>
                     <input required type="text" className="form-control" id="lastName" aria-describedby="lastNameHelp"  onKeyDown={onKeyDown} placeholder="Entrez votre nom" />
