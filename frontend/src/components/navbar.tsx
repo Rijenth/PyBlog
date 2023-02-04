@@ -12,13 +12,6 @@ const Navbar = () => {
         handleLogout(dispatch);
     }
 
-    console.log(
-        "logged in : ",
-        loginState,
-        "userId : ",
-        userId
-    );
-
     return (
         <nav className="navbar navbar-default">
             <div className="container">
