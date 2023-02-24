@@ -17,9 +17,10 @@ function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <div className='container'>
-          <Navbar />
           <AuthProvider>
             <BrowserRouter>
+            <Navbar />
+
               <Routes>
 
                 <Route index path='/' element={<Home />} />

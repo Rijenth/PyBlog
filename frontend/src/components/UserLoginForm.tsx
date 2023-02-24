@@ -89,7 +89,7 @@ const UserLoginForm: FC = () => {
         (loginState) ? 
         <div className="text-left">
             <h3>{welcomeMessage} {username} !</h3>
-            <p>Vous pouvez accéder à toutes les fonctionnalités du site</p>
+            <p>Vous pouvez accéder à toutes les fonctionnalités du site.</p>
             <button onClick={logout} className="btn btn-primary">Deconnexion</button>
         </div>  
         :
@@ -97,13 +97,10 @@ const UserLoginForm: FC = () => {
             { authError && 
                 handleError([authError])
             }
-            <h3>Connexion</h3>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="username">Nom d'utilisateur</label>
                     <input type="text" className="form-control" name="username" value={username} onKeyDown={onKeyDown} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-                <div className="form-group">
                     <label htmlFor="password">Mot de passe</label>
                     <input type="password" className="form-control" name="password" value={password} onKeyDown={onKeyDown} onChange={(e) => setPassword(e.target.value)} />
                 </div>

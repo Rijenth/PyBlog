@@ -55,11 +55,12 @@ const PostArticle = () => {
 
     return (
         (articlesCreated) ? <Navigate to='/articles' /> : (
-            <div>
+            <div className="jumbotron" style={{maxWidth: '600px', margin: '0 auto'}}>
                 {error &&
                     handleError([error])
                 }
                 <h2>Créer un article</h2>
+                <p>Racontez nous une histoire</p>
                 <form>
                     <div className="form-group">
                         <label htmlFor="title">Titre</label>
