@@ -4,6 +4,11 @@ textarea {
   width: 100%;
 }
 
+a:hover {
+  cursor: default;
+  pointer-events: auto;
+}
+
 .cardsBody {
   display: flex;
   flex-wrap: wrap;

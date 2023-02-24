@@ -1,4 +1,4 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ButtonProps {
     buttonText: string;
@@ -7,8 +7,10 @@ interface ButtonProps {
 }
 
 const RedirectButton = (props:ButtonProps) => {
+    const navigate = useNavigate();
+
     return (
-        <a style={{paddingLeft: 5, paddingRight: 5}} href={props.buttonUrl}>  
+        <a style={{paddingLeft: 5, paddingRight: 5}} onClick={()=>navigate(props.buttonUrl)}>  
             <button type='button' className={props.buttonClass}>
                 {props.buttonText}
             </button>
