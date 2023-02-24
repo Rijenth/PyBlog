@@ -1,11 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import handleLogout from '../functions/handleLogout';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const loginState = useSelector((state: any) => state.userAuth.loginState);
-    const userId = useSelector((state: any) => state.userAuth.userId);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     function logout(e: any) {
         e.preventDefault();
@@ -22,21 +23,21 @@ const Navbar = () => {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="/">PyBlog</a>
+                    <span className="navbar-brand" >PyBlog</span>
                 </div>
                 <div id="navbar" className="collapse navbar-collapse">
                     <ul className="nav navbar-nav">
-                        <li><a href="/">Accueil</a></li>
-                        <li><a href="/articles">Articles</a></li>
+                        <li><a onClick={()=>navigate("/")} >Accueil</a></li>
+                        <li><a onClick={()=>navigate("/articles")} >Articles</a></li>
 
                         { loginState && 
-                                <li><a href="/articles/create">Créer un article</a></li>
+                                <li><a onClick={()=>navigate("/articles/create")} >Créer un article</a></li>
                         }
 
-                        <li><a href="/about">À propos</a></li>
+                        <li><a onClick={()=>navigate("/about")} >À propos</a></li>
 
                         { loginState &&
-                            <li><a href="/" onClick={logout}>Déconnexion</a></li>
+                            <li><a href="#" onClick={logout}>Déconnexion</a></li>
                         }
                     </ul>
                 </div>

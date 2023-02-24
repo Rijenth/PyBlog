@@ -4,6 +4,7 @@ import AppContext from '../../context/AppContext';
 import RedirectButton from '../../components/RedirectButton';
 import { useSelector } from 'react-redux';
 import handleError from '../../functions/handleError';
+import { useNavigate } from 'react-router-dom';
 interface Article {
     id: number;
     title: string;
@@ -20,6 +21,7 @@ const IndexArticles = () => {
     const loginState = useSelector((state: any) => state.userAuth.loginState);
     const admin = useSelector((state: any) => state.userAuth.admin);
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${apiUrl}/articles`)
@@ -35,12 +37,12 @@ const IndexArticles = () => {
                 {error && 
                     handleError([error])
                 }
-                <h2>Articles</h2>
+                <h2>Liste d'articles</h2>
                 <p>Aucun article n'est disponible</p>
             </div> 
         ) : (
             <div className="container">
-                <h2>Articles</h2>
+                <h2>Liste d'articles</h2>
                 <ul className="list-group">
                     {articles && articles.length > 0 && articles.map((article) => (
                         <li key={article.id} className="list-group-item">
@@ -50,7 +52,7 @@ const IndexArticles = () => {
                                     <RedirectButton buttonText='Delete' buttonUrl={`/articles/delete/${article.id}`} buttonClass='btn btn-danger btn-sm'/>
                                 </> : <></>
                             }
-                            <a style={{paddingLeft: 10}} href={`/articles/${article.id}`}>
+                            <a style={{paddingLeft: 10}}  onClick={()=>navigate(`/articles/${article.id}`)} >
                             {article.title} - {article.author} - {article.date}
                             </a>
                         </li>
