@@ -1,5 +1,5 @@
 # React_Flask
-Docker template for React App | Flask Backend
+Application de blogging en ReactJS | Flask | MySQL | Bootstrap
 
 `https://github.com/Rijenth/PyBlog.git`
 
