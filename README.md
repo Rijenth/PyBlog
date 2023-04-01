@@ -1,5 +1,5 @@
 # React_Flask
-Application de blogging en ReactJS | Flask | MySQL | Bootstrap
+Application de blogging en React | Typescript | Flask | MySQL | Bootstrap
 
 `git clone https://github.com/Rijenth/PyBlog.git`
 
