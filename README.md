@@ -1,7 +1,7 @@
 # React_Flask
 Application de blogging en ReactJS | Flask | MySQL | Bootstrap
 
-`https://github.com/Rijenth/PyBlog.git`
+`git clone https://github.com/Rijenth/PyBlog.git`
 
 Dans le répertoire /backend, renommer le fichier `.env.exemple` en `.env` et le remplir avec les données appropriées.
 
