@@ -3,7 +3,7 @@ Application de blogging en ReactJS | Flask | MySQL | Bootstrap
 
 `git clone https://github.com/Rijenth/PyBlog.git`
 
-Dans le répertoire /backend, renommer le fichier `.env.exemple` en `.env` et le remplir avec les données appropriées.
+Dans le répertoire /backend, renommer le fichier `.env.example` en `.env` et le remplir avec les données appropriées.
 
 `docker-compose up -d --build`
 
