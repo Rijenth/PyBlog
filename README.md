@@ -7,7 +7,7 @@ Dans le répertoire /backend, renommer le fichier `.env.example` en `.env` et le
 
 `docker-compose up -d --build`
 
-# Route de l'API
+# Routes API
 
 1. Home : 
     1. Endpoint: `/`
