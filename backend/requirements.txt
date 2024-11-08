@@ -5,3 +5,4 @@ cryptography==3.4.8
 bcrypt
 flask_jwt_extended
 python-dotenv
+Werkzeug==2.2.2

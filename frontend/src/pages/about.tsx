@@ -18,11 +18,6 @@ const About = () => {
             </p>
 
             <p>
-                Je suis en deuxième année à Hetic (Montreuil) en Bachelor Concepteur Développeur de solutions digitales.
-                J'effectue actuellement une alternance en tant que développeur backend Laravel chez <a target="_blank" rel="noopener noreferrer" href="https://www.tylto.com/" >Tylto</a> pour une durée de 2 ans.
-            </p>
-
-            <p>
                 Merci d'avoir pris le temps de lire ce message. Si vous avez des questions, n'hésitez pas à me contacter via <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/rijentha/"> LinkedIn </a> 
                 et si vous voulez voir mes autres projets, voici le lien de mon <a target="_blank" rel="noopener noreferrer" href="https://github.com/Rijenth/">Github</a>.
             </p>
